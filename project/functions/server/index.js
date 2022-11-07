@@ -9,6 +9,7 @@ const SERVER = "/.netlify/functions/server";
 const app = express();
 
 app.use(express.json());
+
 // await axios.get(".netlify/functions/server/{ENDPOINT}");
 app.use(`${SERVER}/user`, userRouter);
 
