@@ -25,9 +25,9 @@ function App() {
         <header className="App-header">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="profile/:username" element={<Profile />} />
-            <Route path="games" element={<Games />} />
-            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </header>
