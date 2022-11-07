@@ -1,15 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import SetupExample from "./components/SetupExample";
-import Demo from "./components/Demo";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Leaderboard from "./pages/Leaderboard";
 import Games from "./pages/Games";
 import Profile from "./pages/Profile";
