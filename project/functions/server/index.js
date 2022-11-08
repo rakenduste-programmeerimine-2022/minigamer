@@ -1,13 +1,18 @@
 const serverless = require("serverless-http");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const express = require("express");
-// require("dotenv").config(); // don't have .env file yet
+require("dotenv").config();
 
 const userRouter = require("./router/user.router");
 
 const SERVER = "/.netlify/functions/server";
-const app = express();
+const DB = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
 
+mongoose.connect(DB, { dbName: process.env.MONGO_DATABASE }).catch((error) => {
+    console.error(error);
+});
+
+const app = express();
 app.use(express.json());
 
 // await axios.get(".netlify/functions/server/{ENDPOINT}");
