@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
           </Routes>
         </header>
       </div>
-      <div>footer</div>
+      <Footer />
     </Router>
   );
 }
