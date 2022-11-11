@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
-const { validationCheck } = require("../utility/validationCheck");
+const { validationCheck } = require("../middleware/validationCheck");
 const { message, errorMessage } = require("../utility/message");
 const { body } = require("express-validator");
 const User = require("../model/user.model");
