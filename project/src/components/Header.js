@@ -34,13 +34,29 @@ function ResponsiveAppBar() {
 
   const handleCloseNavMenu = () => {
     setAnchorElGame(null);
+    console.log("siin");
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ backgroundColor: "green" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 0 }}>
+            <IconButton sx={{ p: 2 }}>
+              <Link style={{ textDecoration: "none" }} to={`/`}>
+                <Typography>LOGO</Typography>
+              </Link>
+            </IconButton>
+          </Box>
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "flex-start",
+              marginLeft: 2,
+            }}
+          >
             <Button
               id="games"
               key="Games"
@@ -62,18 +78,19 @@ function ResponsiveAppBar() {
               anchorEl={anchorElGame}
               anchorOrigin={{
                 vertical: "top",
-                horizontal: "right",
+                horizontal: "center",
               }}
               keepMounted
               transformOrigin={{
                 vertical: "top",
-                horizontal: "right",
+                horizontal: "center",
               }}
               open={open}
               onClose={handleCloseNavMenu}
+              //onMouseLeave={handleCloseNavMenu}
             >
               {gamesDropdown.map((game) => (
-                <MenuItem key={game} onMouseOver={handleCloseNavMenu}>
+                <MenuItem key={game}>
                   <Link
                     style={{ textDecoration: "none" }}
                     to={`/games/${game}`}
@@ -87,7 +104,7 @@ function ResponsiveAppBar() {
             <Button //LEADERBOARD
               key="Leaderboard"
               onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ my: 2, color: "white", display: "block", marginLeft: 2 }}
             >
               <Link
                 style={{ textDecoration: "none", color: "white" }}
@@ -101,7 +118,11 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open user">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Typography>Profile</Typography>
+                <Typography
+                  style={{ color: "white", textTransform: "uppercase" }}
+                >
+                  {username}
+                </Typography>
               </IconButton>
             </Tooltip>
             <Menu

@@ -9,6 +9,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Minesweeper from "./pages/Minesweeper";
+import Sudoku from "./pages/Sudoku";
+import Nonogram from "./pages/Nonogram";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/games" element={<Games />} />
             <Route path="/games/Minesweeper" element={<Minesweeper />} />
+            <Route path="/games/Sudoku" element={<Sudoku />} />
+            <Route path="/games/Nonogramm" element={<Nonogram />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<ErrorPage />} />
