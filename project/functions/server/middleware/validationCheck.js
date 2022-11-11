@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { errorMessage } = require("./message");
+const { errorMessage } = require("../utility/message");
 
 exports.validationCheck = (req, res, next) => {
     const { errors } = validationResult(req);
