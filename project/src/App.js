@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Login from "./pages/Login";
+import Minesweeper from "./pages/Minesweeper";
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/games" element={<Games />} />
+            <Route path="/games/Minesweeper" element={<Minesweeper />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/profile/:login" element={<Login />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </header>
