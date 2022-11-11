@@ -22,7 +22,7 @@ function App() {
             <Route path="/games" element={<Games />} />
             <Route path="/games/Minesweeper" element={<Minesweeper />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/profile/:login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </header>
