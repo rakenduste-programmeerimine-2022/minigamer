@@ -12,7 +12,7 @@ class Message {
     }
 }
 
-exports.log = (text, obj = {}) => {
+exports.message = (text, obj = {}) => {
     const message = new Message(text, false);
     if (Object.keys(obj).length != 0) {
         message.addObject(obj);
@@ -20,7 +20,7 @@ exports.log = (text, obj = {}) => {
     return message;
 };
 
-exports.logError = (text, toConsole = false) => {
+exports.errorMessage = (text, toConsole = false) => {
     if (toConsole) {
         console.error(text);
     }
