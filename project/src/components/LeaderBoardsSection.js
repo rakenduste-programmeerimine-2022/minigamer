@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
 
