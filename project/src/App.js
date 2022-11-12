@@ -1,4 +1,5 @@
-import "./App.css";
+import "./Styles/App.scss";
+import "./Styles/Variables.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Leaderboard from "./pages/Leaderboard";
 import Games from "./pages/Games";
