@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 require("dotenv").config();
 
-const userRouter = require("./router/user.router");
 const followingRouter = require("./router/following.router");
+const userRouter = require("./router/user.router");
 
 const SERVER = "/.netlify/functions/server";
 const DB = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
