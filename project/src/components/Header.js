@@ -15,28 +15,6 @@ const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
 let username = "Username";
 
 function ResponsiveAppBar() {
-  //const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElGame, setAnchorElGame] = React.useState(null);
-  const open = Boolean(anchorElGame);
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenGamesMenu = (event) => {
-    setAnchorElGame(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElGame(null);
-    console.log("siin");
-  };
-
   return (
     <AppBar
       className="header"
@@ -46,11 +24,11 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton sx={{ p: 2 }}>
-              <Link style={{ textDecoration: "none" }} to={`/`}>
+            <Link style={{ textDecoration: "none" }} to={`/`}>
+              <IconButton sx={{ p: 2 }}>
                 <Typography>LOGO</Typography>
-              </Link>
-            </IconButton>
+              </IconButton>
+            </Link>
           </Box>
 
           <Box
@@ -61,38 +39,22 @@ function ResponsiveAppBar() {
               marginLeft: 2,
             }}
           >
-            <Button
-              id="games"
-              key="Games"
-              onMouseOver={handleOpenGamesMenu}
-              //onClick={handleOpenGamesMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
+            <Box className="dropdown">
               <Link
                 style={{ textDecoration: "none", color: "white" }}
                 to={`/games`}
               >
-                Games
+                <Button
+                  id="games"
+                  key="Games"
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Games
+                </Button>
               </Link>
-            </Button>
+            </Box>
 
-            <Menu
-              sx={{ mt: "45px" }}
-              id="games-menu"
-              anchorEl={anchorElGame}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              open={open}
-              onClose={handleCloseNavMenu}
-              //onMouseLeave={handleCloseNavMenu}
-            >
+            <Menu sx={{ mt: "45px" }} id="games-menu">
               {gamesDropdown.map((game) => (
                 <MenuItem key={game}>
                   <Link
@@ -105,23 +67,22 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
 
-            <Button //LEADERBOARD
-              key="Leaderboard"
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block", marginLeft: 2 }}
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={`/leaderboard`}
             >
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to={`/leaderboard`}
+              <Button //LEADERBOARD
+                key="Leaderboard"
+                sx={{ my: 2, color: "white", display: "block", marginLeft: 2 }}
               >
                 Leaderboard
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open user">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton sx={{ p: 0 }}>
                 <Typography
                   style={{ color: "white", textTransform: "uppercase" }}
                 >
@@ -129,23 +90,8 @@ function ResponsiveAppBar() {
                 </Typography>
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem key="Profile" onClick={handleCloseUserMenu}>
+            <Menu sx={{ mt: "45px" }} id="menu-appbar">
+              <MenuItem key="Profile">
                 <Link
                   style={{ textDecoration: "none" }}
                   to={`/profile/${username}`}
@@ -153,7 +99,7 @@ function ResponsiveAppBar() {
                   Profile
                 </Link>
               </MenuItem>
-              <MenuItem key="login" onClick={handleCloseUserMenu}>
+              <MenuItem key="login">
                 <Link style={{ textDecoration: "none" }} to={`/login`}>
                   login
                 </Link>
