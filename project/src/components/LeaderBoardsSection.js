@@ -9,40 +9,67 @@ function LeaderBoards_Section() {
 
   return (
     <Box
-      className="leaderBoards_section"
+      className="leaderBoardsSection"
       sx={{
-        display: "flex",
-        justifyContent: "flex-start",
         p: 2,
         backgroundColor: "gray",
       }}
     >
-      <Container>
-        <Box sx={{ width: 1 }}>
-          <Typography
-            className="title"
-            variant="h3"
-            sx={{ display: "flex", justifyContent: "flex-start" }}
-          >
-            Compete with others
-          </Typography>
+      <Container
+        className="LeaderBoards"
+        sx={{ display: "flex", justifyContent: "space-between" }}
+      >
+        <Box
+          className="LeaderBoardsTextWrapper"
+          sx={{
+            display: "flex",
+          }}
+        >
+          <Box className="LeaderBoardsText">
+            <Typography
+              className="title"
+              //sx={{ display: "flex", justifyContent: "flex-start" }}
+            >
+              Compete with others
+            </Typography>
+
+            <Typography className="text">
+              Registered users can record their score and Compete with others.
+              Stats are kept for every day but also across all time. Make your
+              mark. More text vMore textMore textMore textMore textMore textMore
+              textMore textMore textMore textMore textMore textMore textMore
+              textMore textMore textMore textMore textMore textMore textMore
+              textMore textMore textMore text
+            </Typography>
+            <Box
+              className="divider"
+              sx={{ width: 1, height: 2, backgroundColor: "gray" }}
+            ></Box>
+            <Button
+              className="leaderBoards_btn"
+              variant="primary"
+              sx={{
+                width: 200,
+                alignSelf: "center",
+              }}
+              onClick={() => {
+                navigate("/leaderboard");
+              }}
+            >
+              leaderboards
+            </Button>
+          </Box>
+        </Box>
+        <Box className="LeaderBoardsImage">
           <Box
-            className="divider"
-            sx={{ width: 1, height: 2, backgroundColor: "gray" }}
+            sx={
+              {
+                //backgroundColor: "red",
+                //display: "flex",
+                //justifyContent: "flex-end",
+              }
+            }
           ></Box>
-          <Button
-            variant="primary"
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: "blue",
-            }}
-            onClick={() => {
-              navigate("/leaderboard");
-            }}
-          >
-            leaderboards
-          </Button>
         </Box>
       </Container>
     </Box>

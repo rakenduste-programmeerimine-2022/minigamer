@@ -4,7 +4,7 @@
   text-align: center;
 }
 
-.App-header {
+/* .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -18,7 +18,7 @@
 .App-link {
   color: #61dafb;
 }
-
+ */
 
 .Hero_image{
   width: 100%;
@@ -26,8 +26,6 @@
   /*height: 100vh - 200px;*/
   background-color: $darkBlue;
   /*background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("photographer.jpg");*/
-
-
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -47,10 +45,35 @@
   height: 9vh;
 }
 
-.leaderBoards_section .title{
+.LeaderBoards{
+  display: flex;
+  gap: 80px;
 
+  .LeaderBoardsTextWrapper{
+    width: 50%;
+    flex-direction: column;
+    .LeaderBoardsText{
+      text-align: left;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .text{
+      padding-top: 20px ;
+    }
+    .title{
+      font-size: $h3;
+    }
+    .leaderBoards_btn{
+      background-color: $darkBlue;
+    }
+  }
+  .LeaderBoardsImage{
+    width: 50%;
+    height: 400px;
+    background-color: $black;
+  }
+  .leaderBoards_btn{
+    margin-top: 30px;
+  }
 }
-/*scss files
-variables.scss
-varvid, headerheight
-*/
+

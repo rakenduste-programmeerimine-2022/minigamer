@@ -4,6 +4,7 @@ import HeroImage from "../components/HeroImage";
 import GamesSlider from "../components/GamesSlider";
 import LeaderBoardsSection from "../components/LeaderBoardsSection";
 import DailyChallengeSection from "../components/DailyChallengeSection";
+import "../Styles/DailyChallengeSection.scss";
 
 function Home() {
   return (
