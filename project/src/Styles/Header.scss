@@ -1,0 +1,47 @@
+@import 'Variables.scss';
+
+.header{
+    text-transform: uppercase;
+    background-color: $green !important;
+
+    
+    .logo{
+        position: absolute;
+        display: flex;
+        justify-self: center;
+        //alignSelf: "center";
+        left: 20px;
+        top: 3vh;
+    }
+
+    .headerItem{
+        margin-right: 45px;
+    }
+
+    .dropdown{
+        position: relative;
+        display: inline-block;
+    }
+    .dropdownContent{
+        text-transform: capitalize;
+        display: none;
+        position: absolute;
+        min-width: 120px;
+        z-index: 1;
+        margin-top: unset;
+        background-color: $green;
+        background-color: white;
+        .menuItem{
+            color: black;
+            padding: 12px;
+            text-decoration: none;
+            display: block;
+        }
+    }
+    
+    
+    .dropdown:hover .dropdownContent {
+            display: block;
+        }
+    
+}

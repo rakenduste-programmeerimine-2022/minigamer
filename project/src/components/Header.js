@@ -6,105 +6,97 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import "../Styles/Header.scss";
 
 const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
 let username = "Username";
 
 function ResponsiveAppBar() {
   return (
-    <AppBar
-      className="header"
-      position="static"
-      style={{ backgroundColor: "green" }}
-    >
-      <Container maxWidth="xl">
+    <AppBar className="header" position="fixed">
+      <Box className="logo" sx={{}}>
+        <Link style={{ textDecoration: "none" }} to={`/`}>
+          <Typography>LOGO</Typography>
+        </Link>
+      </Box>
+      <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 0 }}>
-            <Link style={{ textDecoration: "none" }} to={`/`}>
-              <IconButton sx={{ p: 2 }}>
-                <Typography>LOGO</Typography>
-              </IconButton>
-            </Link>
-          </Box>
-
           <Box
             sx={{
               flexGrow: 1,
               display: "flex",
               justifyContent: "flex-start",
-              marginLeft: 2,
             }}
           >
-            <Box className="dropdown">
+            <Box className="dropdown headerItem">
               <Link
+                className="dropbtn"
                 style={{ textDecoration: "none", color: "white" }}
                 to={`/games`}
               >
-                <Button
+                <Typography
                   id="games"
                   key="Games"
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   Games
-                </Button>
+                </Typography>
               </Link>
-            </Box>
-
-            <Menu sx={{ mt: "45px" }} id="games-menu">
-              {gamesDropdown.map((game) => (
-                <MenuItem key={game}>
+              <Box
+                sx={{ mt: "45px" }}
+                id="games-menu"
+                className="dropdownContent"
+              >
+                {gamesDropdown.map((game) => (
                   <Link
+                    className="menuItem"
                     style={{ textDecoration: "none" }}
                     to={`/games/${game}`}
+                    key={game}
                   >
                     {game}
                   </Link>
-                </MenuItem>
-              ))}
-            </Menu>
+                ))}
+              </Box>
+            </Box>
 
             <Link
+              className="headerItem"
               style={{ textDecoration: "none", color: "white" }}
               to={`/leaderboard`}
             >
-              <Button //LEADERBOARD
+              <Typography //LEADERBOARD
                 key="Leaderboard"
-                sx={{ my: 2, color: "white", display: "block", marginLeft: 2 }}
+                sx={{ my: 2, color: "white", display: "block" }}
               >
                 Leaderboard
-              </Button>
+              </Typography>
             </Link>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open user">
-              <IconButton sx={{ p: 0 }}>
-                <Typography
-                  style={{ color: "white", textTransform: "uppercase" }}
-                >
-                  {username}
-                </Typography>
-              </IconButton>
-            </Tooltip>
-            <Menu sx={{ mt: "45px" }} id="menu-appbar">
-              <MenuItem key="Profile">
+          <Box sx={{ flexGrow: 0 }} className="dropdown">
+            <Typography
+              className="dropbtn"
+              style={{ color: "white", textTransform: "uppercase" }}
+            >
+              {username}
+            </Typography>
+            <Box className="dropdownContent">
+              <Box key="Profile" className="menuItem">
                 <Link
                   style={{ textDecoration: "none" }}
                   to={`/profile/${username}`}
                 >
                   Profile
                 </Link>
-              </MenuItem>
-              <MenuItem key="login">
+              </Box>
+              <Box key="login" className="menuItem">
                 <Link style={{ textDecoration: "none" }} to={`/login`}>
                   login
                 </Link>
-              </MenuItem>
-            </Menu>
+              </Box>
+            </Box>
           </Box>
         </Toolbar>
       </Container>
