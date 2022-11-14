@@ -1,0 +1,59 @@
+.slider {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    
+  .slide {
+    opacity: 0;
+    transition-duration: 1s ease;
+    background-color: rgb(71, 69, 69);
+  }
+  
+  .slide.active {
+    opacity: 1;
+    transition-duration: 1s;
+    transform: scale(1.08);
+    width: 50%;
+
+  }
+  }
+  
+  
+  .right-arrow {
+    position: absolute;
+    top: 50%;
+    right: 32px;
+    font-size: 3rem;
+    color: #000;
+    z-index: 10;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .left-arrow {
+    position: absolute;
+    top: 50%;
+    left: 32px;
+    font-size: 3rem;
+    color: #000;
+    z-index: 10;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  
+
+  // Differences between pages
+
+  #games{
+    .slider {
+      height: 100vh;
+    }
+  }
+  #home{
+    .slider {
+      height: 25vh;
+    }
+  }
