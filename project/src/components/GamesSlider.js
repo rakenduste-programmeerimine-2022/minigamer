@@ -33,9 +33,24 @@ const GamesSlider = ({ slides }) => {
             key={index}
           >
             {index === current && (
-              <Box>
-                <Link to={slide.link}>{slide.name}</Link>
-                <Box sx={{ color: "white" }}>{slide.desc}</Box>
+              <Box className="slideContent">
+                <Box className="leftContent">
+                  <Box className="gameImg">
+                    <Box className="gameName">{slide.name}</Box>
+                  </Box>
+                </Box>
+                <Box className="rightContent">
+                  <Box className="descWrap">
+                    <Box className="desc" sx={{ color: "white" }}>
+                      {slide.desc}
+                    </Box>
+                  </Box>
+                  <Box className="playBtnWrap">
+                    <Link className="playBtn" to={slide.link}>
+                      <Box>PLAY</Box>
+                    </Link>
+                  </Box>
+                </Box>
               </Box>
             )}
           </Box>
