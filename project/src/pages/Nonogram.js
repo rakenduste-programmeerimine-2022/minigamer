@@ -1,9 +1,9 @@
 import React from "react";
-import Board from "../components/nonogram/Board";
+import Game from "../components/nonogram/Game";
 import "../components/nonogram/style.css";
 
 function Nonogram() {
-    return <Board />;
+    return <Game />;
 }
 
 export default Nonogram;

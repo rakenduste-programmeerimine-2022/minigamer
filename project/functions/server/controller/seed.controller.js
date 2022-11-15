@@ -1,11 +1,9 @@
-const seedrandom = require("seedrandom");
-
-const { message } = require("../utility/message");
 const DailyChallenge = require("../model/dailyChallenge.model");
+const { randomInt } = require("../utility/random");
+const { message } = require("../utility/message");
 
 const BASE = 16;
 const SEEDLENGTH = 32;
-const rng = seedrandom(process.env.RNG_SEED, { entropy: true });
 
 const randomSeed = () => {
     let seed = "";
@@ -14,10 +12,6 @@ const randomSeed = () => {
         seed += int.toString(BASE);
     }
     return seed;
-};
-
-const randomInt = (maxExcluded) => {
-    return Math.round(rng.quick() * (maxExcluded - 1));
 };
 
 exports.getRandom = (req, res) => {

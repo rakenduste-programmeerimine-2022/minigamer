@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import { BoardContext } from "./Board";
 
@@ -8,14 +8,10 @@ const Square = ({ column, row }) => {
 
     const onMouseEvent = (e) => {
         if (e.buttons === 1) {
+            board[column][row] = !isBlack;
             setIsBlack(!isBlack);
-            console.log(column, row);
         }
     };
-
-    useEffect(() => {
-        board[column][row] = isBlack;
-    }, [isBlack]);
 
     return (
         <Box
