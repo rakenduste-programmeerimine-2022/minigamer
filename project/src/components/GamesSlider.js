@@ -35,7 +35,10 @@ const GamesSlider = ({ slides }) => {
             {index === current && (
               <Box className="slideContent">
                 <Box className="leftContent">
-                  <Box className="gameImg">
+                  <Box
+                    className="gameImg"
+                    /*component="img"  src={slide.image} */
+                  >
                     <Box className="gameName">{slide.name}</Box>
                   </Box>
                 </Box>

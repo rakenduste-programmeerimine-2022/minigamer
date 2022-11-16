@@ -7,13 +7,16 @@ import { GamesSliderData } from "../components/GamesSliderData";
 import LeaderBoardsSection from "../components/LeaderBoardsSection";
 import DailyChallengeSection from "../components/DailyChallengeSection";
 import "../Styles/DailyChallengeSection.scss";
-import { height } from "@mui/system";
 
 function Home() {
   return (
     <Box className="home" id="home">
       <HeroImage></HeroImage>
-      <GamesSlider slides={GamesSliderData}></GamesSlider>
+      <GamesSlider
+        classname="homeSlider"
+        slides={GamesSliderData}
+        sx={{ width: 1, height: 200, backgroundColor: "gray" }}
+      ></GamesSlider>
       <LeaderBoardsSection></LeaderBoardsSection>
       <DailyChallengeSection></DailyChallengeSection>
     </Box>

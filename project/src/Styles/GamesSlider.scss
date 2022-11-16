@@ -18,8 +18,8 @@ $padding: 20px;
     opacity: 1;
     transition-duration: 1s;
     transform: scale(1.08);
-    width: 50%;
-    height: 50%;
+    width: 75%;
+    height: 75%;
   }
   .slideContent{
     display: flex;
@@ -108,11 +108,42 @@ $padding: 20px;
     }
   }
 
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 999px) {
     .slider{
-      .leftContent, .rightContent{
-        width: 100%;
-        background-color: red;
+
+      .slideContent{
+        display: grid;
+        .leftContent, .rightContent{
+          width: unset;
+        }
+        .descWrap{
+          height: unset;
+        }
+        .playBtnWrap{
+          position: unset;
+          height: unset;
+        }
       }
     }
   }
+
+  @media only screen and (max-width: 600px) {
+    .slider{
+
+      .slideContent{
+        display: block;
+        .rightContent{
+          .descWrap{
+            display: none;
+          }
+        }
+        .leftContent{
+          height: 100%;
+        }
+        .playBtnWrap{
+          
+        }
+      }
+    }
+  }
+  

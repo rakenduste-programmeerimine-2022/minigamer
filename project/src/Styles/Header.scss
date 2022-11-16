@@ -6,16 +6,19 @@
 
     
     .logo{
-        position: absolute;
+       /*  position: absolute;
         display: flex;
         justify-self: center;
         //alignSelf: "center";
         left: 20px;
-        top: 3vh;
+        top: 3vh; */
+        margin-right: 22px;
+
     }
 
     .headerItem{
-        margin-right: 45px;
+        margin-right: 22px;
+        margin-left: 22px;
     }
 
     .dropdown{

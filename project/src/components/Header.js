@@ -13,13 +13,13 @@ let username = "Username";
 function ResponsiveAppBar() {
   return (
     <AppBar className="header" position="static">
-      <Box className="logo" sx={{}}>
-        <Link style={{ textDecoration: "none" }} to={`/`}>
-          <Typography>LOGO</Typography>
-        </Link>
-      </Box>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
+          <Box className="logo" sx={{}}>
+            <Link style={{ textDecoration: "none" }} to={`/`}>
+              <Typography>LOGO</Typography>
+            </Link>
+          </Box>
           <Box
             sx={{
               flexGrow: 1,
