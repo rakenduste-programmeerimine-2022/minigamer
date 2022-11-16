@@ -19,6 +19,10 @@
     .headerItem{
         margin-right: 22px;
         margin-left: 22px;
+        transition: 0.3s;
+        :hover{
+            color: $linkHover;
+        }
     }
 
     .dropdown{
@@ -44,7 +48,12 @@
     
     
     .dropdown:hover .dropdownContent {
-            display: block;
+        display: block;
+    }
+    .active{
+        p{
+            color: $linkHover;
         }
+    }
     
 }
