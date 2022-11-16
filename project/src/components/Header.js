@@ -11,6 +11,15 @@ const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
 let username = "Username";
 
 function ResponsiveAppBar() {
+  function setActiveDropdown(e) {
+    let target = e.target;
+    target.classList.add("active");
+    console.log(target);
+  }
+  function removeActiveDropdown(e) {
+    let target = document.querySelector(".headerItem");
+    target.classList.remove("active");
+  }
   return (
     <AppBar className="header" position="static">
       <Container maxWidth="lg">
@@ -27,10 +36,14 @@ function ResponsiveAppBar() {
               justifyContent: "flex-start",
             }}
           >
-            <Box className="dropdown headerItem">
+            <Box
+              className="dropdown headerItem"
+              onMouseOver={setActiveDropdown}
+              onMouseLeave={removeActiveDropdown}
+            >
               <Link
                 className="dropbtn"
-                style={{ textDecoration: "none", color: "white" }}
+                style={{ textDecoration: "none" }}
                 to={`/games`}
               >
                 <Typography
@@ -73,10 +86,15 @@ function ResponsiveAppBar() {
             </Link>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }} className="dropdown">
+          <Box
+            sx={{ flexGrow: 0 }}
+            className="dropdown headerItem"
+            onMouseOver={setActiveDropdown}
+            onMouseLeave={removeActiveDropdown}
+          >
             <Typography
               className="dropbtn"
-              style={{ color: "white", textTransform: "uppercase" }}
+              style={{ textTransform: "uppercase" }}
             >
               {username}
             </Typography>
