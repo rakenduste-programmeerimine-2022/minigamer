@@ -2,163 +2,99 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import "../Styles/Header.scss";
 
 const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
 let username = "Username";
 
 function ResponsiveAppBar() {
-  //const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElGame, setAnchorElGame] = React.useState(null);
-  const open = Boolean(anchorElGame);
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenGamesMenu = (event) => {
-    setAnchorElGame(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElGame(null);
-    console.log("siin");
-  };
-
   return (
-    <AppBar
-      className="header"
-      position="static"
-      style={{ backgroundColor: "green" }}
-    >
-      <Container maxWidth="xl">
+    <AppBar className="header" position="static">
+      <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton sx={{ p: 2 }}>
-              <Link style={{ textDecoration: "none" }} to={`/`}>
-                <Typography>LOGO</Typography>
-              </Link>
-            </IconButton>
+          <Box className="logo" sx={{}}>
+            <Link style={{ textDecoration: "none" }} to={`/`}>
+              <Typography>LOGO</Typography>
+            </Link>
           </Box>
-
           <Box
             sx={{
               flexGrow: 1,
               display: "flex",
               justifyContent: "flex-start",
-              marginLeft: 2,
             }}
           >
-            <Button
-              id="games"
-              key="Games"
-              onMouseOver={handleOpenGamesMenu}
-              //onClick={handleOpenGamesMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
+            <Box className="dropdown headerItem">
               <Link
+                className="dropbtn"
                 style={{ textDecoration: "none", color: "white" }}
                 to={`/games`}
               >
-                Games
+                <Typography
+                  id="games"
+                  key="Games"
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Games
+                </Typography>
               </Link>
-            </Button>
-
-            <Menu
-              sx={{ mt: "45px" }}
-              id="games-menu"
-              anchorEl={anchorElGame}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              open={open}
-              onClose={handleCloseNavMenu}
-              //onMouseLeave={handleCloseNavMenu}
-            >
-              {gamesDropdown.map((game) => (
-                <MenuItem key={game}>
+              <Box
+                sx={{ mt: "45px" }}
+                id="games-menu"
+                className="dropdownContent"
+              >
+                {gamesDropdown.map((game) => (
                   <Link
+                    className="menuItem"
                     style={{ textDecoration: "none" }}
                     to={`/games/${game}`}
+                    key={game}
                   >
                     {game}
                   </Link>
-                </MenuItem>
-              ))}
-            </Menu>
+                ))}
+              </Box>
+            </Box>
 
-            <Button //LEADERBOARD
-              key="Leaderboard"
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block", marginLeft: 2 }}
+            <Link
+              className="headerItem"
+              style={{ textDecoration: "none", color: "white" }}
+              to={`/leaderboard`}
             >
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to={`/leaderboard`}
+              <Typography //LEADERBOARD
+                key="Leaderboard"
+                sx={{ my: 2, color: "white", display: "block" }}
               >
                 Leaderboard
-              </Link>
-            </Button>
+              </Typography>
+            </Link>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open user">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Typography
-                  style={{ color: "white", textTransform: "uppercase" }}
-                >
-                  {username}
-                </Typography>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+          <Box sx={{ flexGrow: 0 }} className="dropdown">
+            <Typography
+              className="dropbtn"
+              style={{ color: "white", textTransform: "uppercase" }}
             >
-              <MenuItem key="Profile" onClick={handleCloseUserMenu}>
+              {username}
+            </Typography>
+            <Box className="dropdownContent">
+              <Box key="Profile" className="menuItem">
                 <Link
                   style={{ textDecoration: "none" }}
                   to={`/profile/${username}`}
                 >
                   Profile
                 </Link>
-              </MenuItem>
-              <MenuItem key="login" onClick={handleCloseUserMenu}>
+              </Box>
+              <Box key="login" className="menuItem">
                 <Link style={{ textDecoration: "none" }} to={`/login`}>
                   login
                 </Link>
-              </MenuItem>
-            </Menu>
+              </Box>
+            </Box>
           </Box>
         </Toolbar>
       </Container>
