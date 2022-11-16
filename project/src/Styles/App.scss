@@ -1,7 +1,9 @@
 @import './Variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-.App {
-  text-align: center;
+.App, .header, p, a {
+  font-family: 'Lato', sans-serif !important;
+
 }
 
 /* .App-header {
