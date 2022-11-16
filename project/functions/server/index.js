@@ -5,11 +5,18 @@ require("dotenv").config();
 
 const followingRouter = require("./router/following.router");
 const userRouter = require("./router/user.router");
+const seedRouter = require("./router/seed.router");
 
 const SERVER = "/.netlify/functions/server";
-const DB = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
+const CLUSTER = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
+const DB = process.env.MONGO_PROD_DB;
 
-mongoose.connect(DB, { dbName: process.env.MONGO_DATABASE }).catch((error) => {
+if (DB === process.env.MONGO_TEST_DB) {
+    // the weird escape characters set console text color somehow :)
+    console.error("\x1b[31m", "WARNING: Using test database.", "\x1b[0m");
+}
+
+mongoose.connect(CLUSTER, { dbName: DB }).catch((error) => {
     console.error(error);
 });
 
@@ -18,8 +25,8 @@ app.use(express.json());
 
 // await axios.get(".netlify/functions/server/{ENDPOINT}");
 app.use(`${SERVER}/user`, userRouter);
-// No session user verification yet
 app.use(`${SERVER}/follow`, followingRouter);
+app.use(`${SERVER}/seed`, seedRouter);
 
 // module.exports = app;
 module.exports.handler = serverless(app);
