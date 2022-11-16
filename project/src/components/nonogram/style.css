@@ -1,0 +1,22 @@
+.square {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: green;
+    border: 1px solid black;
+}
+
+.column {
+    grid-row: 9;
+}
+
+.grid {
+    display: grid;
+}
+
+.white {
+    background-color: #ddd;
+}
+
+.black {
+    background-color: #222;
+}

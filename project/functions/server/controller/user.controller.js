@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-require("dotenv").config();
 
 const { validationCheck } = require("../middleware/validationCheck");
 const { message, errorMessage } = require("../utility/message");
@@ -39,7 +38,7 @@ exports.login = async (req, res) => {
         }
         const token = jwt.sign(
             { username, id: user._id },
-            process.env.JWT_SECRET_KEY
+            process.env.JWT_USER_KEY
         );
         return res
             .status(200)
