@@ -9,7 +9,7 @@ const seedRouter = require("./router/seed.router");
 
 const SERVER = "/.netlify/functions/server";
 const CLUSTER = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
-const DB = process.env.MONGO_TEST_DB;
+const DB = process.env.MONGO_PROD_DB;
 
 if (DB === process.env.MONGO_TEST_DB) {
     // the weird escape characters set console text color somehow :)

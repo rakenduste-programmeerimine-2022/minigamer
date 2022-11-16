@@ -4,7 +4,7 @@ import React from "react";
 import Board from "./Board";
 
 const Game = () => {
-    return <Board seed="BALLSACK" />;
+    return <Board seed="TESTSEED" />;
 };
 
 // Game.propTypes = {};
