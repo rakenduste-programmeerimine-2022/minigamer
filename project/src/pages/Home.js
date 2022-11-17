@@ -15,7 +15,7 @@ function Home() {
       <GamesSlider
         classname="homeSlider"
         slides={GamesSliderData}
-        sx={{ width: 1, height: 200, backgroundColor: "gray" }}
+        sx={{ backgroundColor: "gray" }}
       ></GamesSlider>
       <LeaderBoardsSection></LeaderBoardsSection>
       <DailyChallengeSection></DailyChallengeSection>

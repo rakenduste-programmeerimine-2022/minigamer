@@ -12,13 +12,23 @@ $padding: 20px;
     opacity: 0;
     transition-duration: 1s ease;
     background-color: rgb(71, 69, 69);
+    transform:rotateX(-90deg);
+  }
+  .transform_left{
+    transform:rotateZ(-90deg);
+    transform:skewY(8deg);
+  }
+  .transform_right{
+    transform:rotateZ(-90deg);
+    transform:skewY(8deg);
   }
   
   .slide.active {
     opacity: 1;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
     transform: scale(1.08);
     width: 75%;
+
     height: 75%;
   }
   .slideContent{

@@ -3,7 +3,9 @@
 
 .App, .header, p, a {
   font-family: 'Lato', sans-serif !important;
-
+}
+.App{
+  margin-top: $headerHeight;
 }
 
 /* .App-header {
@@ -43,9 +45,6 @@
   color: white;
 }
 
-.header{
-  height: 9vh;
-}
 
 .LeaderBoards{
   display: flex;
