@@ -6,6 +6,7 @@
 }
 .App{
   margin-top: $headerHeight;
+  overflow: hidden;
 }
 
 /* .App-header {
@@ -46,35 +47,4 @@
 }
 
 
-.LeaderBoards{
-  display: flex;
-  gap: 80px;
-
-  .LeaderBoardsTextWrapper{
-    width: 50%;
-    flex-direction: column;
-    .LeaderBoardsText{
-      text-align: left;
-      padding-top: 20px;
-      padding-bottom: 20px;
-    }
-    .text{
-      padding-top: 20px ;
-    }
-    .title{
-      font-size: $h3;
-    }
-    .leaderBoards_btn{
-      background-color: $darkBlue;
-    }
-  }
-  .LeaderBoardsImage{
-    width: 50%;
-    height: 400px;
-    background-color: $black;
-  }
-  .leaderBoards_btn{
-    margin-top: 30px;
-  }
-}
 

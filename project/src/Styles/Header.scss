@@ -12,15 +12,13 @@
         position: absolute;
         left: 20px;
     }
-    .headerItems{
-        text-transform: uppercase;
-    }
-
     .headerItem{
         margin-right: 22px;
         margin-left: 22px;
         transition: 0.3s;
         color: white;
+        text-transform: uppercase;
+
         :hover{
             color: $linkHover;
         }
