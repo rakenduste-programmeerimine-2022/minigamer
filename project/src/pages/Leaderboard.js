@@ -1,7 +1,8 @@
+import { Box } from "@mui/material";
 import React from "react";
 
 function Leaderboard() {
-  return <div>Leaderboard</div>;
+  return <Box className="leaderBoard">Leaderboard</Box>;
 }
 
 export default Leaderboard;

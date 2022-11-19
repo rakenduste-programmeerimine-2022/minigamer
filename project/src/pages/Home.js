@@ -7,6 +7,7 @@ import { GamesSliderData } from "../components/GamesSliderData";
 import LeaderBoardsSection from "../components/LeaderBoardsSection";
 import DailyChallengeSection from "../components/DailyChallengeSection";
 import "../Styles/DailyChallengeSection.scss";
+import "../Styles/LeaderBoardsSection.scss";
 
 function Home() {
   return (

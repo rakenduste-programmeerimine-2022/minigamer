@@ -15,23 +15,10 @@ function LeaderBoards_Section() {
         backgroundColor: "gray",
       }}
     >
-      <Container
-        className="LeaderBoards"
-        sx={{ display: "flex", justifyContent: "space-between" }}
-      >
-        <Box
-          className="LeaderBoardsTextWrapper"
-          sx={{
-            display: "flex",
-          }}
-        >
+      <Container className="LeaderBoards">
+        <Box className="LeaderBoardsTextWrapper">
           <Box className="LeaderBoardsText">
-            <Typography
-              className="title"
-              //sx={{ display: "flex", justifyContent: "flex-start" }}
-            >
-              Compete with others
-            </Typography>
+            <Typography className="title">Compete with others</Typography>
 
             <Typography className="text">
               Registered users can record their score and Compete with others.
@@ -45,23 +32,26 @@ function LeaderBoards_Section() {
               className="divider"
               sx={{ width: 1, height: 2, backgroundColor: "gray" }}
             ></Box>
-            <Button
-              className="leaderBoards_btn"
-              variant="primary"
-              sx={{
-                width: 200,
-                alignSelf: "center",
-              }}
-              onClick={() => {
-                navigate("/leaderboard");
-              }}
-            >
-              leaderboards
-            </Button>
+            <Box className="btn_wrap">
+              <Button
+                className="leaderBoards_btn"
+                variant="primary"
+                sx={{
+                  width: 200,
+                  alignSelf: "center",
+                }}
+                onClick={() => {
+                  navigate("/leaderboard");
+                }}
+              >
+                leaderboards
+              </Button>
+            </Box>
           </Box>
         </Box>
         <Box className="LeaderBoardsImage">
           <Box
+            className="image"
             sx={
               {
                 //backgroundColor: "red",

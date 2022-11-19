@@ -9,31 +9,23 @@ function DailyChallengeSection() {
   return (
     <Box
       className="dailyChallengeSection"
-      sx={{ width: 1, height: 1, backgroundColor: "black" }}
+      sx={{ p: 2, backgroundColor: "black" }}
     >
-      <Container>
-        <Box className="dailyChallengeWrapper">
-          <Box
-            className="leftDiv"
-            onClick={() => {
-              navigate("/leaderboard");
-            }}
-          >
-            {/* <Box
-            className="challengeImg"
-            sx={{ backgroundColor: "black", width: 1, height: 1 }}
-          ></Box> */}
-            <Box
-              className="dailyChallenge"
-              sx={{ backgroundColor: "white", width: 1, height: 1 }}
-            >
-              {" "}
-              <Typography className="dailyText" variant="h5">
-                Daily Challenge
-              </Typography>
-            </Box>
+      <Container className="dailyChallengeWrapper">
+        <Box
+          className="leftDiv"
+          onClick={() => {
+            navigate("/leaderboard");
+          }}
+        >
+          <Box className="dailyChallenge">
+            <Typography className="dailyText" variant="h5">
+              Daily Challenge
+            </Typography>
           </Box>
-          <Box className="rightDiv">
+        </Box>
+        <Box className="rightDiv">
+          <Box className="info">
             <Typography className="title">Complete Daily challenges</Typography>
             <Box>
               <Typography className="text">
