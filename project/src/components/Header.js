@@ -66,7 +66,7 @@ function ResponsiveAppBar() {
       </Box>
 
       <Link
-        className="headerItem"
+        className="headerItem dropdown"
         style={{ textDecoration: "none" }}
         to={`/leaderboard`}
         key="Leaderboard"
