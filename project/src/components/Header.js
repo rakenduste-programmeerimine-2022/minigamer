@@ -30,134 +30,123 @@ function ResponsiveAppBar() {
     let target = document.querySelector(".headerItem");
     target.classList.remove("active");
   }
+  function closeNavBar() {
+    const mobileNav = document.querySelector(".mobileNav");
+    mobileNav.classList.remove("responsive_nav");
+  }
   return (
     <AppBar className="header" position="fixed">
-      <Container maxWidth="lg">
-        <Toolbar disableGutters className="headerItems">
-          <Box className="logo" sx={{}}>
-            <Link style={{ textDecoration: "none" }} to={`/`}>
-              <Typography>LOGO</Typography>
-            </Link>
-          </Box>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Box
-              className="dropdown headerItem"
-              onMouseOver={setActiveDropdown}
-              onMouseLeave={removeActiveDropdown}
-            >
-              <Link
-                className="dropbtn"
-                style={{ textDecoration: "none" }}
-                to={`/games`}
-              >
-                <Typography
-                  id="games"
-                  key="Games"
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Games
-                </Typography>
-              </Link>
-              <Box
-                sx={{ mt: "45px" }}
-                id="games-menu"
-                className="dropdownContent"
-              >
-                {gamesDropdown.map((game) => (
-                  <Link
-                    className="menuItem"
-                    style={{ textDecoration: "none" }}
-                    to={`/games/${game}`}
-                    key={game}
-                  >
-                    {game}
-                  </Link>
-                ))}
-              </Box>
-            </Box>
-
+      <Box className="headeritem logo">
+        <Link style={{ textDecoration: "none" }} to={`/`}>
+          LOGO
+        </Link>
+      </Box>
+      <Box className="dropdown">
+        <Link
+          className="headerItem"
+          style={{ textDecoration: "none" }}
+          to={`/games`}
+          onMouseOver={setActiveDropdown}
+          onMouseLeave={removeActiveDropdown}
+        >
+          Games
+        </Link>
+        <Box sx={{ mt: "45px" }} id="games-menu" className="dropdownContent">
+          {gamesDropdown.map((game) => (
             <Link
-              className="headerItem"
-              style={{ textDecoration: "none", color: "white" }}
-              to={`/leaderboard`}
+              className="menuItem"
+              style={{ textDecoration: "none" }}
+              to={`/games/${game}`}
+              key={game}
             >
-              <Typography //LEADERBOARD
-                key="Leaderboard"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Leaderboard
-              </Typography>
+              {game}
             </Link>
-          </Box>
+          ))}
+        </Box>
+      </Box>
 
-          <Box
-            sx={{ flexGrow: 0 }}
-            className="dropdown headerItem"
-            onMouseOver={setActiveDropdown}
-            onMouseLeave={removeActiveDropdown}
+      <Link
+        className="headerItem"
+        style={{ textDecoration: "none" }}
+        to={`/leaderboard`}
+        key="Leaderboard"
+      >
+        Leaderboard
+      </Link>
+      <Box
+        sx={{ flexGrow: 0, textTransform: "uppercase" }}
+        className="dropdown headerItem headerRight"
+        onMouseOver={setActiveDropdown}
+        onMouseLeave={removeActiveDropdown}
+      >
+        {username}
+        <Box className="dropdownContent">
+          <Link
+            key="Profile"
+            className="menuItem"
+            style={{ textDecoration: "none" }}
+            to={`/profile/${username}`}
           >
-            <Typography
-              className="dropbtn"
-              style={{ textTransform: "uppercase" }}
-            >
-              {username}
-            </Typography>
-            <Box className="dropdownContent">
-              <Box key="Profile" className="menuItem">
-                <Link
-                  style={{ textDecoration: "none" }}
-                  to={`/profile/${username}`}
-                >
-                  Profile
-                </Link>
-              </Box>
-              <Box key="login" className="menuItem">
-                <Link style={{ textDecoration: "none" }} to={`/login`}>
-                  login
-                </Link>
-              </Box>
-            </Box>
-          </Box>
-        </Toolbar>
-        <Box key="mobileNav" className="mobileNav">
-          <Link to={`/games`} className="gameTitle" key="mobileGame">
-            Games
+            Profile
           </Link>
-          <Box key="mobileGames" className="mobileGames">
-            {gamesDropdown.map((game) => (
-              <Link
-                to={`/games/${game}`}
-                key={`mobile${game}`}
-                className="game"
-              >
-                {game}
-              </Link>
-            ))}
+          <Link
+            key="login"
+            className="menuItem"
+            style={{ textDecoration: "none" }}
+            to={`/login`}
+          >
+            login
+          </Link>
+        </Box>
+      </Box>
+
+      {/*  ------ MOBILE ------ */}
+      <Box key="mobileNav" className="mobileNav" onClick={showNavbar}>
+        <Box className="mobileNavWrap">
+          <Box className="mobilegames">
+            <Link to={`/games`} className="gameTitle" key="mobileGame">
+              Games
+            </Link>
+            <Box key="mobileGames" className="mobileGames">
+              {gamesDropdown.map((game) => (
+                <Link
+                  to={`/games/${game}`}
+                  key={`mobile${game}`}
+                  className="game"
+                >
+                  {game}
+                </Link>
+              ))}
+            </Box>
           </Box>
           <Link to={`/leaderboard`} className="mobileLeaderBoard">
             Leaderboard
           </Link>
-          <Box className="mobileProfile">
-            <Link to={`/login`}>Login</Link>
-            <Link to={`/profile/${username}`}>{username}</Link>
+          <Box className="mobileUser">
+            <Link to={`/login`} className="mobileLogin">
+              Login
+            </Link>
+            <Link to={`/profile/${username}`} className="mobileProfile">
+              {username}
+            </Link>
           </Box>
         </Box>
-        <Button
-          key="hamburger"
-          className="nav-btn nav-close-btn"
-          onClick={showNavbar}
-        >
-          <Box className="bar bar1"></Box>
-          <Box className="bar bar2"></Box>
-          <Box className="bar bar3"></Box>
-        </Button>
-      </Container>
+      </Box>
+      <Box className="headeritem logo">
+        <Link style={{ textDecoration: "none" }} to={`/`}>
+          LOGO
+        </Link>
+      </Box>
+
+      <Button
+        key="hamburger"
+        className="nav-btn nav-close-btn"
+        onClick={showNavbar}
+      >
+        <Box className="bar bar1"></Box>
+        <Box className="bar bar2"></Box>
+        <Box className="bar bar3"></Box>
+      </Button>
     </AppBar>
   );
 }
