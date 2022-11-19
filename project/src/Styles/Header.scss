@@ -29,13 +29,16 @@
     //  DROPDOWNS 
     .dropdown{
         position: relative;
-        display: inline-block;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
     .dropdownContent{
         text-transform: capitalize;
         display: none;
         position: absolute;
         z-index: 1;
+        top: $headerHeight;
         margin-top: unset;
         background-color: $green;
         .menuItem{
