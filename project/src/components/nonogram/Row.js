@@ -1,40 +1,26 @@
-import { TableCell, TableRow } from "@mui/material";
+import { TableRow, TableCell } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
 
-import Square from "./Square";
+import Cell from "./Cell";
 
-const Row = ({ currentSquares, solutionSquares, level }) => {
-    const hints = [];
-    let counter = 0;
-    for (let i = 0; i < solutionSquares.length; i++) {
-        const value = solutionSquares[i];
-        if (value) {
-            counter++;
-        } else if (!value && counter !== 0) {
-            hints.push(counter);
-        }
-        if (!value) {
-            counter = 0;
-        }
-    }
-    if (counter !== 0 || hints.length === 0) {
-        hints.push(counter);
-    }
+const Row = ({ index, setBoardCell, hint, solved, cells }) => {
+    const setRowCell = (column) => {
+        return setBoardCell(index, column);
+    };
+
     return (
         <TableRow className="Row">
-            <TableCell className="HintCell">
-                {hints.map((value) => {
-                    return value + " ";
-                })}
+            <TableCell className={`HintCell${solved ? " Solved" : ""}`}>
+                {hint}
             </TableCell>
-            {currentSquares.map((square, id) => {
+            {cells.map((cell, column) => {
                 return (
-                    <Square
-                        row={level}
-                        column={id}
-                        key={`${level}${id}`}
-                        value={square}
+                    <Cell
+                        key={`row-${index}-col-${column}`}
+                        index={column}
+                        setRowCell={setRowCell}
+                        value={cell}
                     />
                 );
             })}
@@ -43,8 +29,11 @@ const Row = ({ currentSquares, solutionSquares, level }) => {
 };
 
 Row.propTypes = {
-    squares: PropTypes.arrayOf(PropTypes.bool),
-    level: PropTypes.number,
+    index: PropTypes.number,
+    setBoardCell: PropTypes.func,
+    hint: PropTypes.string,
+    solved: PropTypes.bool,
+    cells: PropTypes.arrayOf(PropTypes.bool),
 };
 
 export default Row;

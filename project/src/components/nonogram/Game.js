@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import axios from "axios";
+import "./style.css";
 
 import Board from "./Board";
 
@@ -17,9 +18,7 @@ const Game = () => {
         return `Error: ${error}`;
     }
 
-    return <Board seed={data.object.seed} draggable="false" />;
+    return <Board seed={data.object.seed} />;
 };
-
-// Game.propTypes = {};
 
 export default Game;
