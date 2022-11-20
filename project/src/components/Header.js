@@ -26,10 +26,6 @@ function ResponsiveAppBar() {
     let target = document.querySelector(".headerItem");
     target.classList.remove("active");
   }
-  function closeNavBar() {
-    const mobileNav = document.querySelector(".mobileNav");
-    mobileNav.classList.remove("responsive_nav");
-  }
   return (
     <AppBar className="header" position="fixed">
       <Box className="headeritem logo">
