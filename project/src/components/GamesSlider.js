@@ -24,8 +24,14 @@ const GamesSlider = ({ slides }) => {
 
   return (
     <Box className="slider">
-      <ArrowBackIosNewRoundedIcon className="left-arrow" onClick={prevSlide} />
-      <ArrowForwardIosRoundedIcon className="right-arrow" onClick={nextSlide} />
+      <ArrowBackIosNewRoundedIcon
+        className="arrow left-arrow"
+        onClick={prevSlide}
+      />
+      <ArrowForwardIosRoundedIcon
+        className="arrow right-arrow"
+        onClick={nextSlide}
+      />
       {GamesSliderData.map((slide, index) => {
         return (
           <Box
@@ -35,10 +41,13 @@ const GamesSlider = ({ slides }) => {
             {index === current && (
               <Box className="slideContent">
                 <Box className="leftContent">
-                  <Box
-                    className="gameImg"
-                    /*component="img"  src={slide.image} */
-                  >
+                  <Box className="imgBox">
+                    <Box
+                      className="gameImg"
+                      component="img"
+                      src={slide.image}
+                    ></Box>
+                    <Box className="bgGradient"></Box>
                     <Box className="gameName">{slide.name}</Box>
                   </Box>
                 </Box>

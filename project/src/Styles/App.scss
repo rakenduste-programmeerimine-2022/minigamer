@@ -1,7 +1,12 @@
 @import './Variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-.App {
-  text-align: center;
+.App, .header, p, a {
+  font-family: 'Lato', sans-serif !important;
+}
+.App{
+  margin-top: $headerHeight;
+  overflow: hidden;
 }
 
 /* .App-header {
@@ -41,39 +46,5 @@
   color: white;
 }
 
-.header{
-  height: 9vh;
-}
 
-.LeaderBoards{
-  display: flex;
-  gap: 80px;
-
-  .LeaderBoardsTextWrapper{
-    width: 50%;
-    flex-direction: column;
-    .LeaderBoardsText{
-      text-align: left;
-      padding-top: 20px;
-      padding-bottom: 20px;
-    }
-    .text{
-      padding-top: 20px ;
-    }
-    .title{
-      font-size: $h3;
-    }
-    .leaderBoards_btn{
-      background-color: $darkBlue;
-    }
-  }
-  .LeaderBoardsImage{
-    width: 50%;
-    height: 400px;
-    background-color: $black;
-  }
-  .leaderBoards_btn{
-    margin-top: 30px;
-  }
-}
 

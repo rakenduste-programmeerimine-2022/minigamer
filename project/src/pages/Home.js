@@ -7,6 +7,7 @@ import { GamesSliderData } from "../components/GamesSliderData";
 import LeaderBoardsSection from "../components/LeaderBoardsSection";
 import DailyChallengeSection from "../components/DailyChallengeSection";
 import "../Styles/DailyChallengeSection.scss";
+import "../Styles/LeaderBoardsSection.scss";
 
 function Home() {
   return (
@@ -15,7 +16,7 @@ function Home() {
       <GamesSlider
         classname="homeSlider"
         slides={GamesSliderData}
-        sx={{ width: 1, height: 200, backgroundColor: "gray" }}
+        sx={{ backgroundColor: "gray" }}
       ></GamesSlider>
       <LeaderBoardsSection></LeaderBoardsSection>
       <DailyChallengeSection></DailyChallengeSection>
