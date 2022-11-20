@@ -39,34 +39,49 @@ exports.create = async (req, res) => {
 };
 
 exports.getFollowees = async (req, res) => {
-    const { follower } = req.body;
-    if (!(await User.exists({ username: follower }))) {
+    // const { follower } = req.body;
+    const { username } = req.params;
+    if (!username) {
+        return res.status(400).send(errorMessage("No username given."));
+    }
+    if (!(await User.exists({ username }))) {
         return res.status(400).send(errorMessage("User does not exist."));
     }
-    const followees = await Following.find({ follower }, "followee -_id");
+    const followees = await Following.find(
+        { follower: username },
+        "followee -_id"
+    );
     const followeeArray = followees.map((element) => {
         return element.followee;
     });
     return res.status(200).send(
-        message(`Users ${follower} is following`, {
+        message(`Users ${username} is following`, {
             following: followeeArray,
         })
     );
 };
 
 exports.getFollowers = async (req, res) => {
-    const { followee } = req.body;
-    if (!(await User.exists({ username: followee }))) {
+    // const { followee } = req.body;
+    const { username } = req.params;
+    if (!username) {
+        return res.status(400).send(errorMessage("No username given."));
+    }
+    console.log(username);
+    if (!(await User.exists({ username }))) {
         return res.status(400).send(errorMessage("User does not exist."));
     }
-    const followers = await Following.find({ followee }, "follower -_id");
+    const followers = await Following.find(
+        { followee: username },
+        "follower -_id"
+    );
     const followerArray = followers.map((element) => {
         return element.follower;
     });
     return res
         .status(200)
         .send(
-            message(`Users following ${followee}`, { followers: followerArray })
+            message(`Users following ${username}`, { followers: followerArray })
         );
 };
 

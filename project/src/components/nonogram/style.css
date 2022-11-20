@@ -1,5 +1,5 @@
-.SolvedRow {
-    background-color: rgba(0, 0, 0, 1);
+.Solved {
+    background-color: lightgreen;
 }
 
 :root {
@@ -7,7 +7,7 @@
     --height: 1.25vw;
 }
 
-td.Square {
+td.Cell {
     width: var(--width);
     height: var(--height);
     border: 1px solid black;
@@ -15,6 +15,7 @@ td.Square {
 
 table.Board {
     width: min-content;
+    user-select: none;
     /* height: 50vw; */
 }
 
@@ -39,10 +40,10 @@ th.EmptyCell {
     border: none;
 }
 
-.White {
+.WhiteCell {
     background-color: #ddd;
 }
 
-.Black {
+.BlackCell {
     background-color: #222;
 }
