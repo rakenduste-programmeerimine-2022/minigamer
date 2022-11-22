@@ -12,8 +12,16 @@ import Login from "./pages/Login";
 import Minesweeper from "./pages/Minesweeper";
 import Sudoku from "./pages/Sudoku";
 import Nonogram from "./pages/Nonogram";
+import React, { useState } from "react";
+import Register from "./pages/Register";
 
 function App() {
+  const [currentForm, setCurrentForm] = useState("login");
+
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  };
+
   return (
     <Router>
       <Header />
@@ -29,6 +37,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
+        {currentForm === "login" ? (
+          <Login onFormSwitch={toggleForm} />
+        ) : (
+          <Register onFormSwitch={toggleForm} />
+        )}
       </div>
       <Footer />
     </Router>

@@ -20,7 +20,6 @@ function ResponsiveAppBar() {
   function setActiveDropdown(e) {
     let target = e.target;
     target.classList.add("active");
-    console.log(target);
   }
   function removeActiveDropdown(e) {
     let target = document.querySelector(".headerItem");

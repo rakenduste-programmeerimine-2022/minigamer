@@ -9,6 +9,17 @@
   overflow: hidden;
 }
 
+.authContainer, .authForm{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.labels{
+  text-align: left;
+}
+
+
 /* .App-header {
   background-color: #282c34;
   min-height: 100vh;

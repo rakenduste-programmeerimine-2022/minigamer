@@ -1,17 +1,20 @@
 import React, { useState } from "react";
+import Box from "@mui/material/Box";
 
-function Login(props) {
+function Register(props) {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email);
   };
-
   return (
-    <div className="authContainer">
+    <Box className="authContainer">
       <form className="authForm" onSubmit={handleSubmit}>
+        <label className="labels">username</label>
+        <input value={name} name="name" placeholder="username" />
         <label className="labels" for="email">
           email
         </label>
@@ -31,11 +34,11 @@ function Login(props) {
           id="password"
           name="password"
         />
-        <button type="submit">Login</button>
+        <button type="submit">Register </button>
       </form>
-      <button onClick={() => props.onFormSwitch("register")}>Register</button>
-    </div>
+      <button onClick={() => props.onFormSwitch("login")}>Login</button>
+    </Box>
   );
 }
 
-export default Login;
+export default Register;
