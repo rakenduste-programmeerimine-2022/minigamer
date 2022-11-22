@@ -20,7 +20,8 @@ exports.getRandom = (req, res) => {
 
 exports.getDaily = async (req, res) => {
     const dateObj = new Date();
-    const date = `${dateObj.getUTCDate()}-${dateObj.getUTCMonth()}-${dateObj.getUTCFullYear()}`;
+    // const date = `${dateObj.getUTCDate()}-${dateObj.getUTCMonth()}-${dateObj.getUTCFullYear()}`;
+    const date = `${dateObj.getUTCFullYear()}-${dateObj.getUTCMonth()}-${dateObj.getUTCDate()}`;
     const gameID = randomInt(3);
     let daily = await DailyChallenge.findOne({ date });
     if (!daily) {

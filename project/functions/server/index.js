@@ -6,6 +6,7 @@ require("dotenv").config();
 const followingRouter = require("./router/following.router");
 const userRouter = require("./router/user.router");
 const seedRouter = require("./router/seed.router");
+const scoreRouter = require("./router/score.router");
 
 const SERVER = "/.netlify/functions/server";
 const CLUSTER = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(`${SERVER}/user`, userRouter);
 app.use(`${SERVER}/follow`, followingRouter);
 app.use(`${SERVER}/seed`, seedRouter);
+app.use(`${SERVER}/score`, scoreRouter);
 
 // module.exports = app;
 module.exports.handler = serverless(app);

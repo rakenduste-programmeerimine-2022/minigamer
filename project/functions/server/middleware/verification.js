@@ -51,3 +51,12 @@ exports.onFollowRequest = [
 ];
 
 exports.onDailyRequest = [checkUserToken];
+
+exports.onScoreRequest = [
+    (req, res, next) => {
+        const { username } = req.body;
+        req.body._username = username;
+        next();
+    },
+    checkUserAndUserToken,
+];
