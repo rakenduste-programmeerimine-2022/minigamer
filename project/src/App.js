@@ -14,14 +14,9 @@ import Sudoku from "./pages/Sudoku";
 import Nonogram from "./pages/Nonogram";
 import React, { useState } from "react";
 import Register from "./pages/Register";
+import Game from "./pages/Game";
 
 function App() {
-  const [currentForm, setCurrentForm] = useState("login");
-
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
-  };
-
   return (
     <Router>
       <Header />
@@ -30,18 +25,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/games" element={<Games />} />
-          <Route path="/games/Minesweeper" element={<Minesweeper />} />
-          <Route path="/games/Sudoku" element={<Sudoku />} />
-          <Route path="/games/Nonogramm" element={<Nonogram />} />
+          <Route path="/games/:id" element={<Game />} />
+          <Route path="/games/:id" element={<Game />} />
+          <Route path="/games/:id" element={<Game />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/game" element={<Game />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-        {currentForm === "login" ? (
-          <Login onFormSwitch={toggleForm} />
-        ) : (
-          <Register onFormSwitch={toggleForm} />
-        )}
       </div>
       <Footer />
     </Router>

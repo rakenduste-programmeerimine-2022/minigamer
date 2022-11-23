@@ -1,12 +1,24 @@
-// import PropTypes from "prop-types";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import axios from "axios";
+import "./style.css";
 
 import Board from "./Board";
 
 const Game = () => {
-    return <Board seed="TESTSEED" />;
-};
+    const { isLoading, error, data } = useQuery(["randomSeed"], async () => {
+        const res = await axios.get("../.netlify/functions/server/seed/random");
+        return res.data;
+    });
 
-// Game.propTypes = {};
+    if (isLoading) {
+        return "Loading...";
+    }
+    if (error) {
+        return `Error: ${error}`;
+    }
+
+    return <Board seed={data.object.seed} />;
+};
 
 export default Game;
