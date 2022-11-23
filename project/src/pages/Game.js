@@ -24,7 +24,9 @@ function Game() {
   return (
     <Box className="game" id="game">
       <Box className="gameWindowWrap">
-        <Box className="gameWindow">{game}</Box>
+        <Box className="gameWindow">
+          <Box className="playableGame">{game}</Box>
+        </Box>
       </Box>
     </Box>
   );

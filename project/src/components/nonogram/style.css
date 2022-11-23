@@ -14,7 +14,7 @@ td.Cell {
 }
 
 table.Board {
-    width: min-content;
+    /*width: min-content;*/
     user-select: none;
     /* height: 50vw; */
 }
