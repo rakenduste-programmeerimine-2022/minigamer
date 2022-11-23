@@ -2,9 +2,11 @@ const express = require("express");
 
 const controller = require("../controller/score.controller");
 const verification = require("../middleware/verification");
+const database = require("../middleware/database");
 
 const router = express.Router();
 
+router.use(database.connect);
 router.post(
     "/submit",
     verification.onScoreRequest,
