@@ -3,7 +3,7 @@ import { GamesSliderData } from "./GamesSliderData";
 //import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { Box } from "@mui/material";
+import { Box, Slide } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const GamesSlider = ({ slides }) => {
@@ -32,6 +32,7 @@ const GamesSlider = ({ slides }) => {
         className="arrow right-arrow"
         onClick={nextSlide}
       />
+
       {GamesSliderData.map((slide, index) => {
         return (
           <Box

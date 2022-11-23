@@ -9,6 +9,16 @@
   overflow: hidden;
   height: 100%;
   width: 100%;
+  .btn{
+    margin-top: 20px;
+    background-color: $darkBlue;
+    color: white;
+    font-weight: bold;    
+    &:hover{
+        color: $darkBlue;
+        background: white;
+    }
+}
 }
 
 .authContainer, .authForm{
@@ -19,6 +29,12 @@
 }
 .labels{
   text-align: left;
+}
+
+.divider{
+  width: 100%;
+  height: 5px;
+  background-color: $black;        
 }
 
 
