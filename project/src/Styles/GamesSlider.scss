@@ -2,12 +2,32 @@
 $padding: 20px;
 
 
+.gamesSlider{
+  background-color: gray;
+
+  .thumbnailSection{
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    .thumbImg{
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      transition: 0.3s;
+      :hover{
+        transform: scale(110%);
+      }
+    }
+  }
+}
+
 .slider {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: gray;
     
   .slide {
     opacity: 0;
@@ -133,6 +153,17 @@ $padding: 20px;
   }
 
   @media only screen and (max-width: 999px) {
+    .gamesSlider{
+      .thumbnailSection{
+        flex-direction: column;
+        .thumbImg{
+          margin-top: 20px;
+        }
+      }
+
+    }
+    
+    
     .slider{
 
       .slideContent{

@@ -10,19 +10,28 @@ import { GamesSliderData } from "../components/GamesSliderData";
 
 function Game() {
   let navigate = useNavigate();
+  let currentGame = GamesSliderData;
 
   const { id } = useParams();
   //console.log(id);
   let game = null;
   if (id == "Minesweeper") {
     game = <Minesweeper />;
+    currentGame = currentGame.splice(0, 1);
+    console.log(currentGame);
   } else if (id == "Nonogramm") {
     game = <Nonogram />;
+    currentGame = currentGame.splice(2, 1);
+    console.log(currentGame);
   } else if (id == "Sudoku") {
     game = <Sudoku />;
+    currentGame = currentGame.splice(1, 1);
+    console.log(currentGame);
   } else {
     game = <ErrorPage />;
   }
+
+  console.log(currentGame);
 
   const [state, setstate] = useState({ data: "" });
 
@@ -45,11 +54,9 @@ function Game() {
             <Box className="instructions">
               <Typography className="title">Instructions</Typography>
               <Typography className="text">
-                aaaaa aaaaaa aaaaaaaaa aaaaaaaaaaa aaaaaaaa aaaaa aaa aaaaaaa
-                aaaaaaa aaaaaaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaa aaaaaaaaaaaaa
-                aaaa aaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaaa aaaaaaaa
-                aaaaaaaaaaa aaaa aaaaaaaaa
+                aaa aaaa a aa aaa aaa aaaa aaa aaa aaa aaa{" "}
               </Typography>
+              ;
             </Box>
             <Typography className="tutorial">Video tutorial</Typography>
             <Box className="video"></Box>
