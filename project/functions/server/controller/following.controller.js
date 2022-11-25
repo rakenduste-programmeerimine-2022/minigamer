@@ -67,7 +67,6 @@ exports.getFollowers = async (req, res) => {
     if (!username) {
         return res.status(400).send(errorMessage("No username given."));
     }
-    console.log(username);
     if (!(await User.exists({ username }))) {
         return res.status(400).send(errorMessage("User does not exist."));
     }

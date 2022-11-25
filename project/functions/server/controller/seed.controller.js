@@ -1,6 +1,7 @@
 const DailyChallenge = require("../model/dailyChallenge.model");
 const { randomInt } = require("../utility/random");
 const { message } = require("../utility/message");
+const { getStartOfToday } = require("../utility/date");
 
 const BASE = 16;
 const SEEDLENGTH = 32;
@@ -19,9 +20,7 @@ exports.getRandom = (req, res) => {
 };
 
 exports.getDaily = async (req, res) => {
-    const dateObj = new Date();
-    // const date = `${dateObj.getUTCDate()}-${dateObj.getUTCMonth()}-${dateObj.getUTCFullYear()}`;
-    const date = `${dateObj.getUTCFullYear()}-${dateObj.getUTCMonth()}-${dateObj.getUTCDate()}`;
+    const date = getStartOfToday();
     const gameID = randomInt(3);
     let daily = await DailyChallenge.findOne({ date });
     if (!daily) {

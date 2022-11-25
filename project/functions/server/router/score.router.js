@@ -6,14 +6,21 @@ const database = require("../middleware/database");
 
 const router = express.Router();
 
-router.use(database.connect);
+router.get(
+    "/:game/:page",
+    controller.validateRead,
+    database.connect,
+    controller.getAllScores
+);
 router.post(
     "/submit",
-    verification.onScoreRequest,
+    verification.onScoreCreateRequest,
     controller.validateCreate,
+    database.connect,
     controller.create
 );
-router.get("/:game/:page", controller.validateRead, controller.getAllScores);
+router.post("/token", controller.validateGetToken, controller.getGameToken);
+
 // router.get("/daily/:date/:page", controller.getDailyScores)
 // router.get("/followed/:username/:page", controller.getFolloweeScores)
 // router.get("/user/:username/:page", controller.getUserScores)
