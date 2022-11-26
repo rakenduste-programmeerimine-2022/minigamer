@@ -111,6 +111,8 @@ exports.onFollowRequest = [
     checkUser,
 ];
 
+exports.onGameTokenRequest = [checkLogin];
+
 exports.onScoreCreateRequest = [
     (req, res, next) => {
         const { username, seed, time } = req.body;
