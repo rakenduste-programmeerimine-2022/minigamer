@@ -18,7 +18,7 @@
     transition: 0.2s;    
     &:hover{
         color: $darkBlue;
-        background: white;
+        background: $white;
         box-sizing: border-box;
         outline: 3px solid $darkBlue;
     }

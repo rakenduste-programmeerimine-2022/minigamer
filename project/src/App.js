@@ -9,10 +9,7 @@ import ErrorPage from "./pages/ErrorPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
-import Minesweeper from "./pages/Minesweeper";
-import Sudoku from "./pages/Sudoku";
-import Nonogram from "./pages/Nonogram";
-import React, { useState } from "react";
+import React from "react";
 import Register from "./pages/Register";
 import GamePage from "./pages/GamePage";
 

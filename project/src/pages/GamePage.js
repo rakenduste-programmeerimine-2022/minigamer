@@ -10,28 +10,24 @@ import { GamesSliderData } from "../components/GamesSliderData";
 
 function GamePage() {
   let navigate = useNavigate();
-  let currentGame = GamesSliderData;
+  //let currentGame = GamesSliderData;
 
   const { id } = useParams();
   //console.log(id);
   let game = null;
+  let currentGame = GamesSliderData.filter((obj) => {
+    return obj.name === id;
+  });
+  console.log(currentGame);
   if (id == "Minesweeper") {
     game = <Minesweeper />;
-    //currentGame = currentGame.splice(0, 1);
-    //console.log(currentGame);
   } else if (id == "Nonogramm") {
     game = <Nonogram />;
-    //currentGame = currentGame.splice(2, 1);
-    //console.log(currentGame);
   } else if (id == "Sudoku") {
     game = <Sudoku />;
-    //currentGame = currentGame.splice(1, 1);
-    //console.log(currentGame);
   } else {
     game = <ErrorPage />;
   }
-
-  //console.log(currentGame);
 
   const [state, setstate] = useState({ data: "" });
 
@@ -39,7 +35,6 @@ function GamePage() {
     setstate({ data: { id } });
     navigate("/leaderboard");
   };
-
   {
     return (
       <Box className="game" id="game">
@@ -54,13 +49,14 @@ function GamePage() {
             <Box className="leftContent">
               <Box className="instructions">
                 <Typography className="title">Instructions</Typography>
-                <Typography
-                  sx={{ color: "white" }}
-                  className="text"
-                ></Typography>
+                <Typography sx={{ color: "white" }} className="text">
+                  {currentGame[0].instructions}
+                </Typography>
               </Box>
-              <Typography className="tutorial">Video tutorial</Typography>
-              <Box className="video"></Box>
+
+              <Link>
+                <Typography className="tutorial">Video tutorial</Typography>
+              </Link>
             </Box>
           </Box>
           <Box className="rightDiv">
