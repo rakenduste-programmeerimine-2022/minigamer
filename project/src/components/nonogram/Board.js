@@ -7,20 +7,20 @@ import Row from "./Row";
 import HintRow from "./HintRow";
 
 const BLACK_CELL_CHANCE = 0.3;
-const BOARD_SIZE = 10;
+const SIZE = 10;
 
-const Board = ({ seed }) => {
+const Board = ({ seed, setGameWon }) => {
     const [state, setState] = useState({
-        board: Array(BOARD_SIZE ** 2).fill(false),
-        solvedRows: Array(BOARD_SIZE).fill(false),
-        solvedCols: Array(BOARD_SIZE).fill(false),
+        board: Array(SIZE ** 2).fill(false),
+        solvedRows: Array(SIZE).fill(false),
+        solvedCols: Array(SIZE).fill(false),
     });
-    const solution = Array(BOARD_SIZE ** 2);
+    const solution = Array(SIZE ** 2);
 
     const rng = seedrandom(seed);
 
     const initializeSolution = () => {
-        for (let i = 0; i < BOARD_SIZE ** 2; i++) {
+        for (let i = 0; i < SIZE ** 2; i++) {
             solution[i] = randomBool();
         }
     };
@@ -30,7 +30,7 @@ const Board = ({ seed }) => {
     };
 
     const setBoardCell = (row, column) => {
-        const cellIndex = row * BOARD_SIZE + column;
+        const cellIndex = row * SIZE + column;
         const newValue = !state.board[cellIndex];
         const updatedBoard = state.board.map((value, index) => {
             if (index === cellIndex) {
@@ -38,13 +38,14 @@ const Board = ({ seed }) => {
             }
             return value;
         });
-        // setBoard(updatedBoard);
-        const updatedSolvedRows = Array(BOARD_SIZE);
-        const updatedSolvedCols = Array(BOARD_SIZE);
-        for (let i = 0; i < BOARD_SIZE; i++) {
+
+        const updatedSolvedRows = Array(SIZE);
+        const updatedSolvedCols = Array(SIZE);
+        for (let i = 0; i < SIZE; i++) {
             updatedSolvedRows[i] = isRowSolved(updatedBoard, i);
             updatedSolvedCols[i] = isColumnSolved(updatedBoard, i);
         }
+
         setState({
             board: updatedBoard,
             solvedRows: updatedSolvedRows,
@@ -53,8 +54,8 @@ const Board = ({ seed }) => {
     };
 
     const getRowCells = (row) => {
-        const rowStart = row * BOARD_SIZE;
-        const slice = state.board.slice(rowStart, rowStart + BOARD_SIZE);
+        const rowStart = row * SIZE;
+        const slice = state.board.slice(rowStart, rowStart + SIZE);
         return slice;
     };
 
@@ -62,9 +63,10 @@ const Board = ({ seed }) => {
     const getRowHint = (row) => {
         const rowHints = [];
         let counter = 0;
-        const rowStart = row * BOARD_SIZE;
-        const rowSolution = solution.slice(rowStart, rowStart + BOARD_SIZE);
-        for (let col = 0; col < BOARD_SIZE; col++) {
+        const rowStart = row * SIZE;
+        const rowSolution = solution.slice(rowStart, rowStart + SIZE);
+
+        for (let col = 0; col < SIZE; col++) {
             const value = rowSolution[col];
             if (value) {
                 counter++;
@@ -78,17 +80,19 @@ const Board = ({ seed }) => {
         if (counter !== 0 || rowHints.length === 0) {
             rowHints.push(counter);
         }
+
         return rowHints.join(" ");
     };
 
     const getColumnHints = () => {
-        const hints = Array(BOARD_SIZE);
+        const hints = Array(SIZE);
         let counter;
-        for (let col = 0; col < BOARD_SIZE; col++) {
+
+        for (let col = 0; col < SIZE; col++) {
             const columnHints = [];
             counter = 0;
-            for (let row = 0; row < BOARD_SIZE; row++) {
-                const index = row * BOARD_SIZE + col;
+            for (let row = 0; row < SIZE; row++) {
+                const index = row * SIZE + col;
                 const value = solution[index];
                 if (value) {
                     counter++;
@@ -104,41 +108,49 @@ const Board = ({ seed }) => {
             }
             hints[col] = columnHints.join(" ");
         }
+
         return hints;
     };
 
+    // row/col check functions
     const isRowSolved = (board, row) => {
-        const rowStart = row * BOARD_SIZE;
-        const boardRow = board.slice(rowStart, rowStart + BOARD_SIZE);
-        const solutionRow = solution.slice(rowStart, rowStart + BOARD_SIZE);
+        const rowStart = row * SIZE;
+        const boardRow = board.slice(rowStart, rowStart + SIZE);
+        const solutionRow = solution.slice(rowStart, rowStart + SIZE);
 
         let correct = 0;
-        for (let col = 0; col < BOARD_SIZE; col++) {
+        for (let col = 0; col < SIZE; col++) {
             if (boardRow[col] === solutionRow[col]) {
                 correct++;
             }
         }
+
         return correct === 10;
     };
 
     const isColumnSolved = (board, col) => {
         let correct = 0;
-        for (let row = 0; row < BOARD_SIZE; row++) {
-            const rowStart = row * BOARD_SIZE;
+        for (let row = 0; row < SIZE; row++) {
+            const rowStart = row * SIZE;
             const boardCell = board[rowStart + col];
             const solutionCell = solution[rowStart + col];
             if (boardCell === solutionCell) {
                 correct++;
             }
         }
+
         return correct === 10;
     };
 
     useEffect(() => {
-        for (let i = 0; i < BOARD_SIZE; i++) {
-            // setSolvedRow(i);
-            // setSolvedColumn(i);
+        let gameWon = true;
+        for (let i = 0; i < SIZE; i++) {
+            if (state.solvedRows[i] && state.solvedCols[i]) {
+                continue;
+            }
+            gameWon = false;
         }
+        setGameWon(gameWon);
     });
 
     initializeSolution();
@@ -149,7 +161,7 @@ const Board = ({ seed }) => {
                 <HintRow hints={getColumnHints()} solved={state.solvedCols} />
             </TableHead>
             <TableBody>
-                {Array(BOARD_SIZE)
+                {Array(SIZE)
                     .fill()
                     .map((_value, index) => {
                         return (
@@ -170,6 +182,7 @@ const Board = ({ seed }) => {
 
 Board.propTypes = {
     seed: PropTypes.string,
+    setGameWon: PropTypes.func,
 };
 
 export default Board;

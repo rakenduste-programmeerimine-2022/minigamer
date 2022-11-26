@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Skeleton, Typography } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
 
@@ -16,28 +16,74 @@ const queryClient = new QueryClient({
 });
 
 function Nonogram() {
-    const [showGame, setShowGame] = useState(false);
-    const [sessionID, setSessionID] = useState(0);
+    const [state, setState] = useState({
+        showGame: false,
+        gameID: 0,
+        gameWon: false,
+        startTime: 0,
+        endTime: Infinity,
+    });
 
-    const onClick = () => {
-        setSessionID(sessionID + 1);
-        if (showGame) {
+    const newGame = () => {
+        setState({
+            showGame: true,
+            gameID: state.gameID + 1,
+            gameWon: false,
+            startTime: performance.now(),
+            endTime: state.endTime,
+        });
+        if (state.showGame) {
             queryClient.refetchQueries();
             return;
         }
-        setShowGame(true);
+    };
+
+    const setGameWon = (value) => {
+        if (value === state.gameWon) {
+            return;
+        }
+        setState({
+            showGame: state.showGame,
+            gameID: state.gameID,
+            gameWon: value,
+            startTime: state.startTime,
+            endTime: value ? performance.now() : state.endTime,
+        });
+    };
+
+    const submitScore = () => {
+        if (!state.gameWon) {
+            return;
+        }
+        // millis
+        const time = state.endTime - state.startTime;
+        console.log(time);
     };
 
     return (
         <QueryClientProvider client={queryClient}>
-            {showGame ? (
+            <Typography variant="h2">
+                Nonogram{state.gameWon ? " complete!" : ""}
+            </Typography>
+            <Button onClick={newGame}>New game</Button>
+            {state.showGame ? (
                 <>
-                    <Button onClick={onClick}>New game</Button>
-                    <Game key={sessionID} />
+                    <Button onClick={submitScore} disabled={!state.gameWon}>
+                        Submit score
+                    </Button>
+                    <Game
+                        key={`game-${state.gameID}`}
+                        setGameWon={setGameWon}
+                    />
                 </>
             ) : (
                 <>
-                    <Button onClick={onClick}>New game</Button>
+                    <Skeleton
+                        variant="rectangular"
+                        height={500}
+                        width={500}
+                        animation={false}
+                    />
                 </>
             )}
         </QueryClientProvider>
