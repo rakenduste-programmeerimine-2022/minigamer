@@ -88,6 +88,14 @@ function ResponsiveAppBar() {
           >
             login
           </Link>
+          <Link
+            key="register"
+            className="menuItem"
+            style={{ textDecoration: "none" }}
+            to={`/register`}
+          >
+            register
+          </Link>
         </Box>
       </Box>
 

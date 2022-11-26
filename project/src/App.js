@@ -14,7 +14,7 @@ import Sudoku from "./pages/Sudoku";
 import Nonogram from "./pages/Nonogram";
 import React, { useState } from "react";
 import Register from "./pages/Register";
-import Game from "./pages/Game";
+import GamePage from "./pages/GamePage";
 
 function App() {
   return (
@@ -25,12 +25,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/games" element={<Games />} />
-          <Route path="/games/:id" element={<Game />} />
-          <Route path="/games/:id" element={<Game />} />
-          <Route path="/games/:id" element={<Game />} />
+          <Route path="/games/:id" element={<GamePage />} />
+          <Route path="/games/:id" element={<GamePage />} />
+          <Route path="/games/:id" element={<GamePage />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/game" element={<Game />} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

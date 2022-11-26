@@ -1,41 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 
-function Login(props) {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+const Login = (props) => {
+  const userRef = useRef();
+  const errRef = useRef();
 
-  const handleSubmit = (e) => {
+  const [username, setusername] = useState("");
+  const [password, setPass] = useState("");
+  const [loginStatus, setLoginStatus] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
+    console.log(username);
+    //setSuccess(true);
+
+    axios
+      .post("http://localhost:8888/.netlify/functions/server/user/login", {
+        username: username,
+        password: password,
+      })
+      .then((res) => {
+        setLoginStatus("logged in");
+      });
   };
 
   return (
     <div className="authContainer">
-      <form className="authForm" onSubmit={handleSubmit}>
-        <label className="labels" for="email">
-          email
-        </label>
-        <input
-          value={email}
-          type="enail"
-          placeholder="example@gmail.com"
-          id="email"
-          name="email"
-        />
-        <label className="labels" for="password">
-          password
-        </label>
-        <input
-          type="password"
-          placeholder="*******"
-          id="password"
-          name="password"
-        />
-        <button type="submit">Login</button>
-      </form>
-      <button onClick={() => props.onFormSwitch("register")}>Register</button>
+      <h1>Login</h1>
+      {loginStatus ? (
+        <h1>you are logged in</h1>
+      ) : (
+        <form className="authForm" onSubmit={handleSubmit}>
+          <label className="labels" htmlFor="username">
+            username
+            <input
+              className="username"
+              placeholder="Username"
+              id="username"
+              name="username"
+              ref={userRef}
+              onChange={(e) => setusername(e.target.value)}
+              value={username}
+              required
+            />
+          </label>
+
+          <label className="labels" htmlFor="password">
+            password
+            <input
+              className="password"
+              type="password"
+              placeholder="*******"
+              id="password"
+              name="password"
+              onChange={(e) => setPass(e.target.value)}
+              value={password}
+            />
+          </label>
+          <button className="submitBtn btn" type="submit">
+            Login
+          </button>
+        </form>
+      )}
     </div>
   );
-}
+};
 
 export default Login;
