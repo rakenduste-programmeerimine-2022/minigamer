@@ -11,24 +11,21 @@
   width: 100%;
   .btn{
     margin-top: 20px;
+    padding: 10px 15px;
     background-color: $darkBlue;
     color: white;
-    font-weight: bold;    
+    font-weight: bold;
+    transition: 0.2s;    
     &:hover{
         color: $darkBlue;
         background: white;
+        box-sizing: border-box;
+        outline: 3px solid $darkBlue;
     }
-}
-}
-
-.authContainer, .authForm{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.labels{
-  text-align: left;
+  }
+  .hidden{
+    visibility: hidden;
+  }
 }
 
 .divider{
@@ -58,7 +55,7 @@
   width: 100%;
   height: 100vh;
   /*height: 100vh - 200px;*/
-  background-color: $darkBlue;
+  background-color: $black;
   /*background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("photographer.jpg");*/
   background-position: center;
   background-repeat: no-repeat;

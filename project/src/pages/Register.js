@@ -1,13 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import {
+  Button,
+  Typography,
+  Grid,
+  Paper,
+  TextField,
+  Alert,
+} from "@mui/material";
+
+import "../Styles/loginRegister.scss";
+import { Box } from "@mui/system";
 
 const Register = (props) => {
   const userRef = useRef();
   const errRef = useRef();
+  const nav = useNavigate();
 
   const [username, setusername] = useState("");
   const [password, setPass] = useState("");
   const [regStatus, setRegStatus] = useState(false);
+  const [open, setOpen] = useState(null);
+  const [severity, setSeverity] = useState("info");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,20 +38,31 @@ const Register = (props) => {
       })
       .then((res) => {
         setRegStatus(res.data.text);
+        setPass("");
+        setusername("");
+        setOpen(true);
+        setSeverity("success");
       })
       .catch((err) => {
         setRegStatus(err.response.data.text);
+        setPass("");
+        setusername("");
+        setOpen(true);
+        setSeverity("error");
       });
   };
 
   return (
-    <div className="authContainer">
-      <h1>Register</h1>
-      <form className="authForm" onSubmit={handleSubmit}>
-        <label className="labels" htmlFor="username">
-          username
-          <input
-            className="username"
+    <Box className="authContainer">
+      <Paper elevation={10} className="paper">
+        <form className="authForm" onSubmit={handleSubmit}>
+          <Grid>
+            <Typography className="title" variant="h3">
+              Register
+            </Typography>
+          </Grid>
+          <TextField
+            className="username textfield"
             placeholder="Username"
             id="username"
             name="username"
@@ -43,13 +70,12 @@ const Register = (props) => {
             onChange={(e) => setusername(e.target.value)}
             value={username}
             required
+            fullWidth
+            variant="filled"
+            autoComplete="off"
           />
-        </label>
-
-        <label className="labels" htmlFor="password">
-          password
-          <input
-            className="password"
+          <TextField
+            className="password textfield"
             type="password"
             placeholder="*******"
             id="password"
@@ -57,14 +83,33 @@ const Register = (props) => {
             onChange={(e) => setPass(e.target.value)}
             value={password}
             required
+            fullWidth
+            variant="filled"
           />
-        </label>
-        <button className="submitBtn btn" type="submit">
-          Register
-        </button>
-        {regStatus}
-      </form>
-    </div>
+          <Button className="submitBtn btn" type="submit">
+            Register
+          </Button>
+          {open ? (
+            <Alert severity={severity} className="info">
+              {regStatus}
+            </Alert>
+          ) : (
+            <Alert className="info hidden"></Alert>
+          )}
+        </form>
+        <Box className="changeAuth">
+          <Typography>Already have account ?</Typography>
+          <Button
+            onClick={() => {
+              nav("/login");
+            }}
+            className="authBtn btn"
+          >
+            Login
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

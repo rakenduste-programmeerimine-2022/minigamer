@@ -1,42 +1,71 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Typography,
+  Grid,
+  Paper,
+  TextField,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import "../Styles/loginRegister.scss";
 
 const Login = (props) => {
   const userRef = useRef();
   const errRef = useRef();
+  const nav = useNavigate();
 
   const [username, setusername] = useState("");
   const [password, setPass] = useState("");
   const [loginStatus, setLoginStatus] = useState(false);
+  const [userToken, setUserToken] = useState("");
+  const [open, setOpen] = useState(null);
+  const [severity, setSeverity] = useState("info");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(username);
-    //setSuccess(true);
     const LoginURL = "../.netlify/functions/server/user/login";
 
     axios
-      .post(LoginURL, {
-        username: username,
-        password: password,
-      })
+      .post(
+        LoginURL,
+        { username, password },
+        {
+          headers: { Content: "application/json" },
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setLoginStatus(res.data.text);
+        setUserToken(res.data.object.token);
+        localStorage.setItem("user", userToken);
+        setOpen(true);
+        setSeverity("success");
+        //nav("/");
       })
       .catch((err) => {
-        console.log(err);
         setLoginStatus(err.response.data.text);
+        setusername("");
+        setPass("");
+        setOpen(true);
+        setSeverity("error");
       });
   };
 
   return (
-    <div className="authContainer">
-      <h1>Login</h1>
-      <form className="authForm" onSubmit={handleSubmit}>
-        <label className="labels" htmlFor="username">
-          username
-          <input
-            className="username"
+    <Box className="authContainer">
+      <Paper elevation={10} className="paper">
+        <form className="authForm" onSubmit={handleSubmit}>
+          <Grid>
+            <Typography className="title" variant="h3">
+              Login
+            </Typography>
+          </Grid>
+          <TextField
+            className="username textfield"
             placeholder="Username"
             id="username"
             name="username"
@@ -44,27 +73,46 @@ const Login = (props) => {
             onChange={(e) => setusername(e.target.value)}
             value={username}
             required
+            fullWidth
+            variant="filled"
+            autoComplete="off"
           />
-        </label>
-
-        <label className="labels" htmlFor="password">
-          password
-          <input
-            className="password"
+          <TextField
+            className="password textfield"
             type="password"
             placeholder="*******"
             id="password"
             name="password"
             onChange={(e) => setPass(e.target.value)}
             value={password}
+            required
+            fullWidth
+            variant="filled"
           />
-        </label>
-        <button className="submitBtn btn" type="submit">
-          Login
-        </button>
-        {loginStatus}
-      </form>
-    </div>
+          <Button className="submitBtn btn" type="submit">
+            Login
+          </Button>
+          {open ? (
+            <Alert severity={severity} className="info">
+              {loginStatus}
+            </Alert>
+          ) : (
+            <Alert className="info hidden"></Alert>
+          )}
+        </form>
+        <Box className="changeAuth">
+          <Typography>Don't have account ?</Typography>
+          <Button
+            onClick={() => {
+              nav("/register");
+            }}
+            className="authBtn btn"
+          >
+            Register
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
