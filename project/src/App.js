@@ -9,29 +9,37 @@ import ErrorPage from "./pages/ErrorPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
-import React from "react";
+import React, { createContext, useState } from "react";
 import Register from "./pages/Register";
 import GamePage from "./pages/GamePage";
 
+export const UserContext = createContext();
+
 function App() {
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(window.sessionStorage.getItem("user"))
+  );
+
   return (
     <Router>
-      <Header />
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile/:username" element={<Profile />} />
-          <Route path="/games" element={<Games />} />
-          <Route path="/games/:id" element={<GamePage />} />
-          <Route path="/games/:id" element={<GamePage />} />
-          <Route path="/games/:id" element={<GamePage />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </div>
-      <Footer />
+      <UserContext.Provider value={[currentUser, setCurrentUser]}>
+        <Header />
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/games/:id" element={<GamePage />} />
+            <Route path="/games/:id" element={<GamePage />} />
+            <Route path="/games/:id" element={<GamePage />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </div>
+        <Footer />
+      </UserContext.Provider>
     </Router>
   );
 }

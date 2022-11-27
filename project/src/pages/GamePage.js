@@ -54,8 +54,8 @@ function GamePage() {
                 </Typography>
               </Box>
 
-              <Link>
-                <Typography className="tutorial">Video tutorial</Typography>
+              <Link className="tutorial">
+                <Button className="btn">Video tutorial</Button>
               </Link>
             </Box>
           </Box>

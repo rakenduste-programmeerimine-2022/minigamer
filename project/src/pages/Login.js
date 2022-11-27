@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,6 +12,7 @@ import {
   Alert,
 } from "@mui/material";
 import "../Styles/loginRegister.scss";
+import { UserContext } from "../App";
 
 const Login = (props) => {
   const userRef = useRef();
@@ -24,6 +25,8 @@ const Login = (props) => {
   const [userToken, setUserToken] = useState("");
   const [open, setOpen] = useState(null);
   const [severity, setSeverity] = useState("info");
+
+  const [currentUser, setCurrentUser] = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,11 +43,15 @@ const Login = (props) => {
       )
       .then((res) => {
         setLoginStatus(res.data.text);
-        setUserToken(res.data.object.token);
-        localStorage.setItem("user", userToken);
+        //setUserToken(res.data.object.token);
+        const token = res.data.object.token;
+        const name = res.data.object;
+        const localUser = { username, token };
+        sessionStorage.setItem("user", JSON.stringify(localUser));
+        setCurrentUser({ username, token });
         setOpen(true);
         setSeverity("success");
-        //nav("/");
+        nav("/");
       })
       .catch((err) => {
         setLoginStatus(err.response.data.text);

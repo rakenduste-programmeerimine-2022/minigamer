@@ -18,6 +18,7 @@
         transition: 0.3s;
         color: white;
         text-transform: uppercase;
+        text-decoration: none;
 
         :hover{
             color: $linkHover;
@@ -126,7 +127,7 @@
                     justify-content: space-evenly;
                     text-align: center;
                 }
-                a{
+                a, .mobileLogin{
                     color: white;
                     text-decoration: none;
                     transition: 0.3s;
