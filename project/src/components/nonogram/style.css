@@ -1,5 +1,11 @@
 .Solved {
-    background-color: lightgreen;
+    animation: SolvedCellAnimation 2s infinite;
+}
+
+@keyframes SolvedCellAnimation {
+    0%      {background-color: #90ee90;}
+    50%     {background-color: #70cc70;}
+    100%    {background-color: #90ee90;}
 }
 
 :root {

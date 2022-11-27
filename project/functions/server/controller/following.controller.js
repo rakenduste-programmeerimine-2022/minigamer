@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 
 const { validationCheck } = require("../middleware/validationCheck");
 const { message, errorMessage } = require("../utility/message");
@@ -67,7 +67,6 @@ exports.getFollowers = async (req, res) => {
     if (!username) {
         return res.status(400).send(errorMessage("No username given."));
     }
-    console.log(username);
     if (!(await User.exists({ username }))) {
         return res.status(400).send(errorMessage("User does not exist."));
     }
@@ -98,9 +97,19 @@ exports.delete = async (req, res) => {
     return res.status(200).send(message("User has been unfollowed!"));
 };
 
-exports.validate = [
+exports.validateCreate = [
     body(["follower", "followee"])
-        .optional()
+        .isString()
+        .withMessage("Invalid data type.")
+        .isLength({ min: 3, max: 16 })
+        .withMessage("Username length has to be between 3 and 16 symbols.")
+        .isAlphanumeric()
+        .withMessage("Username can only contain symbols A-Z, a-z and 0-9."),
+    validationCheck,
+];
+
+exports.validateRead = [
+    param("username")
         .isString()
         .withMessage("Invalid data type.")
         .isLength({ min: 3, max: 16 })
