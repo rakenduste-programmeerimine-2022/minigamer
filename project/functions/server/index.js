@@ -5,6 +5,7 @@ require("dotenv").config();
 const followingRouter = require("./router/following.router");
 const userRouter = require("./router/user.router");
 const seedRouter = require("./router/seed.router");
+
 const scoreRouter = require("./router/score.router");
 
 const app = express();
