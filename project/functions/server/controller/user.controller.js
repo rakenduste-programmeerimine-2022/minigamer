@@ -1,9 +1,12 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const { validationCheck } = require("../middleware/validationCheck");
+const {
+    finishValidation,
+    validateUsername,
+    validatePassword,
+} = require("../middleware/validation");
 const { message, errorMessage } = require("../utility/message");
-const { body } = require("express-validator");
 const User = require("../model/user.model");
 
 const ROUNDS = 10;
@@ -47,17 +50,7 @@ exports.login = async (req, res) => {
 };
 
 exports.validate = [
-    body("username")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isLength({ min: 3, max: 16 })
-        .withMessage("Username length has to be between 3 and 16 symbols.")
-        .isAlphanumeric()
-        .withMessage("Username can only contain symbols A-Z, a-z and 0-9."),
-    body("password")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isLength({ min: 8 })
-        .withMessage("Password needs to be at least 8 symbols long."),
-    validationCheck,
+    validateUsername("body"),
+    validatePassword(),
+    finishValidation,
 ];

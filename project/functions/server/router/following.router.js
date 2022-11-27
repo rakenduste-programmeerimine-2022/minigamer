@@ -12,7 +12,7 @@ router.use(database.connect);
 // returns the array of accounts that {USER} is following
 router.get(
     "/:username/following",
-    controller.validateRead,
+    controller.validate.read,
     controller.getFollowees
 );
 
@@ -20,7 +20,7 @@ router.get(
 // returns the array of accounts that follow {USER}
 router.get(
     "/:username/followers",
-    controller.validateRead,
+    controller.validate.read,
     controller.getFollowers
 );
 
@@ -29,7 +29,7 @@ router.get(
 // requires user token as auth, request body requires "follower" (user making the request) and "followee" (user being followed)
 router.post(
     "/follow",
-    controller.validateCreate,
+    controller.validate.write,
     verification.onFollowRequest,
     controller.create
 );
@@ -39,7 +39,7 @@ router.post(
 // requires user token as auth, request body requires "follower" (user making the request) and "followee" (user being followed)
 router.delete(
     "/follow",
-    controller.validateCreate,
+    controller.validate.write,
     verification.onFollowRequest,
     controller.delete
 );

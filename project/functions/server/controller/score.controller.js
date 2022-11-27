@@ -1,9 +1,19 @@
-const { body, param, query } = require("express-validator");
 const { startOfDay } = require("date-fns");
 const jwt = require("jsonwebtoken");
 
-const { validationCheck } = require("../middleware/validationCheck");
+const {
+    finishValidation,
+    validateSeed,
+    validateTime,
+    validateUsername,
+    validateGameID,
+    validatePage,
+    validateGame,
+    validateDate,
+} = require("../middleware/validation");
 const { message, errorMessage } = require("../utility/message");
+const DailyChallenge = require("../model/dailyChallenge.model");
+const Following = require("../model/following.model");
 const Score = require("../model/score.model");
 const User = require("../model/user.model");
 
@@ -49,7 +59,7 @@ exports.getAllScores = async (req, res) => {
             : {
                   gameID,
               },
-        "-_id -gameID -__v"
+        useDate ? "-_id -gameID -__v -date" : "-_id -gameID -__v"
     )
         .sort(
             useDate
@@ -68,47 +78,123 @@ exports.getAllScores = async (req, res) => {
         .send(message(`All ${game} scores, page ${page}`, { scores }));
 };
 
-exports.validateGetToken = [
-    body("seed")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isHexadecimal()
-        .withMessage("Seed is not hexadecimal.")
-        .isLength({ min: 32, max: 32 })
-        .withMessage("Seed is wrong length."),
-    body("time").isInt({ gt: 0 }).withMessage("Invalid game time."),
-    validationCheck,
-];
+exports.getDailyScores = async (req, res) => {
+    const { date, page } = req.params;
+    const dateObject = startOfDay(new Date(date));
+    // the real gameID of the Daily Challenge is obtained here
+    const daily = await DailyChallenge.findOne(
+        { date: dateObject },
+        "-_id -__v"
+    );
+    if (!daily) {
+        return res
+            .status(404)
+            .send(
+                errorMessage("This daily challenge has not had any players.")
+            );
+    }
+    // gameID == 3 indicates the score is a Daily Challenge score
+    const scores = await Score.find(
+        { gameID: 3, date: dateObject },
+        "-_id -gameID -__v -date"
+    )
+        .sort({ time: "asc" })
+        .skip((page - 1) * MAX_RESULTS)
+        .limit(MAX_RESULTS);
+    return res
+        .status(200)
+        .send(
+            message(
+                `Daily challenge scores, game ${
+                    GAMES[daily.gameID]
+                }, page ${page}`,
+                { daily, scores }
+            )
+        );
+};
 
-exports.validateCreate = [
-    body("username")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isLength({ min: 3, max: 16 })
-        .withMessage("Username length has to be between 3 and 16 symbols.")
-        .isAlphanumeric()
-        .withMessage("Username can only contain symbols A-Z, a-z and 0-9."),
-    body("gameID").isInt({ min: 0, max: 3 }).withMessage("Invalid game ID."),
-    body("time").isInt().withMessage("Invalid data type."),
-    validationCheck,
-];
+exports.getFolloweeScores = async (req, res) => {
+    const { username, page } = req.params;
+    const { game, date } = req.query;
+    const useGame = Boolean(game);
+    const useDate = Boolean(date);
+    if (!(await User.exists({ username }))) {
+        return res.status(400).send(errorMessage("User does not exist."));
+    }
+    const followees = await Following.find({ follower: username });
+    const usernames = followees.map((entry) => {
+        return entry.followee;
+    });
+    const scores = await Score.find(
+        {
+            username: { $in: usernames },
+            gameID: useGame ? GAMES.indexOf(game) : { $gte: 0, $lte: 2 },
+            date: useDate
+                ? startOfDay(new Date(date))
+                : { $gt: new Date("2022-11-20") },
+        },
+        "-_id -__v"
+    )
+        .sort({ time: "asc", date: "asc" })
+        .skip((page - 1) * MAX_RESULTS)
+        .limit(MAX_RESULTS);
+    return res.status(200).send(
+        message(`Scores of users followed by ${username}, page ${page}`, {
+            scores,
+        })
+    );
+};
 
-exports.validateRead = [
-    param("page").isInt({ min: 1 }).withMessage("Invalid page number."),
-    param("game")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isIn(GAMES)
-        .withMessage("Invalid game name."),
-    param("username")
-        .optional()
-        .isString()
-        .withMessage("Invalid data type.")
-        .isAlphanumeric()
-        .withMessage("Username can only contain symbols A-Z, a-z and 0-9."),
-    query("date")
-        .optional()
-        .isDate({ format: "YYYY-MM-DD", strictMode: true })
-        .withMessage("Invalid date."),
-    validationCheck,
-];
+exports.getUserScores = async (req, res) => {
+    const { username, page } = req.params;
+    const { game, date } = req.query;
+    const useGame = Boolean(game);
+    const useDate = Boolean(date);
+    if (!(await User.exists({ username }))) {
+        return res.status(400).send(errorMessage("User does not exist."));
+    }
+    const scores = await Score.find(
+        {
+            username,
+            gameID: useGame ? GAMES.indexOf(game) : { $gte: 0, $lte: 2 },
+            date: useDate
+                ? startOfDay(new Date(date))
+                : { $gt: new Date("2022-11-20") },
+        },
+        "-_id -__v"
+    )
+        .sort({ time: "asc", date: "asc" })
+        .skip((page - 1) * MAX_RESULTS)
+        .limit(MAX_RESULTS);
+    return res
+        .status(200)
+        .send(message(`Scores of user ${username}, page ${page}`, { scores }));
+};
+
+exports.validate = {
+    get: {
+        allScores: [
+            validateGame("param"),
+            validatePage(),
+            validateDate("query").optional(),
+            finishValidation,
+        ],
+        dailyScores: [validateDate("param"), validatePage(), finishValidation],
+        scoresByUser: [
+            validateUsername("param"),
+            validatePage(),
+            validateGame("query").optional(),
+            validateDate("query").optional(),
+            finishValidation,
+        ],
+    },
+    post: {
+        token: [validateSeed(), validateTime(), finishValidation],
+        score: [
+            validateUsername("body"),
+            validateGameID(),
+            validateTime(),
+            finishValidation,
+        ],
+    },
+};
