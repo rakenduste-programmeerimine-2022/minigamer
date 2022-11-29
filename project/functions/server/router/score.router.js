@@ -7,7 +7,7 @@ const database = require("../middleware/database");
 const router = express.Router();
 
 
-// .netlify/functions/server/score/{GAME}/{PAGE}?date=YYYY-MM-DD
+// .netlify/functions/server/score/g/{GAME}/{PAGE}?date=YYYY-MM-DD
 // {GAME} is either "nonogram", "sudoku" or "minesweeper"
 // {PAGE} is integer, minimum 1
 // date is optional
@@ -19,7 +19,7 @@ router.get(
     controller.getAllScores
 );
 
-// .netlify/functions/server/score/daily/{DATE}/{PAGE}
+// .netlify/functions/server/score/d/{DATE}/{PAGE}
 // {DATE} is YYYY-MM-DD
 // {PAGE} is integer, minimum 1
 // returns daily challenge scores of that day
@@ -30,9 +30,11 @@ router.get(
     controller.getDailyScores
 );
 
-// .netlify/functions/server/score/{USER}/following/{PAGE}
+// .netlify/functions/server/score/u/{USER}/following/{PAGE}?game={GAME}&date=YYYY-MM-DD
 // {USER} is username
 // {PAGE} is integer, minimum 1
+// {GAME} is optional and either "nonogram", "sudoku" or "minesweeper"
+// date is optional
 // returns scores of users followed by {USER}
 router.get(
     "/u/:username/following/:page",
@@ -41,9 +43,11 @@ router.get(
     controller.getFolloweeScores
 );
 
-// .netlify/functions/server/score/{USER}/{PAGE}
+// .netlify/functions/server/score/u/{USER}/{PAGE}?game={GAME}&date=YYYY-MM-DD
 // {USER} is username
 // {PAGE} is integer, minimum 1
+// {GAME} is optional and either "nonogram", "sudoku" or "minesweeper"
+// date is optional
 // returns scores made by {USER}
 router.get(
     "/u/:username/:page",
@@ -51,7 +55,6 @@ router.get(
     database.connect,
     controller.getUserScores
 );
-
 
 // .netlify/functions/server/score/token
 // body requires "seed" and "time"
