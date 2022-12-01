@@ -9,7 +9,7 @@ const Cell = ({ index, value, setRowCell }) => {
 
     return (
         <TableCell className={`Cell`} onMouseDown={onMouseDown}>
-            {value === 0 ? "" : value.toString()}
+            {value !== 0 ? value : ""}
         </TableCell>
     );
 };
