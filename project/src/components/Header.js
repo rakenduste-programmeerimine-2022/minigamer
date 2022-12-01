@@ -13,7 +13,7 @@ const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogram"];
 function ResponsiveAppBar() {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  console.log(user);
+  //console.log(user);
   let username = null;
 
   if (user[0]) {
