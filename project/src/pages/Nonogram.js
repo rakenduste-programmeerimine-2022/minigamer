@@ -16,8 +16,6 @@ const queryClient = new QueryClient({
 });
 
 function Nonogram() {
-  const [showGame, setShowGame] = useState(false);
-  const [sessionID, setSessionID] = useState(0);
   const [state, setState] = useState({
     showGame: false,
     gameID: 0,
@@ -26,14 +24,6 @@ function Nonogram() {
     endTime: Infinity,
   });
 
-  const onClick = () => {
-    setSessionID(sessionID + 1);
-    if (showGame) {
-      queryClient.refetchQueries();
-      return;
-    }
-    setShowGame(true);
-  };
   const newGame = () => {
     setState({
       showGame: true,
@@ -70,20 +60,6 @@ function Nonogram() {
     console.log(time);
   };
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {showGame ? (
-        <>
-          <Button onClick={onClick}>New game</Button>
-          <Game key={sessionID} />
-        </>
-      ) : (
-        <>
-          <Button onClick={onClick}>New game</Button>
-        </>
-      )}
-    </QueryClientProvider>
-  );
   return (
     <QueryClientProvider client={queryClient}>
       <Typography variant="h2">

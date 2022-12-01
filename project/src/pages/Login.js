@@ -10,6 +10,7 @@ import {
   TextField,
   Snackbar,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import "../Styles/loginRegister.scss";
 import { UserContext } from "../App";
@@ -106,6 +107,8 @@ const Login = (props) => {
           ) : (
             <Alert className="info hidden"></Alert>
           )}
+          {severity == "success" && <CircularProgress />}
+          <CircularProgress className="loading hidden" />
         </form>
         <Box className="changeAuth">
           <Typography>Don't have account ?</Typography>

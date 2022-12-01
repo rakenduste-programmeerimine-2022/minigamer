@@ -8,7 +8,7 @@ import React, { useContext } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
-const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
+const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogram"];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();

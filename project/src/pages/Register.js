@@ -9,6 +9,7 @@ import {
   Paper,
   TextField,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 
 import "../Styles/loginRegister.scss";
