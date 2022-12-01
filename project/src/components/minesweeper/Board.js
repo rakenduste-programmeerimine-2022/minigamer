@@ -1,37 +1,55 @@
 import React, { useEffect, useState } from "react";
 import createBoard from "./createBoard";
 import { Box, Typography } from "@mui/material";
+import Cell from "./Cell";
+import { revealed } from "./reveal";
 
 const Board = () => {
   const [grid, setGrid] = useState([]);
   useEffect(() => {
     function freshBoard() {
-      const newBoard = createBoard(5, 5, 10);
-      console.log(newBoard);
-      setGrid(newBoard);
+      const newBoard = createBoard(10, 10, 20);
+      setGrid(newBoard.board);
     }
     freshBoard();
   }, []);
 
-  if (!grid.board) {
+  //FLAG -- RIGHT CLICK
+  const updateFlag = (e, x, y) => {
+    e.preventDefault(); //disable right click default popup
+    let newGrid = JSON.parse(JSON.stringify(grid)); // creating a copy of grid
+    newGrid[x][y].flagged = true;
+    setGrid(newGrid);
+    console.log(newGrid[x][y]);
+  };
+
+  /*  if (!grid.board) {
     return <div>loading</div>;
-  }
-  return grid.board.map((singleRow) => {
+  } */
+
+  // Reveal Cell
+  const revealCell = (x, y) => {
+    let newGrid = JSON.parse(JSON.stringify(grid)); // creating a copy of grid
+    if (newGrid[x][y].value === "X") {
+      alert("MINE !!! | you lost");
+      //setGameState lost
+    } else {
+      let newRevealedBoard = revealed(newGrid, x, y);
+      //newGrid[x][y].revealed = true;
+      setGrid(newRevealedBoard.arr);
+    }
+  };
+
+  return grid.map((singleRow) => {
     return (
       <div style={{ display: "flex" }}>
         {singleRow.map((singleBlock) => {
           return (
-            <div
-              style={{
-                width: 80,
-                height: 80,
-                backgroundColor: "gray",
-                border: "2px solid black",
-                textAlign: "center",
-              }}
-            >
-              {singleBlock.value}
-            </div>
+            <Cell
+              details={singleBlock}
+              updateFlag={updateFlag}
+              revealCell={revealCell}
+            />
           );
         })}
       </div>
