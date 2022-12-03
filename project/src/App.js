@@ -13,7 +13,7 @@ import React, { createContext, useState } from "react";
 import Register from "./pages/Register";
 import GamePage from "./pages/GamePage";
 import Nonogram from "./pages/Nonogram";
-import Minesweeper from "./pages/Minesweeper";
+//import Minesweeper from "./pages/Minesweeper";
 
 export const UserContext = createContext();
 
@@ -35,7 +35,7 @@ function App() {
             <Route path="/games/:id" element={<GamePage />} />
             <Route path="/games/:id" element={<GamePage />} /> */}
             <Route path="/games/nonogram" element={<Nonogram />}></Route>
-            <Route path="/games/Minesweeper" element={<Minesweeper />}></Route>
+            <Route path="/games/:id" element={<GamePage />}></Route>
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

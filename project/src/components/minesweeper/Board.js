@@ -65,15 +65,16 @@ const Board = () => {
     <div>
       <p>{JSON.stringify(gameOver)}</p>
       <div>
-        {grid.map((singleRow) => {
+        {grid.map((singleRow, index1) => {
           return (
-            <div className="row">
-              {singleRow.map((singleBlock) => {
+            <div className="row" key={index1}>
+              {singleRow.map((singleBlock, index2) => {
                 return (
                   <Cell
                     details={singleBlock}
                     updateFlag={updateFlag}
                     revealCell={revealCell}
+                    key={index2}
                   />
                 );
               })}
