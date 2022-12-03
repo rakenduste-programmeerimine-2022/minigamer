@@ -1,10 +1,10 @@
-import MinesweeperImage from "../Images/minesweeper.jpg";
-import SudokuImage from "../Images/sudoku.png";
-import NonogramImage from "../Images/nonogram.jpg";
+import MinesweeperImage from "../Images/minesweeper_img.jpg";
+import SudokuImage from "../Images/sudoku_img.png";
+import NonogramImage from "../Images/nonogram_img.jpg";
 
-import MinesweeperThumb from "../Images/minesweeper.jpg";
-import SudokuThumb from "../Images/sudoku.png";
-import NonogramThumb from "../Images/nonogram.jpg";
+import MinesweeperThumb from "../Images/minesweeper_img.jpg";
+import SudokuThumb from "../Images/sudoku_img.png";
+import NonogramThumb from "../Images/nonogram_img.jpg";
 
 export const GamesSliderData = [
     {
