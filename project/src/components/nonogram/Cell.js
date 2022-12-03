@@ -3,25 +3,25 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const Cell = ({ setRowCell, index, value }) => {
-    const onMouseEvent = (event) => {
-        if (event.buttons === 1) {
-            setRowCell(index);
-        }
-    };
+  const onMouseEvent = (event) => {
+    if (event.buttons === 1) {
+      setRowCell(index);
+    }
+  };
 
-    return (
-        <TableCell
-            className={`Cell ${value ? "BlackCell" : "WhiteCell"}`}
-            onMouseEnter={onMouseEvent}
-            onMouseDown={onMouseEvent}
-        />
-    );
+  return (
+    <TableCell
+      className={`Cell ${value ? "BlackCell" : "WhiteCell"}`}
+      onMouseEnter={onMouseEvent}
+      onMouseDown={onMouseEvent}
+    />
+  );
 };
 
 Cell.propTypes = {
-    setRowCell: PropTypes.func,
-    index: PropTypes.number,
-    value: PropTypes.bool,
+  setRowCell: PropTypes.func,
+  index: PropTypes.number,
+  value: PropTypes.bool,
 };
 
 export default Cell;

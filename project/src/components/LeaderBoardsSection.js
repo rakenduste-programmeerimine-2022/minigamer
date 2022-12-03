@@ -34,7 +34,7 @@ function LeaderBoards_Section() {
             ></Box>
             <Box className="btn_wrap">
               <Button
-                className="leaderBoards_btn"
+                className="leaderBoards_btn btn"
                 variant="primary"
                 sx={{
                   width: 200,

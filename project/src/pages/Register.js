@@ -1,61 +1,51 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import {
-  Box,
   Button,
   Typography,
   Grid,
   Paper,
   TextField,
   Alert,
-  CircularProgress,
 } from "@mui/material";
-import "../Styles/loginRegister.scss";
-import { UserContext } from "../App";
 
-const Login = (props) => {
+import "../Styles/loginRegister.scss";
+import { Box } from "@mui/system";
+
+const Register = (props) => {
   const userRef = useRef();
   const nav = useNavigate();
 
   const [username, setusername] = useState("");
   const [password, setPass] = useState("");
-  const [loginStatus, setLoginStatus] = useState(false);
+  const [regStatus, setRegStatus] = useState(false);
   const [open, setOpen] = useState(null);
   const [severity, setSeverity] = useState("info");
 
-  const [currentUser, setCurrentUser] = useContext(UserContext);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const LoginURL = "../.netlify/functions/server/user/login";
+    console.log(username);
+    //setSuccess(true);
+    const RegisterURL = "../.netlify/functions/server/user/register";
 
     axios
-      .post(
-        LoginURL,
-        { username, password },
-        {
-          headers: { Content: "application/json" },
-          withCredentials: true,
-        }
-      )
+      .post(RegisterURL, {
+        username: username,
+        password: password,
+      })
       .then((res) => {
-        setLoginStatus(res.data.text);
-        //setUserToken(res.data.object.token);
-        const token = res.data.object.token;
-        //const name = res.data.object;
-        const localUser = { username, token };
-        sessionStorage.setItem("user", JSON.stringify(localUser));
-        setCurrentUser({ username, token });
-        console.log(currentUser);
+        setRegStatus(res.data.text);
+        setPass("");
+        setusername("");
         setOpen(true);
         setSeverity("success");
-        nav("/");
       })
       .catch((err) => {
-        setLoginStatus(err.response.data.text);
-        setusername("");
+        setRegStatus(err.response.data.text);
         setPass("");
+        setusername("");
         setOpen(true);
         setSeverity("error");
       });
@@ -67,7 +57,7 @@ const Login = (props) => {
         <form className="authForm" onSubmit={handleSubmit}>
           <Grid>
             <Typography className="title" variant="h3">
-              Login
+              Register
             </Typography>
           </Grid>
           <TextField
@@ -96,27 +86,25 @@ const Login = (props) => {
             variant="filled"
           />
           <Button className="submitBtn btn" type="submit">
-            Login
+            Register
           </Button>
           {open ? (
             <Alert severity={severity} className="info">
-              {loginStatus}
+              {regStatus}
             </Alert>
           ) : (
             <Alert className="info hidden"></Alert>
           )}
-          {severity === "success" && <CircularProgress />}
-          <CircularProgress className="loading hidden" />
         </form>
         <Box className="changeAuth">
-          <Typography>Don't have account ?</Typography>
+          <Typography>Already have account ?</Typography>
           <Button
             onClick={() => {
-              nav("/register");
+              nav("/login");
             }}
             className="authBtn btn"
           >
-            Register
+            Login
           </Button>
         </Box>
       </Paper>
@@ -124,4 +112,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Register;

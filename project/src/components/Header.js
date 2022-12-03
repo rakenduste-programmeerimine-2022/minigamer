@@ -1,14 +1,32 @@
-import * as React from "react";
+//import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import "../Styles/Header.scss";
 import { Button } from "@mui/material";
+import React, { useContext } from "react";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
-const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
-let username = "Username";
+const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogram"];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
+  const user = useContext(UserContext);
+  //console.log(user);
+  let username = null;
+
+  if (user[0]) {
+    username = user[0].username;
+  }
+
+  const logout = () => {
+    sessionStorage.removeItem("user");
+    username = null;
+    console.log("logout");
+    navigate("/login");
+  };
+
   const showNavbar = () => {
     const mobileNav = document.querySelector(".mobileNav");
     mobileNav.classList.toggle("responsive_nav");
@@ -20,7 +38,6 @@ function ResponsiveAppBar() {
   function setActiveDropdown(e) {
     let target = e.target;
     target.classList.add("active");
-    console.log(target);
   }
   function removeActiveDropdown(e) {
     let target = document.querySelector(".headerItem");
@@ -65,32 +82,42 @@ function ResponsiveAppBar() {
       >
         Leaderboard
       </Link>
-      <Box
-        sx={{ flexGrow: 0, textTransform: "uppercase" }}
-        className="dropdown headerItem headerRight"
-        onMouseOver={setActiveDropdown}
-        onMouseLeave={removeActiveDropdown}
-      >
-        {username}
-        <Box className="dropdownContent">
-          <Link
-            key="Profile"
-            className="menuItem"
-            style={{ textDecoration: "none" }}
-            to={`/profile/${username}`}
-          >
-            Profile
-          </Link>
-          <Link
-            key="login"
-            className="menuItem"
-            style={{ textDecoration: "none" }}
-            to={`/login`}
-          >
-            login
-          </Link>
+      {username ? (
+        <Box
+          sx={{ flexGrow: 0, textTransform: "uppercase" }}
+          className="dropdown headerItem headerRight"
+          onMouseOver={setActiveDropdown}
+          onMouseLeave={removeActiveDropdown}
+        >
+          {username}
+          <Box className="dropdownContent">
+            <Link
+              key="Profile"
+              className="menuItem"
+              style={{ textDecoration: "none" }}
+              to={`/profile/${username}`}
+            >
+              Profile
+            </Link>
+            <Box
+              key="logout"
+              className="menuItem"
+              style={{ textDecoration: "none", cursor: "pointer" }}
+              onClick={() => logout()}
+            >
+              log out
+            </Box>
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        <Link
+          className="headerItem dropdown headerRight"
+          key="notLoggedIn"
+          to={"/login"}
+        >
+          Login
+        </Link>
+      )}
 
       {/*  ------ MOBILE ------ */}
       <Box key="mobileNav" className="mobileNav" onClick={showNavbar}>
@@ -115,12 +142,18 @@ function ResponsiveAppBar() {
             Leaderboard
           </Link>
           <Box className="mobileUser">
-            <Link to={`/login`} className="mobileLogin">
-              Login
-            </Link>
-            <Link to={`/profile/${username}`} className="mobileProfile">
-              {username}
-            </Link>
+            {username && (
+              <Link to={`/profile/${username}`} className="mobileProfile">
+                {username}
+              </Link>
+            )}
+            {username ? (
+              <Box className="mobileLogin">Log out</Box>
+            ) : (
+              <Link to={`/login`} className="mobileLogin">
+                Login
+              </Link>
+            )}
           </Box>
         </Box>
       </Box>

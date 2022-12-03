@@ -7,7 +7,33 @@
 .App{
   margin-top: $headerHeight;
   overflow: hidden;
+  height: 100%;
+  width: 100%;
+  .btn{
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: $darkBlue;
+    color: white;
+    font-weight: bold;
+    transition: 0.2s;    
+    &:hover{
+        color: $darkBlue;
+        background-color: $white;
+        box-sizing: border-box;
+        outline: 3px solid $darkBlue;
+    }
+  }
+  .hidden{
+    visibility: hidden;
+  }
 }
+
+.divider{
+  width: 100%;
+  height: 5px;
+  background-color: $black;        
+}
+
 
 /* .App-header {
   background-color: #282c34;
@@ -29,7 +55,7 @@
   width: 100%;
   height: 100vh;
   /*height: 100vh - 200px;*/
-  background-color: $darkBlue;
+  background-color: $black;
   /*background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("photographer.jpg");*/
   background-position: center;
   background-repeat: no-repeat;

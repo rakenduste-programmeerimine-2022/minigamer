@@ -1,8 +1,11 @@
 import { Box } from "@mui/material";
 import React from "react";
 
-function Leaderboard() {
-  return <Box className="leaderBoard">Leaderboard</Box>;
+export default function Leaderboard(props) {
+  return (
+    <Box className="leaderBoard">
+      aaaaaaaaa
+      <Box>{props.data}</Box>
+    </Box>
+  );
 }
-
-export default Leaderboard;
