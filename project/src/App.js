@@ -11,29 +11,48 @@ import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Minesweeper from "./pages/Minesweeper";
 import Flood from "./pages/Flood";
+import React, { createContext, useState } from "react";
+import Register from "./pages/Register";
 import Nonogram from "./pages/Nonogram";
+import GamePage from "./pages/GamePage";
+
+export const UserContext = createContext();
 
 function App() {
+    const [currentUser, setCurrentUser] = useState(
+        JSON.parse(window.sessionStorage.getItem("user"))
+    );
+
     return (
         <Router>
-            <Header />
-            <div className="App">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/profile/:username" element={<Profile />} />
-                    <Route path="/games" element={<Games />} />
-                    <Route
-                        path="/games/Minesweeper"
-                        element={<Minesweeper />}
-                    />
-                    <Route path="/games/Flood" element={<Flood />} />
-                    <Route path="/games/Nonogram" element={<Nonogram />} />
-                    <Route path="/leaderboard" element={<Leaderboard />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="*" element={<ErrorPage />} />
-                </Routes>
-            </div>
-            <Footer />
+            <UserContext.Provider value={[currentUser, setCurrentUser]}>
+                <Header />
+                <div className="App">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/profile/:username"
+                            element={<Profile />}
+                        />
+                        <Route path="/games" element={<Games />} />
+                        {/* <Route path="/games/:id" element={<GamePage />} />
+            <Route path="/games/:id" element={<GamePage />} />
+            <Route path="/games/:id" element={<GamePage />} /> */}
+                        <Route path="/games/:id" element={<GamePage />} />
+                        <Route path="/games/nonogram" element={<Nonogram />} />
+                        <Route path="/games/flood" element={<Flood />} />
+                        <Route
+                            path="/games/minesweeper"
+                            element={<Minesweeper />}
+                        />
+                        <Route path="/leaderboard" element={<Leaderboard />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="*" element={<ErrorPage />} />
+                    </Routes>
+                </div>
+                <Footer />
+            </UserContext.Provider>
         </Router>
     );
 }

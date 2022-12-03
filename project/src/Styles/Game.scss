@@ -1,0 +1,93 @@
+@import 'Variables.scss';
+
+#game{
+    width: 100%;
+    height: 100%;
+    background-color: $darkBlue;
+
+    .gameWindowWrap{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+       
+    }   
+
+    .gameWindow{
+        background-color: aqua;
+        //max-width: calc(100vh - $headerHeight);
+        max-width: 93vh;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+        border: 3px solid $black;
+        box-shadow: -10px 5px 5px rgba($color: $black, $alpha: 0.5);
+        &::after{
+            content: '';
+            display: block;
+            padding-top: 100%;
+        }
+        .playableGame{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .bottomWrap{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        
+    }
+    .leftDiv, .rightDiv{
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .leftDiv{
+        color: white;
+        background-color: black;
+        padding-left: 20px;
+        padding-right: 20px;
+        .title, .tutorial{
+            text-align: center;
+        }
+        .text{
+            text-align: justify;
+        }
+        .tutorial{
+            padding-top: 20px;
+            padding-bottom: 20px;
+            font-size: 1.3rem;
+        }
+    }
+    .rightContent, .leftContent, .rightDiv{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .title{
+        font-size: $h4_scaling;
+    }
+    .rightDiv{
+        background-color: rgb(160, 128, 128);
+        
+        
+       
+        .subtitle{
+            font-size: 1.2rem ;
+        }   
+    }
+    @media only screen and (max-width: 700px) {
+        .bottomWrap{
+            grid-template-rows: 1fr 1fr;
+            grid-template-columns: 1fr;
+            .title{
+                font-size: 1.2rem;
+            }
+            .subtitle{
+                font-size: 1rem ;
+            }   
+        }
+    }
+}
+
