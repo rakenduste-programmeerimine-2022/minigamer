@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import React from "react";
 import axios from "axios";
 
-import Board from "./Board";
-import "./style.css";
+import "../../components/nonogram/nonogram.css";
 import { Skeleton } from "@mui/material";
+import Board from "./Board";
 
 const Game = ({ setGameWon }) => {
     const { isLoading, isFetching, error, data } = useQuery(
-        ["nonogram seed"],
+        ["Nonogram Seed"],
         async () => {
             const res = await axios.get(
                 "../.netlify/functions/server/seed/random"

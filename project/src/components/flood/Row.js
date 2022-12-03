@@ -4,13 +4,13 @@ import { TableRow } from "@mui/material";
 
 import Cell from "./Cell";
 
-const Row = ({ index, cells, solved, setBoardCell }) => {
+const Row = ({ index, cells, setCell }) => {
     const setRowCell = (column) => {
-        return setBoardCell(index, column);
+        return setCell(index, column);
     };
 
     return (
-        <TableRow className={`Row${solved ? " SolvedRow" : ""}`}>
+        <TableRow className={`Row`}>
             {cells.map((cell, column) => {
                 return (
                     <Cell
@@ -27,9 +27,8 @@ const Row = ({ index, cells, solved, setBoardCell }) => {
 
 Row.propTypes = {
     index: PropTypes.number,
-    cells: PropTypes.arrayOf(PropTypes.number),
-    solved: PropTypes.bool,
-    setBoardCell: PropTypes.func,
+    cells: PropTypes.arrayOf(PropTypes.string),
+    setCell: PropTypes.func,
 };
 
 export default Row;

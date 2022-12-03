@@ -8,15 +8,17 @@ const Cell = ({ index, value, setRowCell }) => {
     };
 
     return (
-        <TableCell className={`Cell`} onMouseDown={onMouseDown}>
-            {value !== 0 ? value : ""}
-        </TableCell>
+        <TableCell
+            className={`FloodCell`}
+            onMouseDown={onMouseDown}
+            style={{ backgroundColor: value }}
+        />
     );
 };
 
 Cell.propTypes = {
     index: PropTypes.number,
-    value: PropTypes.number,
+    value: PropTypes.string,
     setRowCell: PropTypes.func,
 };
 

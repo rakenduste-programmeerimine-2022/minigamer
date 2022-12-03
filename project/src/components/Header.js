@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "../Styles/Header.scss";
 import { Button } from "@mui/material";
 
-const gamesDropdown = ["Minesweeper", "Sudoku", "Nonogramm"];
+const gamesDropdown = ["Minesweeper", "Flood", "Nonogram"];
 let username = "Username";
 
 function ResponsiveAppBar() {

@@ -1,0 +1,9 @@
+td.FloodCell {
+    border: none;
+    padding: 2vw;
+}
+
+table.FloodBoard {
+    border: 1px solid black;
+    width: min-content;
+}

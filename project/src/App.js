@@ -10,29 +10,32 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Minesweeper from "./pages/Minesweeper";
-import Sudoku from "./pages/Sudoku";
+import Flood from "./pages/Flood";
 import Nonogram from "./pages/Nonogram";
 
 function App() {
-  return (
-    <Router>
-      <Header />
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile/:username" element={<Profile />} />
-          <Route path="/games" element={<Games />} />
-          <Route path="/games/Minesweeper" element={<Minesweeper />} />
-          <Route path="/games/Sudoku" element={<Sudoku />} />
-          <Route path="/games/Nonogramm" element={<Nonogram />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </div>
-      <Footer />
-    </Router>
-  );
+    return (
+        <Router>
+            <Header />
+            <div className="App">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/profile/:username" element={<Profile />} />
+                    <Route path="/games" element={<Games />} />
+                    <Route
+                        path="/games/Minesweeper"
+                        element={<Minesweeper />}
+                    />
+                    <Route path="/games/Flood" element={<Flood />} />
+                    <Route path="/games/Nonogram" element={<Nonogram />} />
+                    <Route path="/leaderboard" element={<Leaderboard />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<ErrorPage />} />
+                </Routes>
+            </div>
+            <Footer />
+        </Router>
+    );
 }
 
 export default App;

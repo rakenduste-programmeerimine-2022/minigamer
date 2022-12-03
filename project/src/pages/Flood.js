@@ -2,8 +2,7 @@ import { Button, Skeleton, Typography } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
 
-import Game from "../components/sudoku/Game";
-import "../components/sudoku/style.css";
+import Game from "../components/flood/Game";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -15,13 +14,14 @@ const queryClient = new QueryClient({
     },
 });
 
-function Sudoku() {
+function Flood() {
     const [state, setState] = useState({
         showGame: false,
         gameID: 0,
         gameWon: false,
         startTime: 0,
         endTime: Infinity,
+        clicks: 0,
     });
 
     const newGame = () => {
@@ -38,16 +38,17 @@ function Sudoku() {
         }
     };
 
-    const setGameWon = (value) => {
-        if (value === state.gameWon) {
+    const setGameWon = (gameWon, clicks) => {
+        if (gameWon === state.gameWon) {
             return;
         }
         setState({
             showGame: state.showGame,
             gameID: state.gameID,
-            gameWon: value,
+            gameWon: gameWon,
             startTime: state.startTime,
-            endTime: value ? performance.now() : state.endTime,
+            endTime: gameWon ? performance.now() : state.endTime,
+            clicks,
         });
     };
 
@@ -55,15 +56,15 @@ function Sudoku() {
         if (!state.gameWon) {
             return;
         }
-        // millis
-        const time = state.endTime - state.startTime;
-        console.log(time);
+        const time = Math.ceil((state.endTime - state.startTime) / 10);
+        const score = time * state.clicks;
+        console.log(score);
     };
 
     return (
         <QueryClientProvider client={queryClient}>
             <Typography variant="h2">
-                Sudoku{state.gameWon ? " complete!" : ""}
+                Flood{state.gameWon ? " complete!" : ""}
             </Typography>
             <Button onClick={newGame}>New game</Button>
             {state.showGame ? (
@@ -90,4 +91,4 @@ function Sudoku() {
     );
 }
 
-export default Sudoku;
+export default Flood;
