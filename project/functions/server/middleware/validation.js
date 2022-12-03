@@ -6,7 +6,7 @@ const FUNCTIONS = {
     param,
     query,
 };
-const GAMES = ["nonogram", "minesweeper", "sudoku"];
+const GAMES = ["nonogram", "minesweeper", "flood"];
 
 exports.validateUsername = (fn, param = "username") => {
     return FUNCTIONS[fn](param)

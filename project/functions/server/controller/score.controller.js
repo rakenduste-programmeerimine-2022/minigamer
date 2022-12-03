@@ -37,7 +37,7 @@ exports.create = async (req, res) => {
 };
 
 // filter by game and day
-const GAMES = ["nonogram", "minesweeper", "sudoku"];
+const GAMES = ["nonogram", "minesweeper", "flood"];
 const MAX_RESULTS = 25;
 
 exports.getAllScores = async (req, res) => {

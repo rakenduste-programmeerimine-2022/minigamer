@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 // .netlify/functions/server/score/g/{GAME}/{PAGE}?date=YYYY-MM-DD
-// {GAME} is either "nonogram", "sudoku" or "minesweeper"
+// {GAME} is either "nonogram", "flood" or "minesweeper"
 // {PAGE} is integer, minimum 1
 // date is optional
 // returns scores sorted by time spent on game, date, 1 page should have 25 scores at most
@@ -33,7 +33,7 @@ router.get(
 // .netlify/functions/server/score/u/{USER}/following/{PAGE}?game={GAME}&date=YYYY-MM-DD
 // {USER} is username
 // {PAGE} is integer, minimum 1
-// {GAME} is optional and either "nonogram", "sudoku" or "minesweeper"
+// {GAME} is optional and either "nonogram", "flood" or "minesweeper"
 // date is optional
 // returns scores of users followed by {USER}
 router.get(
@@ -46,7 +46,7 @@ router.get(
 // .netlify/functions/server/score/u/{USER}/{PAGE}?game={GAME}&date=YYYY-MM-DD
 // {USER} is username
 // {PAGE} is integer, minimum 1
-// {GAME} is optional and either "nonogram", "sudoku" or "minesweeper"
+// {GAME} is optional and either "nonogram", "flood" or "minesweeper"
 // date is optional
 // returns scores made by {USER}
 router.get(

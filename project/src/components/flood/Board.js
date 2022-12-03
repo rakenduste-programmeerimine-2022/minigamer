@@ -1,5 +1,5 @@
-import { Box, Button, Table, TableBody, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { Table, TableBody, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import seedrandom from "seedrandom";
 import PropTypes from "prop-types";
 
