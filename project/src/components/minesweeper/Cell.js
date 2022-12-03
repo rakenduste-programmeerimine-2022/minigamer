@@ -8,7 +8,7 @@ export default function Cell({ details, updateFlag, revealCell }) {
         ? "red" // bomb color
         : "#e5c29f" // revealed color
       : "#aad751", // hidden color
-    color: numColorCode(details.value), //nrs color
+    color: details.flagged == false && numColorCode(details.value), //nrs color
   };
 
   return (

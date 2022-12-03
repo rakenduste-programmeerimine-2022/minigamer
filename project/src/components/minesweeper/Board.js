@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import createBoard from "./createBoard";
-import { Box, Typography } from "@mui/material";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
 
