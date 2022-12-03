@@ -1,4 +1,4 @@
-export default (row, col, bombs) => {
+const createBoard = (row, col, bombs) => {
   let board = [];
   let mineLocation = [];
   // Create blank board
@@ -98,3 +98,5 @@ function randomNum(min = 0, max) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export default createBoard;

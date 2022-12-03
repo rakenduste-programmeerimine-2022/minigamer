@@ -6,7 +6,9 @@ import Board from "../components/minesweeper/Board";
 function Minesweeper() {
   return (
     <Box className="minesweeper">
-      <h3 className="title">Minesweeper</h3>
+      <Typography variant="h3" className="title">
+        Minesweeper
+      </Typography>
       <Board />
     </Box>
   );

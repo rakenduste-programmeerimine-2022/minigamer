@@ -3,7 +3,7 @@ import { GamesSliderData } from "./GamesSliderData";
 //import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { Box, Slide, ImageList, ImageListItem } from "@mui/material";
+import { Box, ImageListItem } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const GamesSlider = ({ slides }) => {
@@ -34,6 +34,7 @@ const GamesSlider = ({ slides }) => {
             <img
               src={`${item.thumbnail}?w=164&h=164&fit=crop&auto=format`}
               loading="lazy"
+              alt={`game_img` + item.nr}
             />
           </ImageListItem>
         ))}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,7 +8,6 @@ import {
   Grid,
   Paper,
   TextField,
-  Snackbar,
   Alert,
   CircularProgress,
 } from "@mui/material";
@@ -17,13 +16,11 @@ import { UserContext } from "../App";
 
 const Login = (props) => {
   const userRef = useRef();
-  const errRef = useRef();
   const nav = useNavigate();
 
   const [username, setusername] = useState("");
   const [password, setPass] = useState("");
   const [loginStatus, setLoginStatus] = useState(false);
-  const [userToken, setUserToken] = useState("");
   const [open, setOpen] = useState(null);
   const [severity, setSeverity] = useState("info");
 
@@ -46,10 +43,11 @@ const Login = (props) => {
         setLoginStatus(res.data.text);
         //setUserToken(res.data.object.token);
         const token = res.data.object.token;
-        const name = res.data.object;
+        //const name = res.data.object;
         const localUser = { username, token };
         sessionStorage.setItem("user", JSON.stringify(localUser));
         setCurrentUser({ username, token });
+        console.log(currentUser);
         setOpen(true);
         setSeverity("success");
         nav("/");
@@ -107,7 +105,7 @@ const Login = (props) => {
           ) : (
             <Alert className="info hidden"></Alert>
           )}
-          {severity == "success" && <CircularProgress />}
+          {severity === "success" && <CircularProgress />}
           <CircularProgress className="loading hidden" />
         </form>
         <Box className="changeAuth">

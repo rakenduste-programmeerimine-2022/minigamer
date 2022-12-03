@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,6 @@ import {
   Paper,
   TextField,
   Alert,
-  CircularProgress,
 } from "@mui/material";
 
 import "../Styles/loginRegister.scss";
@@ -17,7 +16,6 @@ import { Box } from "@mui/system";
 
 const Register = (props) => {
   const userRef = useRef();
-  const errRef = useRef();
   const nav = useNavigate();
 
   const [username, setusername] = useState("");
