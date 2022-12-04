@@ -2,9 +2,8 @@ import seedrandom from "seedrandom";
 
 const CreateBoard = (row, col, bombs, seed) => {
   let board = [];
-  let mineLocation = [];
-  const BOMB_CHANCE = 0.2;
   const rng = seedrandom(seed);
+  let mineLocation = [];
 
   // x = column
   for (let x = 0; x < row; x++) {
@@ -27,7 +26,7 @@ const CreateBoard = (row, col, bombs, seed) => {
     return rng.quick();
   };
 
-  const randomNum = (min = 0, max) => {
+  const randomNum = () => {
     // min and max included
     //console.log(Math.floor(Math.random() * (max - min + 1) + min));
     let number = randomBool() * 10;
