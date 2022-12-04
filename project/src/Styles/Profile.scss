@@ -1,0 +1,23 @@
+@import 'Variables.scss';
+
+#profile{
+    width: 100%;
+    color: $white;
+    .profileWrapper{
+        padding: 20px;
+    }
+    .user{
+        font-size: $h3;
+    }
+    .followSection{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .followSection{
+            grid-template-columns: 1fr;
+        }
+        
+    }
+}
