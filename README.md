@@ -34,7 +34,7 @@ Minigamer on lehekülg, kus on mitu erinevat pisikest mängu. Mängida saab iga�
 -   Mängud
     -   Nonogram
     -   Minesweeper
-    -   Sudoku
+    -   Flood
 -   Igapäevane tase ehk _daily challenge_ (ainult kontoga kasutajale)
     -   Üks mängudest kindla _seed_-iga
     -   Püsib 24 tundi sama, siis uueneb

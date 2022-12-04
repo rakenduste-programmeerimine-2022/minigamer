@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
 import axios from "axios";
 
-import "../../components/nonogram/nonogram.css";
-import { Skeleton } from "@mui/material";
+import "../../components/flood/flood.css";
 import Board from "./Board";
 
 const Game = ({ setGameWon }) => {
     const { isLoading, isFetching, error, data } = useQuery(
-        ["Nonogram Seed"],
+        ["Flood Seed"],
         async () => {
             const res = await axios.get(
                 "../.netlify/functions/server/seed/random"

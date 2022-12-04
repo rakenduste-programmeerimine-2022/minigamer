@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 import Game from "../components/nonogram/Game";
-import "../components/nonogram/style.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
