@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import createBoard from "./createBoard";
+import CreateBoard from "./CreateBoard";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
+import seedrandom from "seedrandom";
 
-const Board = () => {
+const Board = (seed, setGameWon) => {
   const [grid, setGrid] = useState([]);
   const [nonMines, setNonMines] = useState(0);
   const [minelocations, setMinelocations] = useState([]);
@@ -13,7 +14,7 @@ const Board = () => {
     function freshBoard() {
       const SIZE = 10;
       const BOMBS = 15;
-      const newBoard = createBoard(SIZE, SIZE, BOMBS);
+      const newBoard = CreateBoard(SIZE, SIZE, BOMBS, seed);
       setNonMines(SIZE * SIZE - BOMBS);
       setMinelocations(newBoard.mineLocation);
       setGrid(newBoard.board);
@@ -28,7 +29,11 @@ const Board = () => {
     }
     e.preventDefault(); //disable right click default popup
     let newGrid = JSON.parse(JSON.stringify(grid)); // creating a copy of grid
-    newGrid[x][y].flagged = true;
+    if (newGrid[x][y].flagged) {
+      newGrid[x][y].flagged = false;
+    } else {
+      newGrid[x][y].flagged = true;
+    }
     setGrid(newGrid);
     console.log(newGrid[x][y]);
   };
