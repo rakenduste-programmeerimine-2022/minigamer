@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import React from "react";
 import axios from "axios";
-import CreateBoard from "./CreateBoard";
 
 import Board from "./Board";
 import { Skeleton } from "@mui/material";

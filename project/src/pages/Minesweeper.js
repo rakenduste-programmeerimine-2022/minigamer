@@ -3,7 +3,6 @@ import { Box, Typography, Button, Skeleton } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "../Styles/Minesweeper.scss";
-import Board from "../components/minesweeper/Board";
 import Game from "../components/minesweeper/Game";
 
 const queryClient = new QueryClient({
@@ -62,7 +61,7 @@ function Minesweeper() {
     <QueryClientProvider client={queryClient}>
       <Box className="minesweeper">
         <Typography variant="h3" className="title">
-          Minesweeper{state.gameWon ? " complete!" : ""}
+          Minesweeper{state.gameWon ? " complete!" : " playing"}
         </Typography>
         <Button onClick={newGame}>New game</Button>
         {state.showGame ? (
@@ -86,7 +85,4 @@ function Minesweeper() {
     </QueryClientProvider>
   );
 }
-
-// pooleli 1.11.11
-
 export default Minesweeper;

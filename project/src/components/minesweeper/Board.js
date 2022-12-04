@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import CreateBoard from "./CreateBoard";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
-import seedrandom from "seedrandom";
+import PropTypes from "prop-types";
 
-const Board = (seed, setGameWon) => {
+const Board = ({ seed, setGameWon }) => {
   const [grid, setGrid] = useState([]);
   const [nonMines, setNonMines] = useState(0);
   const [minelocations, setMinelocations] = useState([]);
-  const [gameOver, setGameOver] = useState(false);
-
+  const [gameState, setGameState] = useState("playing");
   useEffect(() => {
     function freshBoard() {
       const SIZE = 10;
-      const BOMBS = 15;
+      const BOMBS = 1;
       const newBoard = CreateBoard(SIZE, SIZE, BOMBS, seed);
       setNonMines(SIZE * SIZE - BOMBS);
       setMinelocations(newBoard.mineLocation);
@@ -24,7 +23,7 @@ const Board = (seed, setGameWon) => {
 
   //FLAG -- RIGHT CLICK
   const updateFlag = (e, x, y) => {
-    if (gameOver) {
+    if (gameState !== "playing") {
       return;
     }
     e.preventDefault(); //disable right click default popup
@@ -38,37 +37,43 @@ const Board = (seed, setGameWon) => {
     console.log(newGrid[x][y]);
   };
 
-  /*  if (!grid.board) {
-    return <div>loading</div>;
-  } */
-
   // Reveal Cell
   const revealCell = (x, y) => {
-    if (grid[x][y].revealed || gameOver) {
+    if (grid[x][y].revealed || gameState !== "playing") {
       return;
     }
     let newGrid = JSON.parse(JSON.stringify(grid)); // creating a copy of grid
     if (newGrid[x][y].value === "X") {
-      //alert("MINE !!! | you lost");
+      // hit bomb
       //reveal all bombs
       for (let i = 0; i < minelocations.length; i++) {
         newGrid[minelocations[i][0]][minelocations[i][1]].revealed = true;
       }
       setGrid(newGrid);
-      setGameOver(true);
+      setGameState("lost");
     } else {
       let newRevealedBoard = revealed(newGrid, x, y, nonMines);
       setGrid(newRevealedBoard.arr); // update grid
       setNonMines(newRevealedBoard.newNonMinesCount);
       if (newRevealedBoard.newNonMinesCount === 0) {
-        setGameOver(true);
+        setGameState("won");
       }
     }
   };
 
+  useEffect(() => {
+    let gameWon = true;
+    if (gameState !== "won") {
+      console.log("mangu ei voidetud");
+      gameWon = false;
+    }
+
+    setGameWon(gameWon);
+  });
+
   return (
     <div>
-      <p>{JSON.stringify(gameOver)}</p>
+      <p>{gameState}</p>
       <div>
         {grid.map((singleRow, index1) => {
           return (
@@ -89,6 +94,11 @@ const Board = (seed, setGameWon) => {
       </div>
     </div>
   );
+};
+
+Board.propTypes = {
+  seed: PropTypes.string,
+  setGameWon: PropTypes.func,
 };
 
 export default Board;
