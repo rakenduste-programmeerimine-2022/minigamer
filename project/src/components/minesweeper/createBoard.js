@@ -1,7 +1,10 @@
-const createBoard = (row, col, bombs) => {
+import seedrandom from "seedrandom";
+
+const CreateBoard = (row, col, bombs, seed) => {
   let board = [];
   let mineLocation = [];
-  // Create blank board
+  const BOMB_CHANCE = 0.2;
+  const rng = seedrandom(seed);
 
   // x = column
   for (let x = 0; x < row; x++) {
@@ -19,6 +22,23 @@ const createBoard = (row, col, bombs) => {
   }
 
   // Randomize Bomb Placement
+
+  const randomBool = () => {
+    return rng.quick();
+  };
+
+  const randomNum = (min = 0, max) => {
+    // min and max included
+    //console.log(Math.floor(Math.random() * (max - min + 1) + min));
+    let number = randomBool() * 10;
+    if (number < 0.5) {
+      number = number * 10;
+    }
+    number = Math.floor(number);
+    console.log(number);
+    return number;
+  };
+
   let bombsCount = 0;
   while (bombsCount < bombs) {
     let x = randomNum(0, row - 1);
@@ -94,9 +114,4 @@ const createBoard = (row, col, bombs) => {
   return { board, mineLocation };
 };
 
-function randomNum(min = 0, max) {
-  // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-export default createBoard;
+export default CreateBoard;
