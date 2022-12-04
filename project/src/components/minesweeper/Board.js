@@ -12,7 +12,7 @@ const Board = ({ seed, setGameWon }) => {
   useEffect(() => {
     function freshBoard() {
       const SIZE = 10;
-      const BOMBS = 1;
+      const BOMBS = 15;
       const newBoard = CreateBoard(SIZE, SIZE, BOMBS, seed);
       setNonMines(SIZE * SIZE - BOMBS);
       setMinelocations(newBoard.mineLocation);
@@ -64,7 +64,6 @@ const Board = ({ seed, setGameWon }) => {
   useEffect(() => {
     let gameWon = true;
     if (gameState !== "won") {
-      console.log("mangu ei voidetud");
       gameWon = false;
     }
 
