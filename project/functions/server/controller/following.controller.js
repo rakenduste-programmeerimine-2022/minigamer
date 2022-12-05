@@ -1,6 +1,7 @@
-const { body, param } = require("express-validator");
-
-const { validationCheck } = require("../middleware/validationCheck");
+const {
+    finishValidation,
+    validateUsername,
+} = require("../middleware/validation");
 const { message, errorMessage } = require("../utility/message");
 const Following = require("../model/following.model");
 const User = require("../model/user.model");
@@ -97,24 +98,10 @@ exports.delete = async (req, res) => {
     return res.status(200).send(message("User has been unfollowed!"));
 };
 
-exports.validateCreate = [
-    body(["follower", "followee"])
-        .isString()
-        .withMessage("Invalid data type.")
-        .isLength({ min: 3, max: 16 })
-        .withMessage("Username length has to be between 3 and 16 symbols.")
-        .isAlphanumeric()
-        .withMessage("Username can only contain symbols A-Z, a-z and 0-9."),
-    validationCheck,
-];
-
-exports.validateRead = [
-    param("username")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isLength({ min: 3, max: 16 })
-        .withMessage("Username length has to be between 3 and 16 symbols.")
-        .isAlphanumeric()
-        .withMessage("Username can only contain symbols A-Z, a-z and 0-9."),
-    validationCheck,
-];
+exports.validate = {
+    read: [validateUsername("param"), finishValidation],
+    write: [
+        validateUsername("body", ["follower", "followee"]),
+        finishValidation,
+    ],
+};
