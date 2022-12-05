@@ -40,18 +40,18 @@ exports.validatePassword = () => {
         .withMessage("Password needs to be at least 8 symbols long.");
 };
 
-exports.validateSeed = () => {
-    return body("seed")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isHexadecimal()
-        .withMessage("Seed is not hexadecimal.")
-        .isLength({ min: 32, max: 32 })
-        .withMessage("Seed is wrong length.");
-};
+// exports.validateSeed = () => {
+//     return body("seed")
+//         .isString()
+//         .withMessage("Invalid data type.")
+//         .isHexadecimal()
+//         .withMessage("Seed is not hexadecimal.")
+//         .isLength({ min: 32, max: 32 })
+//         .withMessage("Seed is wrong length.");
+// };
 
-exports.validateTime = () => {
-    return body("time").isInt({ gt: 0 }).withMessage("Invalid game time.");
+exports.validateScore = () => {
+    return body("score").isInt({ gt: 0 }).withMessage("Invalid game score.");
 };
 
 exports.validateGameID = () => {

@@ -11,7 +11,7 @@ const router = express.Router();
 // {GAME} is either "nonogram", "flood" or "minesweeper"
 // {PAGE} is integer, minimum 1
 // date is optional
-// returns scores sorted by time spent on game, date, 1 page should have 25 scores at most
+// returns scores sorted by score, date, 1 page should have 25 scores at most
 router.get(
     "/g/:game/:page",
     controller.validate.get.allScores,
@@ -57,9 +57,9 @@ router.get(
 );
 
 // .netlify/functions/server/score/token
-// body requires "seed" and "time"
-// seed is hexadecimal string with 32 symbols
-// time is integer and greater than 0
+// body requires "game", "score"
+// game is either "nonogram", "flood" or "minesweeper"
+// score is integer and greater than 0
 // returns game token used for submitting score
 router.post(
     "/token",
@@ -69,7 +69,7 @@ router.post(
     );
 
 // .netlify/functions/server/score/submit
-// body requires "username", "gameID", "time" and "seed"
+// body requires "username", "gameID", "score"
 // auth requires both user token and game token
 // auth example: "Bearer {USERTOKEN}, Bearer {GAMETOKEN}"
 // submits a score to the database

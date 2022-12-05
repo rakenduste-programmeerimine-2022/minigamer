@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const { errorMessage } = require("../utility/message");
+const games = require("../utility/games");
 
 const hasBearerToken = (token) => {
     if (!token) {
@@ -71,7 +72,7 @@ const checkUserAndGame = (req, res, next) => {
     if (auth.length != 2) {
         return res.status(403).send(errorMessage("Missing token."));
     }
-    const { _username, _seed, _time } = req.body;
+    const { _username, _gameID, _seed, _score } = req.body;
     const userToken = hasBearerToken(auth[0].trim());
     const gameToken = hasBearerToken(auth[1].trim());
     if (!userToken || !gameToken) {
@@ -91,7 +92,10 @@ const checkUserAndGame = (req, res, next) => {
         if (error || !result) {
             return res.status(403).send(errorMessage("Invalid game token."));
         }
-        if (result.seed != _seed || result.time != _time) {
+        if (
+            result.score != _score ||
+            games.gameID({ byName: false, env: result.env }) != _gameID
+        ) {
             return res
                 .status(400)
                 .send(errorMessage("Token data does not match."));
@@ -115,10 +119,10 @@ exports.onGameTokenRequest = [checkLogin];
 
 exports.onScoreCreateRequest = [
     (req, res, next) => {
-        const { username, seed, time } = req.body;
+        const { username, gameID, score } = req.body;
         req.body._username = username;
-        req.body._seed = seed;
-        req.body._time = time;
+        req.body._gameID = gameID;
+        req.body._score = score;
         next();
     },
     checkUserAndGame,

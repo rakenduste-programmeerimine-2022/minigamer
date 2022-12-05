@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const {
     finishValidation,
     validateSeed,
-    validateTime,
+    validateScore,
     validateUsername,
     validateGameID,
     validatePage,
@@ -16,34 +16,37 @@ const DailyChallenge = require("../model/dailyChallenge.model");
 const Following = require("../model/following.model");
 const Score = require("../model/score.model");
 const User = require("../model/user.model");
+const games = require("../utility/games");
 
 exports.getGameToken = (req, res) => {
-    const { seed, time } = req.body;
-    const token = jwt.sign({ seed, time }, process.env.JWT_GAME_KEY);
+    const { game, score } = req.body;
+    const token = jwt.sign(
+        { env: games.environmentVariable(game), score },
+        process.env.JWT_GAME_KEY
+    );
     return res.status(200).send(message("Game token", { token }));
 };
 
 exports.create = async (req, res) => {
-    const { username, gameID, time } = req.body;
+    const { username, gameID, score } = req.body;
     if (!(await User.exists({ username }))) {
         return res.status(400).send(errorMessage("User does not exist."));
     }
     await Score.create({
         username,
         gameID,
-        time,
+        score,
     });
     return res.status(200).send(message("Your score has been submitted!"));
 };
 
 // filter by game and day
-const GAMES = ["nonogram", "minesweeper", "flood"];
 const MAX_RESULTS = 25;
 
 exports.getAllScores = async (req, res) => {
     const { game, page } = req.params;
     const { date } = req.query;
-    const gameID = GAMES.indexOf(game);
+    const gameID = games.gameID({ byName: true, name: game });
     if (!(gameID >= 0 && gameID <= 2)) {
         return res.status(400).send(errorMessage("Invalid game name."));
     }
@@ -64,11 +67,11 @@ exports.getAllScores = async (req, res) => {
         .sort(
             useDate
                 ? {
-                      time: "asc",
+                      score: "asc",
                       date: "asc",
                   }
                 : {
-                      time: "asc",
+                      score: "asc",
                   }
         )
         .skip((page - 1) * MAX_RESULTS)
@@ -98,16 +101,16 @@ exports.getDailyScores = async (req, res) => {
         { gameID: 3, date: dateObject },
         "-_id -gameID -__v -date"
     )
-        .sort({ time: "asc" })
+        .sort({ score: "asc" })
         .skip((page - 1) * MAX_RESULTS)
         .limit(MAX_RESULTS);
     return res
         .status(200)
         .send(
             message(
-                `Daily challenge scores, game ${
-                    GAMES[daily.gameID]
-                }, page ${page}`,
+                `Daily challenge scores, game ${games.name(
+                    daily.gameID
+                )}, page ${page}`,
                 { daily, scores }
             )
         );
@@ -128,14 +131,16 @@ exports.getFolloweeScores = async (req, res) => {
     const scores = await Score.find(
         {
             username: { $in: usernames },
-            gameID: useGame ? GAMES.indexOf(game) : { $gte: 0, $lte: 2 },
+            gameID: useGame
+                ? games.getGameIDByName(game)
+                : { $gte: 0, $lte: 2 },
             date: useDate
                 ? startOfDay(new Date(date))
                 : { $gt: new Date("2022-11-20") },
         },
         "-_id -__v"
     )
-        .sort({ time: "asc", date: "asc" })
+        .sort({ score: "asc", date: "asc" })
         .skip((page - 1) * MAX_RESULTS)
         .limit(MAX_RESULTS);
     return res.status(200).send(
@@ -156,14 +161,16 @@ exports.getUserScores = async (req, res) => {
     const scores = await Score.find(
         {
             username,
-            gameID: useGame ? GAMES.indexOf(game) : { $gte: 0, $lte: 2 },
+            gameID: useGame
+                ? games.getGameIDByName(game)
+                : { $gte: 0, $lte: 2 },
             date: useDate
                 ? startOfDay(new Date(date))
                 : { $gt: new Date("2022-11-20") },
         },
         "-_id -__v"
     )
-        .sort({ time: "asc", date: "asc" })
+        .sort({ score: "asc", date: "asc" })
         .skip((page - 1) * MAX_RESULTS)
         .limit(MAX_RESULTS);
     return res
@@ -189,11 +196,11 @@ exports.validate = {
         ],
     },
     post: {
-        token: [validateSeed(), validateTime(), finishValidation],
+        token: [validateScore(), finishValidation],
         score: [
             validateUsername("body"),
             validateGameID(),
-            validateTime(),
+            validateScore(),
             finishValidation,
         ],
     },
