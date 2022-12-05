@@ -6,12 +6,36 @@
     .profileWrapper{
         padding: 20px;
     }
-    .user{
-        font-size: $h3;
+    .userSection{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 40px;
+
+        .user{
+            font-size: $h3;
+        }
+    }
+    .followPopUpSection{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
     }
     .followSection{
+        padding-top: 20px;
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        a{
+            text-decoration: none;
+            color: $black;
+            width: 100%;
+            :hover{
+                background-color: $darkBlue;
+                color: $white;
+            }
+        }
     }
 
     @media only screen and (max-width: 700px) {
