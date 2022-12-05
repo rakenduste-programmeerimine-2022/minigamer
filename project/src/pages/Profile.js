@@ -9,6 +9,7 @@ import {
   AccordionDetails,
   Button,
   Modal,
+  Skeleton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { UserContext } from "../App";
@@ -33,7 +34,6 @@ function Profile() {
 
   if (user[0]) {
     Currentusername = user[0].username;
-    console.log(Currentusername);
   }
 
   let { username } = useParams();
@@ -50,6 +50,14 @@ function Profile() {
   const [open, setOpen] = useState({ windowOpen: false, window: "" });
   const handleOpen = (list) => setOpen({ windowOpen: true, window: list });
   const handleClose = () => setOpen({ windowOpen: false, window: "" });
+  const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
+
+  const getFollowData = (list) => {
+    handleOpen(list);
+    setTimeout(() => {
+      setDataLoaded({ window: list, loaded: true });
+    }, 2500);
+  };
 
   return (
     <Box className="profile" id="profile">
@@ -64,10 +72,10 @@ function Profile() {
         </Box>
         <Box className="divider"></Box>
         <Box className="followPopUpSection">
-          <Button onClick={() => handleOpen("Followers")} className="btn">
+          <Button onClick={() => getFollowData("Followers")} className="btn">
             Followers
           </Button>
-          <Button onClick={() => handleOpen("Following")} className="btn">
+          <Button onClick={() => getFollowData("Following")} className="btn">
             Following
           </Button>
           <Modal
@@ -80,33 +88,41 @@ function Profile() {
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {open.window}
               </Typography>
-              {open.window === "Followers" ? (
-                <>
-                  {followers.map((follower) => {
-                    return (
-                      <Link
-                        to={`/profile/${follower}`}
-                        onClick={handleClose}
-                        key={follower}
-                      >
-                        <Typography> {follower}</Typography>
-                      </Link>
-                    );
-                  })}
-                </>
+              {dataLoaded.loaded && dataLoaded.window === open.window ? (
+                open.window === "Followers" ? (
+                  <>
+                    {followers.map((follower) => {
+                      return (
+                        <Link
+                          to={`/profile/${follower}`}
+                          onClick={handleClose}
+                          key={follower}
+                        >
+                          <Typography> {follower}</Typography>
+                        </Link>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
+                    {following.map((followee) => {
+                      return (
+                        <Link
+                          onClick={handleClose}
+                          to={`/profile/${followee}`}
+                          key={followee}
+                        >
+                          <Typography>{followee}</Typography>
+                        </Link>
+                      );
+                    })}
+                  </>
+                )
               ) : (
                 <>
-                  {following.map((followee) => {
-                    return (
-                      <Link
-                        onClick={handleClose}
-                        to={`/profile/${followee}`}
-                        key={followee}
-                      >
-                        <Typography>{followee}</Typography>
-                      </Link>
-                    );
-                  })}
+                  <Skeleton animation="wave"></Skeleton>
+                  <Skeleton animation="wave"></Skeleton>
+                  <Skeleton animation="wave"></Skeleton>
                 </>
               )}
             </Box>
@@ -117,11 +133,7 @@ function Profile() {
             Scores
           </Button>
         </Box>
-        {Currentusername === username && (
-          <Box>
-            Seda näeb ainult enda profiilil kui tahame midagi siukest teha
-          </Box>
-        )}
+
         <Box className="followSection">
           <Box className="following">
             <Accordion>
