@@ -1,6 +1,18 @@
 @import './Variables.scss';
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .App, .header, p, a {
   font-family: 'Lato', sans-serif !important;
 }
