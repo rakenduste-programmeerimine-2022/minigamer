@@ -45,3 +45,30 @@
         
     }
 }
+
+//POP UP
+.popup{
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $white;
+    border: 2px solid $black;
+    box-shadow: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.modalLink{
+    text-decoration: none;
+    color: $black;
+    text-align: center;
+    padding: 5px;
+    :hover{
+        background-color: $darkBlue;
+        color: $white;
+    }
+}
