@@ -3,6 +3,7 @@ import CreateBoard from "./CreateBoard";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
 import PropTypes from "prop-types";
+import { Box, Typography } from "@mui/material";
 
 const Board = ({ seed, setGameWon }) => {
   const [grid, setGrid] = useState([]);
@@ -71,12 +72,12 @@ const Board = ({ seed, setGameWon }) => {
   });
 
   return (
-    <div>
-      <p>{gameState}</p>
-      <div>
+    <Box>
+      <Typography>{gameState}</Typography>
+      <Box>
         {grid.map((singleRow, index1) => {
           return (
-            <div className="row" key={index1}>
+            <Box className="row" key={index1}>
               {singleRow.map((singleBlock, index2) => {
                 return (
                   <Cell
@@ -87,11 +88,11 @@ const Board = ({ seed, setGameWon }) => {
                   />
                 );
               })}
-            </div>
+            </Box>
           );
         })}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

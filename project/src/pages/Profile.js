@@ -14,17 +14,11 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { UserContext } from "../App";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  height: "50%",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+const style = {};
+
+const linksStyle = {
+  textDexoration: "none",
+  color: "black",
 };
 
 function Profile() {
@@ -53,10 +47,13 @@ function Profile() {
   const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
 
   const getFollowData = (list) => {
-    handleOpen(list);
+    handleOpen(list); //list is either followers or following
+    setDataLoaded({ window: list });
     setTimeout(() => {
+      // timeout for testing load time
       setDataLoaded({ window: list, loaded: true });
-    }, 2500);
+      console.log(dataLoaded);
+    }, 1500);
   };
 
   return (
@@ -84,7 +81,7 @@ function Profile() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box sx={style}>
+            <Box className="popup" sx={style}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {open.window}
               </Typography>
@@ -97,6 +94,7 @@ function Profile() {
                           to={`/profile/${follower}`}
                           onClick={handleClose}
                           key={follower}
+                          className="modalLink"
                         >
                           <Typography> {follower}</Typography>
                         </Link>
@@ -111,6 +109,7 @@ function Profile() {
                           onClick={handleClose}
                           to={`/profile/${followee}`}
                           key={followee}
+                          className="modalLink"
                         >
                           <Typography>{followee}</Typography>
                         </Link>
