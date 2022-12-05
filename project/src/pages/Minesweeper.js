@@ -61,7 +61,7 @@ function Minesweeper() {
     <QueryClientProvider client={queryClient}>
       <Box className="minesweeper">
         <Typography variant="h3" className="title">
-          Minesweeper{state.gameWon ? " complete!" : " playing"}
+          Minesweeper{state.gameWon ? " complete!" : ""}
         </Typography>
         <Button onClick={newGame}>New game</Button>
         {state.showGame ? (
