@@ -14,13 +14,6 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { UserContext } from "../App";
 
-const style = {};
-
-const linksStyle = {
-  textDexoration: "none",
-  color: "black",
-};
-
 function Profile() {
   let navigate = useNavigate();
   const user = useContext(UserContext);
@@ -81,7 +74,7 @@ function Profile() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box className="popup" sx={style}>
+            <Box className="popup">
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {open.window}
               </Typography>

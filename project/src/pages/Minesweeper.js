@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import { Box, Typography, Button, Skeleton } from "@mui/material";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+//import React, { useState } from "react";
+//import { Box, Typography, Button, Skeleton } from "@mui/material";
+//import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+//import { useQuery } from "@tanstack/react-query";
 
+import { Box } from "@mui/system";
+import React from "react";
 import "../Styles/Minesweeper.scss";
 import Game from "../components/minesweeper/Game";
 
-const queryClient = new QueryClient({
+/* const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
@@ -13,10 +16,11 @@ const queryClient = new QueryClient({
       staleTime: Infinity,
     },
   },
-});
+}); */
 
-function Minesweeper() {
-  const [state, setState] = useState({
+const Minesweeper = ({ setGameWon, state }) => {
+  //console.log(state);
+  /* const [state, setState] = useState({
     showGame: false,
     gameID: 0,
     gameWon: false,
@@ -56,33 +60,11 @@ function Minesweeper() {
     // millis
     const time = state.endTime - state.startTime;
     console.log(time);
-  };
+  }; */
   return (
-    <QueryClientProvider client={queryClient}>
-      <Box className="minesweeper">
-        <Typography variant="h3" className="title">
-          Minesweeper{state.gameWon ? " complete!" : ""}
-        </Typography>
-        <Button onClick={newGame}>New game</Button>
-        {state.showGame ? (
-          <>
-            <Button onClick={submitScore} disabled={!state.gameWon}>
-              Submit score
-            </Button>
-            <Game key={`game-${state.gameID}`} setGameWon={setGameWon} />
-          </>
-        ) : (
-          <>
-            <Skeleton
-              variant="rectangular"
-              height={500}
-              width={500}
-              animation={false}
-            />
-          </>
-        )}
-      </Box>
-    </QueryClientProvider>
+    <Box className="minesweeper">
+      <Game key={`game-${state.gameID}`} setGameWon={setGameWon} />
+    </Box>
   );
-}
+};
 export default Minesweeper;

@@ -13,13 +13,14 @@ const Board = ({ seed, setGameWon }) => {
   useEffect(() => {
     function freshBoard() {
       const SIZE = 10;
-      const BOMBS = 15;
+      const BOMBS = 1;
       const newBoard = CreateBoard(SIZE, SIZE, BOMBS, seed);
       setNonMines(SIZE * SIZE - BOMBS);
       setMinelocations(newBoard.mineLocation);
       setGrid(newBoard.board);
     }
     freshBoard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //FLAG -- RIGHT CLICK
