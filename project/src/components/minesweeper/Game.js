@@ -8,7 +8,7 @@ import { Skeleton } from "@mui/material";
 
 const Game = ({ setGameWon }) => {
   const { isLoading, isFetching, error, data } = useQuery(
-    ["randomSeed"],
+    ["Minesweeper Seed"],
     async () => {
       const res = await axios.get("../.netlify/functions/server/seed/random");
       return res.data;
