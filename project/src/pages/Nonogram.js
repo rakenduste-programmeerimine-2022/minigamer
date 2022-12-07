@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import React from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 import "../components/nonogram/nonogram.css";
 import { Skeleton } from "@mui/material";
@@ -15,9 +16,13 @@ const Nonogram = ({ setGameWon, setState, state }) => {
       return res.data;
     }
   );
-  if (state.gameName !== "Nonogram") {
-    setState({ showGame: false });
-  }
+  useEffect(() => {
+    if (state.gameName !== "Nonogram") {
+      setState(false);
+    }
+  });
+
+  //setState({ showGame: false });
 
   if (isLoading || isFetching) {
     return (

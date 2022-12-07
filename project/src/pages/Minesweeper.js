@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import React from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 import "../Styles/Minesweeper.scss";
 import { Box, Skeleton } from "@mui/material";
@@ -15,9 +16,12 @@ const Minesweeper = ({ setGameWon, setState, state }) => {
       return res.data;
     }
   );
-  if (state.gameName !== "Minesweeper") {
-    setState({ showGame: false });
-  }
+  useEffect(() => {
+    if (state.gameName !== "Minesweeper") {
+      setState(false);
+    }
+  });
+
   if (isLoading || isFetching) {
     return (
       <Skeleton
