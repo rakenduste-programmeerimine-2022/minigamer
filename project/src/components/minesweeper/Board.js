@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CreateBoard from "./CreateBoard";
+import createBoard from "./createBoard";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
 import PropTypes from "prop-types";
@@ -14,7 +14,7 @@ const Board = ({ seed, setGameWon }) => {
     function freshBoard() {
       const SIZE = 10;
       const BOMBS = 1;
-      const newBoard = CreateBoard(SIZE, SIZE, BOMBS, seed);
+      const newBoard = createBoard(SIZE, SIZE, BOMBS, seed);
       setNonMines(SIZE * SIZE - BOMBS);
       setMinelocations(newBoard.mineLocation);
       setGrid(newBoard.board);

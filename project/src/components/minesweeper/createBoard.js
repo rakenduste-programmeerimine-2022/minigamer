@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 
-const CreateBoard = (row, col, bombs, seed) => {
+const createBoard = (row, col, bombs, seed) => {
   let board = [];
   const rng = seedrandom(seed);
   let mineLocation = [];
@@ -112,4 +112,4 @@ const CreateBoard = (row, col, bombs, seed) => {
   return { board, mineLocation };
 };
 
-export default CreateBoard;
+export default createBoard;
