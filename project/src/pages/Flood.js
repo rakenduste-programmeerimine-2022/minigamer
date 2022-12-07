@@ -6,8 +6,9 @@ import axios from "axios";
 
 import "../components/flood/flood.css";
 import Board from "../components/flood/Board";
+import { useEffect } from "react";
 
-const Flood = ({ setGameWon }) => {
+const Flood = ({ setGameWon, setState, state }) => {
   const { isLoading, isFetching, error, data } = useQuery(
     ["Flood Seed"],
     async () => {
@@ -15,7 +16,11 @@ const Flood = ({ setGameWon }) => {
       return res.data;
     }
   );
-
+  useEffect(() => {
+    if (state.gameName !== "Flood") {
+      setState(false);
+    }
+  });
   if (isLoading || isFetching) {
     return (
       <Skeleton
