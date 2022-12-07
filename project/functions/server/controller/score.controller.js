@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
 const {
     finishValidation,
-    validateSeed,
     validateScore,
     validateUsername,
     validateGameID,
@@ -22,7 +21,8 @@ exports.getGameToken = (req, res) => {
     const { game, score } = req.body;
     const token = jwt.sign(
         { env: games.environmentVariable(game), score },
-        process.env.JWT_GAME_KEY
+        process.env.JWT_GAME_KEY,
+        { expiresIn: 30 }
     );
     return res.status(200).send(message("Game token", { token }));
 };

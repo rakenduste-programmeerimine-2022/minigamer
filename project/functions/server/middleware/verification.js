@@ -90,7 +90,16 @@ const checkUserAndGame = (req, res, next) => {
     });
     jwt.verify(gameToken, process.env.JWT_GAME_KEY, (error, result) => {
         if (error || !result) {
-            return res.status(403).send(errorMessage("Invalid game token."));
+            const expired = "expiredAt" in error;
+            return res
+                .status(403)
+                .send(
+                    errorMessage(
+                        expired
+                            ? "Game token has expired."
+                            : "Invalid game token."
+                    )
+                );
         }
         if (
             result.score != _score ||
