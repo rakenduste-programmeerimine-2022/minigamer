@@ -9,8 +9,6 @@ import ErrorPage from "./ErrorPage";
 import { GamesSliderData } from "../components/GamesSliderData";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useEffect } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
