@@ -30,6 +30,7 @@ function GamePage() {
     gameWon: false,
     startTime: 0,
     endTime: Infinity,
+    clicks: 0,
   });
 
   let currentGame = GamesSliderData.filter((obj) => {
@@ -59,7 +60,7 @@ function GamePage() {
       return;
     }
   };
-  const setGameWon = (value) => {
+  const setGameWon = (value, clicks) => {
     if (value === state.gameWon) {
       return;
     }
@@ -70,6 +71,7 @@ function GamePage() {
       startTime: state.startTime,
       endTime: value ? performance.now() : state.endTime,
       gameName: id,
+      clicks,
     });
   };
 
@@ -78,8 +80,14 @@ function GamePage() {
       return;
     }
     // millis
-    const time = state.endTime - state.startTime;
-    console.log(time);
+    if (id === "Flood") {
+      const time = Math.ceil((state.endTime - state.startTime) / 10);
+      const score = time * state.clicks;
+      console.log(score);
+    } else {
+      const time = state.endTime - state.startTime;
+      console.log(time);
+    }
   };
 
   let game = null;
