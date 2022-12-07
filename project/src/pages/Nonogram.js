@@ -7,14 +7,17 @@ import "../components/nonogram/nonogram.css";
 import { Skeleton } from "@mui/material";
 import Board from "../components/nonogram/Board";
 
-const Nonogram = ({ setGameWon }) => {
+const Nonogram = ({ setGameWon, setState, state }) => {
   const { isLoading, isFetching, error, data } = useQuery(
-    ["Nonogram Seed"],
+    ["Nonogram", "Seed"],
     async () => {
       const res = await axios.get("../.netlify/functions/server/seed/random");
       return res.data;
     }
   );
+  if (state.gameName !== "Nonogram") {
+    setState({ showGame: false });
+  }
 
   if (isLoading || isFetching) {
     return (

@@ -34,7 +34,6 @@ const CreateBoard = (row, col, bombs, seed) => {
       number = number * 10;
     }
     number = Math.floor(number);
-    console.log(number);
     return number;
   };
 

@@ -21,6 +21,9 @@ const queryClient = new QueryClient({
 });
 
 function GamePage() {
+  let navigate = useNavigate();
+  const { id } = useParams();
+
   const [state, setState] = useState({
     showGame: false,
     gameID: 0,
@@ -28,17 +31,14 @@ function GamePage() {
     startTime: 0,
     endTime: Infinity,
   });
-  let navigate = useNavigate();
 
-  const { id } = useParams();
   let currentGame = GamesSliderData.filter((obj) => {
     return obj.name === id;
   });
   if (currentGame.length === 0) {
     return <ErrorPage />;
   }
-
-  const sendData = () => {
+  const navToLeaderBoards = () => {
     // mangu id saata nii et leaderboardist tuleks see oige lahti
     //setstate({ data: { id } });
     navigate("/leaderboard");
@@ -51,6 +51,7 @@ function GamePage() {
       gameWon: false,
       startTime: performance.now(),
       endTime: state.endTime,
+      gameName: id,
     });
     if (state.showGame) {
       queryClient.refetchQueries();
@@ -67,6 +68,7 @@ function GamePage() {
       gameWon: value,
       startTime: state.startTime,
       endTime: value ? performance.now() : state.endTime,
+      gameName: id,
     });
   };
 
@@ -100,18 +102,21 @@ function GamePage() {
                       <Flood
                         key={`game-${state.gameID}`}
                         setGameWon={setGameWon}
+                        setState={setState}
                         state={state}
                       />
                     ) : id === "Minesweeper" ? (
                       <Minesweeper
                         key={`game-${state.gameID}`}
                         setGameWon={setGameWon}
+                        setState={setState}
                         state={state}
                       />
                     ) : (
                       <Nonogram
                         key={`game-${state.gameID}`}
                         setGameWon={setGameWon}
+                        setState={setState}
                         state={state}
                       />
                     )
@@ -159,7 +164,7 @@ function GamePage() {
 
               <Button
                 className="leaderboardsBtn btn"
-                onClick={sendData}
+                onClick={navToLeaderBoards}
                 variant="primary"
               >
                 Leaderboards
