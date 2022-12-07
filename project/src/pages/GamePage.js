@@ -9,6 +9,8 @@ import ErrorPage from "./ErrorPage";
 import { GamesSliderData } from "../components/GamesSliderData";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +40,7 @@ function GamePage() {
   if (currentGame.length === 0) {
     return <ErrorPage />;
   }
+
   const navToLeaderBoards = () => {
     // mangu id saata nii et leaderboardist tuleks see oige lahti
     //setstate({ data: { id } });
@@ -81,6 +84,37 @@ function GamePage() {
     console.log(time);
   };
 
+  let game = null;
+
+  if (currentGame[0].name === "Nonogram") {
+    game = (
+      <Nonogram
+        key={`nonogram-${state.gameID}`}
+        setGameWon={setGameWon}
+        setState={setState}
+        state={state}
+      />
+    );
+  } else if (currentGame[0].name === "Minesweeper") {
+    game = (
+      <Minesweeper
+        key={`minesweeper-${state.gameID}`}
+        setGameWon={setGameWon}
+        setState={setState}
+        state={state}
+      />
+    );
+  } else if (currentGame[0].name === "Flood") {
+    game = (
+      <Flood
+        key={`flood-${state.gameID}`}
+        setGameWon={setGameWon}
+        setState={setState}
+        state={state}
+      />
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Box className="game" id="game">
@@ -96,34 +130,7 @@ function GamePage() {
             </Button>
             <Box className="playableGame">
               {state.showGame ? (
-                <>
-                  {id ? (
-                    id === "Flood" ? (
-                      <Flood
-                        key={`game-${state.gameID}`}
-                        setGameWon={setGameWon}
-                        setState={setState}
-                        state={state}
-                      />
-                    ) : id === "Minesweeper" ? (
-                      <Minesweeper
-                        key={`game-${state.gameID}`}
-                        setGameWon={setGameWon}
-                        setState={setState}
-                        state={state}
-                      />
-                    ) : (
-                      <Nonogram
-                        key={`game-${state.gameID}`}
-                        setGameWon={setGameWon}
-                        setState={setState}
-                        state={state}
-                      />
-                    )
-                  ) : (
-                    <Box>GAME not found</Box>
-                  )}
-                </>
+                <>{game}</>
               ) : (
                 <>
                   <Skeleton
