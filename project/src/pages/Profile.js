@@ -13,40 +13,94 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { UserContext } from "../App";
+import ErrorPage from "./ErrorPage";
+import axios from "axios";
 
 function Profile() {
   let navigate = useNavigate();
   const user = useContext(UserContext);
-  let Currentusername = null;
+  const [open, setOpen] = useState({ windowOpen: false, window: "" });
+  const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
+  const [userFollowed, setUserFollowed] = useState(false);
+  let { username } = useParams();
+  const handleOpen = (list) => setOpen({ windowOpen: true, window: list });
+  const handleClose = () => setOpen({ windowOpen: false, window: "" });
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
 
-  if (user[0]) {
-    Currentusername = user[0].username;
+  let userExist = true;
+  if (!userExist) {
+    return <ErrorPage from={"profile"} />;
   }
 
-  let { username } = useParams();
-  let following = ["juss", "suss", "muss", "kuss"];
-  let followers = ["juss", "suss", "muss", "kuss"];
+  // check if user is signed in
+  let USER = null;
+  let TOKEN = null;
+  if (user[0]) {
+    USER = user[0].username;
+    TOKEN = user[0].token;
+  }
+
   let isDisabled = false;
   function closeAccordions() {
     isDisabled = true;
   }
-  function followUser(name) {
-    console.log("user followed : ", name);
-  }
+  const HandlefollowUser = async (e) => {
+    //e.preventDefault();
+    console.log("user followed : ", username);
+    setUserFollowed(true);
+    console.log(USER);
+    console.log(username);
+    const FollowURL = "../.netlify/functions/server/follow/follow";
+    axios
+      .post(
+        FollowURL,
+        { follower: USER, followee: username },
+        {
+          headers: { Content: "application/json" },
+          withCredentials: true,
+          auth: TOKEN,
+        }
+      )
+      .then((res) => {
+        console.log("then");
+      })
+      .catch((err) => {
+        console.log("err");
+        console.log(err);
+      });
+  };
 
-  const [open, setOpen] = useState({ windowOpen: false, window: "" });
-  const handleOpen = (list) => setOpen({ windowOpen: true, window: list });
-  const handleClose = () => setOpen({ windowOpen: false, window: "" });
-  const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
-
-  const getFollowData = (list) => {
+  const getFollowing = () => {
+    let list = "Following";
     handleOpen(list); //list is either followers or following
     setDataLoaded({ window: list });
-    setTimeout(() => {
-      // timeout for testing load time
-      setDataLoaded({ window: list, loaded: true });
-      console.log(dataLoaded);
-    }, 1500);
+    const followingURL = `../.netlify/functions/server/follow/${username}/following`;
+    axios
+      .get(followingURL)
+      .then((res) => {
+        setFollowing(res.data.object.following);
+        setDataLoaded({ window: list, loaded: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getFollowers = () => {
+    let list = "Followers";
+    handleOpen(list); //list is either followers or following
+    setDataLoaded({ window: list });
+    const followersURL = `../.netlify/functions/server/follow/${username}/followers`;
+    axios
+      .get(followersURL)
+      .then((res) => {
+        setFollowers(res.data.object.followers);
+        setDataLoaded({ window: list, loaded: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -54,18 +108,18 @@ function Profile() {
       <Box className="profileWrapper">
         <Box className="userSection">
           <Typography className="user">{username} profile</Typography>
-          {username !== Currentusername && (
-            <Button className="btn" onClick={() => followUser(username)}>
-              Follow user
+          {username !== USER && (
+            <Button className="btn" onClick={HandlefollowUser}>
+              {userFollowed ? "unfollow user" : "Follow user"}
             </Button>
           )}
         </Box>
         <Box className="divider"></Box>
         <Box className="followPopUpSection">
-          <Button onClick={() => getFollowData("Followers")} className="btn">
+          <Button onClick={() => getFollowers()} className="btn">
             Followers
           </Button>
-          <Button onClick={() => getFollowData("Following")} className="btn">
+          <Button onClick={() => getFollowing()} className="btn">
             Following
           </Button>
           <Modal
@@ -78,23 +132,27 @@ function Profile() {
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {open.window}
               </Typography>
-              {dataLoaded.loaded && dataLoaded.window === open.window ? (
+              {dataLoaded.loaded ? (
                 open.window === "Followers" ? (
-                  <>
-                    {followers.map((follower) => {
-                      return (
-                        <Link
-                          to={`/profile/${follower}`}
-                          onClick={handleClose}
-                          key={follower}
-                          className="modalLink"
-                        >
-                          <Typography> {follower}</Typography>
-                        </Link>
-                      );
-                    })}
-                  </>
-                ) : (
+                  followers.length !== 0 ? (
+                    <>
+                      {followers.map((follower) => {
+                        return (
+                          <Link
+                            to={`/profile/${follower}`}
+                            onClick={handleClose}
+                            key={follower}
+                            className="modalLink"
+                          >
+                            <Typography> {follower}</Typography>
+                          </Link>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <Typography>no followers</Typography>
+                  )
+                ) : following.length !== 0 ? (
                   <>
                     {following.map((followee) => {
                       return (
@@ -109,6 +167,8 @@ function Profile() {
                       );
                     })}
                   </>
+                ) : (
+                  <Typography>not following anyone</Typography>
                 )
               ) : (
                 <>
@@ -124,53 +184,6 @@ function Profile() {
           <Button className="btn" onClick={() => navigate("/leaderboard")}>
             Scores
           </Button>
-        </Box>
-
-        <Box className="followSection">
-          <Box className="following">
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Following</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {followers.map((follower) => {
-                  return (
-                    <Link to={`/profile/${follower}`} key={follower}>
-                      <Typography> {follower}</Typography>
-                    </Link>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-          <Box className="followers">
-            <Accordion disabled={isDisabled}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Following</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {following.map((followee) => {
-                  return (
-                    <Link
-                      onClick={() => closeAccordions()}
-                      to={`/profile/${followee}`}
-                      key={followee}
-                    >
-                      <Typography>{followee}</Typography>
-                    </Link>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion>
-          </Box>
         </Box>
       </Box>
     </Box>

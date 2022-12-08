@@ -37,7 +37,7 @@ function GamePage() {
     return obj.name === id;
   });
   if (currentGame.length === 0) {
-    return <ErrorPage />;
+    return <ErrorPage from={"games"} />;
   }
 
   const navToLeaderBoards = () => {
