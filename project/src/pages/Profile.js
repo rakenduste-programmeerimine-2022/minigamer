@@ -1,20 +1,179 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import "../Styles/Profile.scss";
+import {
+  Box,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  Modal,
+  Skeleton,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { UserContext } from "../App";
 
 function Profile() {
   let navigate = useNavigate();
+  const user = useContext(UserContext);
+  let Currentusername = null;
+
+  if (user[0]) {
+    Currentusername = user[0].username;
+  }
+
   let { username } = useParams();
+  let following = ["juss", "suss", "muss", "kuss"];
+  let followers = ["juss", "suss", "muss", "kuss"];
+  let isDisabled = false;
+  function closeAccordions() {
+    isDisabled = true;
+  }
+  function followUser(name) {
+    console.log("user followed : ", name);
+  }
+
+  const [open, setOpen] = useState({ windowOpen: false, window: "" });
+  const handleOpen = (list) => setOpen({ windowOpen: true, window: list });
+  const handleClose = () => setOpen({ windowOpen: false, window: "" });
+  const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
+
+  const getFollowData = (list) => {
+    handleOpen(list); //list is either followers or following
+    setDataLoaded({ window: list });
+    setTimeout(() => {
+      // timeout for testing load time
+      setDataLoaded({ window: list, loaded: true });
+      console.log(dataLoaded);
+    }, 1500);
+  };
+
   return (
-    <div>
-      <button
-        onClick={() => {
-          navigate("/games");
-        }}
-      >
-        Chnage to games
-      </button>
-      {username} Profile
-    </div>
+    <Box className="profile" id="profile">
+      <Box className="profileWrapper">
+        <Box className="userSection">
+          <Typography className="user">{username} profile</Typography>
+          {username !== Currentusername && (
+            <Button className="btn" onClick={() => followUser(username)}>
+              Follow user
+            </Button>
+          )}
+        </Box>
+        <Box className="divider"></Box>
+        <Box className="followPopUpSection">
+          <Button onClick={() => getFollowData("Followers")} className="btn">
+            Followers
+          </Button>
+          <Button onClick={() => getFollowData("Following")} className="btn">
+            Following
+          </Button>
+          <Modal
+            open={open.windowOpen}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box className="popup">
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                {open.window}
+              </Typography>
+              {dataLoaded.loaded && dataLoaded.window === open.window ? (
+                open.window === "Followers" ? (
+                  <>
+                    {followers.map((follower) => {
+                      return (
+                        <Link
+                          to={`/profile/${follower}`}
+                          onClick={handleClose}
+                          key={follower}
+                          className="modalLink"
+                        >
+                          <Typography> {follower}</Typography>
+                        </Link>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
+                    {following.map((followee) => {
+                      return (
+                        <Link
+                          onClick={handleClose}
+                          to={`/profile/${followee}`}
+                          key={followee}
+                          className="modalLink"
+                        >
+                          <Typography>{followee}</Typography>
+                        </Link>
+                      );
+                    })}
+                  </>
+                )
+              ) : (
+                <>
+                  <Skeleton animation="wave"></Skeleton>
+                  <Skeleton animation="wave"></Skeleton>
+                  <Skeleton animation="wave"></Skeleton>
+                </>
+              )}
+            </Box>
+          </Modal>
+        </Box>
+        <Box className="gameDataSection">
+          <Button className="btn" onClick={() => navigate("/leaderboard")}>
+            Scores
+          </Button>
+        </Box>
+
+        <Box className="followSection">
+          <Box className="following">
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Following</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {followers.map((follower) => {
+                  return (
+                    <Link to={`/profile/${follower}`} key={follower}>
+                      <Typography> {follower}</Typography>
+                    </Link>
+                  );
+                })}
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+          <Box className="followers">
+            <Accordion disabled={isDisabled}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Following</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {following.map((followee) => {
+                  return (
+                    <Link
+                      onClick={() => closeAccordions()}
+                      to={`/profile/${followee}`}
+                      key={followee}
+                    >
+                      <Typography>{followee}</Typography>
+                    </Link>
+                  );
+                })}
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

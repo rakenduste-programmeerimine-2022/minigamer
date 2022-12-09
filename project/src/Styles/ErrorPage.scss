@@ -1,0 +1,19 @@
+@import 'Variables.scss';
+
+#errorPage{
+    background-color: $grey;
+    color: $white;
+    height: 100vh;
+    .errorWrap{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+        .title{
+            font-size: $h3;
+            text-align: center;
+        }
+        
+    }
+}
