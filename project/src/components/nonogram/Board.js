@@ -156,7 +156,7 @@ const Board = ({ seed, setGameWon }) => {
   initializeSolution();
 
   return (
-    <Table className="Board">
+    <Table className="Board nonogram">
       <TableHead>
         <HintRow hints={getColumnHints()} solved={state.solvedCols} />
       </TableHead>

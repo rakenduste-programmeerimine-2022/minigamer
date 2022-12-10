@@ -1,9 +1,24 @@
 td.FloodCell {
     border: none;
-    padding: 2vw;
+    padding: 1rem;
+    padding: 21px; 
+    /*2vw*/
 }
 
 table.FloodBoard {
     border: 1px solid black;
-    width: min-content;
+/*     width: min-content;
+ */}
+
+@media only screen and (max-width: 600px) {
+    td.FloodCell {
+        padding: 18px;
+
+    }
+}
+@media only screen and (max-width: 500px) {
+    td.FloodCell {
+        padding: 14px;
+
+    }
 }

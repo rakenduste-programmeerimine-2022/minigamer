@@ -1,17 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "../Styles/Profile.scss";
-import {
-  Box,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Button,
-  Modal,
-  Skeleton,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, Typography, Button, Modal, Skeleton } from "@mui/material";
 import { UserContext } from "../App";
 import ErrorPage from "./ErrorPage";
 import axios from "axios";
