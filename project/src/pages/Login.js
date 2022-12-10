@@ -25,6 +25,7 @@ const Login = (props) => {
   const [severity, setSeverity] = useState("info");
 
   const [currentUser, setCurrentUser] = useContext(UserContext);
+  console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,16 +41,18 @@ const Login = (props) => {
         }
       )
       .then((res) => {
+        setSeverity("success");
         setLoginStatus(res.data.text);
         //setUserToken(res.data.object.token);
-        const token = res.data.object.token;
+        const TOKEN = res.data.object.token;
         //const name = res.data.object;
-        const localUser = { username, token };
+        const localUser = { username, TOKEN };
         sessionStorage.setItem("user", JSON.stringify(localUser));
-        setCurrentUser({ username, token });
+        setCurrentUser({ username, TOKEN });
         console.log(currentUser);
+        console.log(localUser);
+        console.log(TOKEN);
         setOpen(true);
-        setSeverity("success");
         nav("/");
       })
       .catch((err) => {
@@ -106,7 +109,6 @@ const Login = (props) => {
             <Alert className="info hidden"></Alert>
           )}
           {severity === "success" && <CircularProgress />}
-          <CircularProgress className="loading hidden" />
         </form>
         <Box className="changeAuth">
           <Typography>Don't have account ?</Typography>
