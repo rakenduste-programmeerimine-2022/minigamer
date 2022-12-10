@@ -5,16 +5,45 @@ const database = require("../middleware/database");
 
 const router = express.Router();
 
-router.use(controller.validate, database.connect);
-
 // .netlify/functions/server/user/register
-// requires username (3-16 symbols alphanumeric) and password (at least 8 symbols) in body
-// inserts username and hashed password to database
-router.post("/register", controller.register);
+
+// body requires:
+//  username - 3-16 symbols, alphanumeric
+//  password - at least 8 symbols
+
+// Inserts username and hashed password to database.
+router.post(
+    "/register",
+    controller.validate.post,
+    database.connect,
+    controller.requests.register
+);
 
 // .netlify/functions/server/user/login
-// requires username (3-16 symbols alphanumeric) and password (at least 8 symbols) in body
-// returns user token if successful
-router.post("/login", controller.login);
+
+// body requires:
+//  username - 3-16 symbols, alphanumeric
+//  password - at least 8 symbols
+
+// Returns user token if successful.
+router.post(
+    "/login",
+    controller.validate.post,
+    database.connect,
+    controller.requests.login
+);
+
+// .netlify/functions/server/user/profile/{USER}
+
+// params require:
+//  {USER} - username
+
+// Returns the users who follow and are followed by {USER}.
+router.get(
+    "/profile/:username",
+    controller.validate.get,
+    database.connect,
+    controller.requests.profile
+)
 
 module.exports = router;

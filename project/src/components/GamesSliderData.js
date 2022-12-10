@@ -40,4 +40,14 @@ export const GamesSliderData = [
         thumbnail: NonogramThumb,
         nr: 2,
     },
+    {
+        link: "/games/Daily",
+        name: "Daily",
+        image: undefined,
+        desc: "Daily Challenge",
+        instructions: "Daily Challenge",
+        videoTutorial: undefined,
+        thumbnail: undefined,
+        nr: 3,
+    },
 ];

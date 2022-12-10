@@ -8,25 +8,19 @@
     100%    {background-color: #90ee90;}
 }
 
-:root {
-    --width: 1.25vw;
-    --height: 1.25vw;
-}
-
 td.Cell {
-    width: var(--width);
-    height: var(--height);
+    /* width: min-content;
+    height: min-content; */
     border: 1px solid black;
 }
 
 table.Board {
-    /*width: min-content;*/
+    width: min-content;
     user-select: none;
     /* height: 50vw; */
 }
 
 th.HintCell {
-    height: var(--height);
     border: 1px solid black;
     border-top: none;
     vertical-align: bottom;
@@ -35,7 +29,6 @@ th.HintCell {
 }
 
 td.HintCell {
-    width: var(--width);
     border: 1px solid black;
     border-left: none;
     text-align: end;
