@@ -92,7 +92,7 @@ function GamePage() {
             return game.name === id;
         })[0] ?? null;
 
-    if (!(currentGame?.name in gameComponents)) {
+    if (!currentGame) {
         return <ErrorPage />;
     }
     const Game = gameComponents[currentGame.name];

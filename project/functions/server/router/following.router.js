@@ -6,42 +6,28 @@ const database = require("../middleware/database");
 
 const router = express.Router();
 
-router.use(database.connect);
+router.use(controller.validate, verification.onFollowRequest, database.connect);
 
-// .netlify/functions/server/follow/{USER}/following
-// returns the array of accounts that {USER} is following
-router.get(
-    "/:username/following",
-    controller.validate.read,
-    controller.getFollowees
-);
+// .netlify/functions/server/follow
 
-// .netlify/functions/server/follow/{USER}/followers
-// returns the array of accounts that follow {USER}
-router.get(
-    "/:username/followers",
-    controller.validate.read,
-    controller.getFollowers
-);
+// body requires:
+//  "follower" (user making the request)
+//  "followee"
+// auth requires:
+//  user token
 
-// .netlify/functions/server/follow/follow
-// follows an user
-// requires user token as auth, request body requires "follower" (user making the request) and "followee" (user being followed)
-router.post(
-    "/follow",
-    controller.validate.write,
-    verification.onFollowRequest,
-    controller.create
-);
+// Makes "follower" follow "followee".
+router.post("/", controller.requests.create);
 
-// .netlify/functions/server/follow/follow
-// unfollows an user
-// requires user token as auth, request body requires "follower" (user making the request) and "followee" (user being followed)
-router.delete(
-    "/follow",
-    controller.validate.write,
-    verification.onFollowRequest,
-    controller.delete
-);
+// .netlify/functions/server/follow
+
+// body requires:
+//  "follower" (user making the request)
+//  "followee"
+// auth requires:
+//  user token
+
+// Makes "follower" unfollow "followee".
+router.delete("/", controller.requests.delete);
 
 module.exports = router;

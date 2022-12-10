@@ -1,5 +1,5 @@
 const { validationResult, body, param, query } = require("express-validator");
-const { errorMessage } = require("../utility/message");
+const { errorResponse: errorMessage } = require("../utility/response");
 
 const FUNCTIONS = {
     body,
@@ -62,6 +62,13 @@ exports.validateGameID = () => {
 
 exports.validatePage = () => {
     return param("page").isInt({ min: 1 }).withMessage("Invalid page number.");
+};
+
+exports.validateBeforeBool = () => {
+    return query("before")
+        .isBoolean({ loose: false })
+        .withMessage("Invalid boolean.")
+        .toBoolean();
 };
 
 exports.finishValidation = (req, res, next) => {

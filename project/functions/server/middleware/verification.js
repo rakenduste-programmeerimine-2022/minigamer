@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { errorMessage } = require("../utility/message");
+const { errorResponse: errorMessage } = require("../utility/response");
 const games = require("../utility/games");
 
 const hasBearerToken = (token) => {
