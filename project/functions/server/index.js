@@ -7,7 +7,7 @@ const scoreRouter = require("./router/score.router");
 const userRouter = require("./router/user.router");
 const seedRouter = require("./router/seed.router");
 
-const { errorMessage } = require("./utility/message");
+const { errorResponse } = require("./utility/response");
 
 const app = express();
 app.use(express.json());
@@ -20,7 +20,7 @@ app.use(`${SERVER}/follow`, followingRouter);
 app.use(`${SERVER}/seed`, seedRouter);
 app.use(`${SERVER}/score`, scoreRouter);
 app.use(`${SERVER}/*`, (req, res) => {
-    res.status(404).send(errorMessage("Nothing here."));
+    res.status(404).send(errorResponse(404, "Nothing here."));
 });
 
 // module.exports = app;

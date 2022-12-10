@@ -1,14 +1,16 @@
-import { Box, Button, Typography, Skeleton } from "@mui/material";
-import React from "react";
-import "../Styles/Game.scss";
-import Minesweeper from "../pages/Minesweeper";
-import Flood from "../pages/Flood";
-import Nonogram from "../pages/Nonogram";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import { GamesSliderData } from "../components/GamesSliderData";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Box, Button, Typography, Skeleton } from "@mui/material";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
+import React from "react";
+
+import { GamesSliderData } from "../components/GamesSliderData";
+import Minesweeper from "../pages/Minesweeper";
+import Nonogram from "../pages/Nonogram";
+import Daily from "./DailyChallenge";
+import ErrorPage from "./ErrorPage";
+import Flood from "../pages/Flood";
+import "../Styles/Game.scss";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,173 +22,78 @@ const queryClient = new QueryClient({
   },
 });
 
+const gameComponents = {
+  Nonogram,
+  Minesweeper,
+  Flood,
+  Daily,
+};
+
 function GamePage() {
   let navigate = useNavigate();
+  //let currentGame = GamesSliderData;
+
   const { id } = useParams();
-
-  const [state, setState] = useState({
-    showGame: false,
-    gameID: 0,
-    gameWon: false,
-    startTime: 0,
-    endTime: Infinity,
-    clicks: 0,
-  });
-
+  //console.log(id);
+  let game = null;
   let currentGame = GamesSliderData.filter((obj) => {
     return obj.name === id;
   });
-  if (currentGame.length === 0) {
-    return <ErrorPage from={"games"} />;
+  console.log(currentGame);
+  if (id === "Minesweeper") {
+    game = <Minesweeper />;
+  } else if (id === "Nonogramm") {
+    game = <Nonogram />;
+  } else if (id === "Sudoku") {
+    game = <Flood />;
+  } else {
+    game = <ErrorPage />;
   }
 
-  const navToLeaderBoards = () => {
-    // mangu id saata nii et leaderboardist tuleks see oige lahti
+  const sendData = () => {
     //setstate({ data: { id } });
     navigate("/leaderboard");
   };
 
-  const newGame = () => {
-    setState({
-      showGame: true,
-      gameID: state.gameID + 1,
-      gameWon: false,
-      startTime: performance.now(),
-      endTime: state.endTime,
-      gameName: id,
-    });
-    if (state.showGame) {
-      queryClient.refetchQueries();
-      return;
-    }
-  };
-  const setGameWon = (value, clicks) => {
-    if (value === state.gameWon) {
-      return;
-    }
-    setState({
-      showGame: state.showGame,
-      gameID: state.gameID,
-      gameWon: value,
-      startTime: state.startTime,
-      endTime: value ? performance.now() : state.endTime,
-      gameName: id,
-      clicks,
-    });
-  };
-
-  const submitScore = () => {
-    if (!state.gameWon) {
-      return;
-    }
-    // millis
-    if (id === "Flood") {
-      const time = Math.ceil((state.endTime - state.startTime) / 10);
-      const score = time * state.clicks;
-      console.log(score);
-    } else {
-      const time = state.endTime - state.startTime;
-      console.log(time);
-    }
-  };
-
-  let game = null;
-
-  if (currentGame[0].name === "Nonogram") {
-    game = (
-      <Nonogram
-        key={`nonogram-${state.gameID}`}
-        setGameWon={setGameWon}
-        setState={setState}
-        state={state}
-      />
-    );
-  } else if (currentGame[0].name === "Minesweeper") {
-    game = (
-      <Minesweeper
-        key={`minesweeper-${state.gameID}`}
-        setGameWon={setGameWon}
-        setState={setState}
-        state={state}
-      />
-    );
-  } else if (currentGame[0].name === "Flood") {
-    game = (
-      <Flood
-        key={`flood-${state.gameID}`}
-        setGameWon={setGameWon}
-        setState={setState}
-        state={state}
-      />
-    );
-  }
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <Box className="game" id="game">
-        <Box className="gameWindowWrap">
-          <Box className="gameWindow">
-            <Typography variant="h3" className="title">
-              {id}
-              {state.gameWon ? " complete!" : ""}
-            </Typography>
-            <Button onClick={newGame}>New game</Button>
-            <Button onClick={submitScore} disabled={!state.gameWon}>
-              Submit score
-            </Button>
-            <Box className="playableGame">
-              {state.showGame ? (
-                <>{game}</>
-              ) : (
-                <>
-                  <Skeleton
-                    variant="rectangular"
-                    height={500}
-                    width={500}
-                    animation={false}
-                  />
-                </>
-              )}
+    <Box className="game" id="game">
+      <Box className="gameWindowWrap">
+        <Box className="gameWindow">
+          <Box className="playableGame">{game}</Box>
+        </Box>
+      </Box>
+      <Box className="divider"></Box>
+      <Box className="bottomWrap">
+        <Box className="leftDiv">
+          <Box className="leftContent">
+            <Box className="instructions">
+              <Typography className="title">Instructions</Typography>
+              <Typography sx={{ color: "white" }} className="text">
+                {currentGame[0].instructions}
+              </Typography>
             </Box>
+
+            <Link className="tutorial">
+              <Button className="btn">Video tutorial</Button>
+            </Link>
           </Box>
         </Box>
-        <Box className="divider"></Box>
-        <Box className="bottomWrap">
-          <Box className="leftDiv">
-            <Box className="leftContent">
-              <Box className="instructions">
-                <Typography className="title">Instructions</Typography>
-                <Typography sx={{ color: "white" }} className="text">
-                  {currentGame[0].instructions}
-                </Typography>
-              </Box>
+        <Box className="rightDiv">
+          <Box className="rightContent">
+            <Typography className="title">Want to get competetive ?</Typography>
+            <Typography className="subtitle">Check out leaderboards</Typography>
 
-              <Link className="tutorial">
-                <Button className="btn">Video tutorial</Button>
-              </Link>
-            </Box>
-          </Box>
-          <Box className="rightDiv">
-            <Box className="rightContent">
-              <Typography className="title">
-                Want to get competetive ?
-              </Typography>
-              <Typography className="subtitle">
-                Check out leaderboards
-              </Typography>
-
-              <Button
-                className="leaderboardsBtn btn"
-                onClick={navToLeaderBoards}
-                variant="primary"
-              >
-                Leaderboards
-              </Button>
-            </Box>
+            <Button
+              className="leaderboardsBtn btn"
+              onClick={sendData}
+              variant="primary"
+            >
+              Leaderboards
+            </Button>
           </Box>
         </Box>
       </Box>
-    </QueryClientProvider>
+    </Box>
   );
 }
 

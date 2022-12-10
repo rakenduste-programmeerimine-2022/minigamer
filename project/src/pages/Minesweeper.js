@@ -8,7 +8,7 @@ import "../Styles/Minesweeper.scss";
 import { Box, Skeleton } from "@mui/material";
 import Board from "../components/minesweeper/Board";
 
-const Minesweeper = ({ setGameWon, setState, state }) => {
+const Minesweeper = ({ stateSetters, name }) => {
   const { isLoading, isFetching, error, data } = useQuery(
     ["Minesweeper", "Seed"],
     async () => {
@@ -16,9 +16,10 @@ const Minesweeper = ({ setGameWon, setState, state }) => {
       return res.data;
     }
   );
+
   useEffect(() => {
-    if (state.gameName !== "Minesweeper") {
-      setState(false);
+    if (name !== "Minesweeper") {
+      stateSetters.newGame(false);
     }
   });
 
@@ -38,13 +39,14 @@ const Minesweeper = ({ setGameWon, setState, state }) => {
 
   return (
     <Box className={"Minesweeper"}>
-      <Board seed={data.object.seed} setGameWon={setGameWon} />;
+      <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />;
     </Box>
   );
 };
 
 Minesweeper.propTypes = {
-  setGameWon: PropTypes.func,
+  stateSetters: PropTypes.objectOf(PropTypes.func),
+  name: PropTypes.string,
 };
 
 export default Minesweeper;

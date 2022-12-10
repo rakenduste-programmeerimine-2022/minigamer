@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const { errorMessage } = require("../utility/message");
+const { errorResponse: errorMessage } = require("../utility/response");
 
 const CLUSTER = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
 const DB = process.env.MONGO_TEST_DB;

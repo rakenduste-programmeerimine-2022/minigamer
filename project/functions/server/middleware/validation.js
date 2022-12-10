@@ -1,5 +1,5 @@
 const { validationResult, body, param, query } = require("express-validator");
-const { errorMessage } = require("../utility/message");
+const { errorResponse: errorMessage } = require("../utility/response");
 
 const FUNCTIONS = {
     body,
@@ -40,18 +40,18 @@ exports.validatePassword = () => {
         .withMessage("Password needs to be at least 8 symbols long.");
 };
 
-exports.validateSeed = () => {
-    return body("seed")
-        .isString()
-        .withMessage("Invalid data type.")
-        .isHexadecimal()
-        .withMessage("Seed is not hexadecimal.")
-        .isLength({ min: 32, max: 32 })
-        .withMessage("Seed is wrong length.");
-};
+// exports.validateSeed = () => {
+//     return body("seed")
+//         .isString()
+//         .withMessage("Invalid data type.")
+//         .isHexadecimal()
+//         .withMessage("Seed is not hexadecimal.")
+//         .isLength({ min: 32, max: 32 })
+//         .withMessage("Seed is wrong length.");
+// };
 
-exports.validateTime = () => {
-    return body("time").isInt({ gt: 0 }).withMessage("Invalid game time.");
+exports.validateScore = () => {
+    return body("score").isInt({ gt: 0 }).withMessage("Invalid game score.");
 };
 
 exports.validateGameID = () => {
@@ -62,6 +62,13 @@ exports.validateGameID = () => {
 
 exports.validatePage = () => {
     return param("page").isInt({ min: 1 }).withMessage("Invalid page number.");
+};
+
+exports.validateBeforeBool = () => {
+    return query("before")
+        .isBoolean({ loose: false })
+        .withMessage("Invalid boolean.")
+        .toBoolean();
 };
 
 exports.finishValidation = (req, res, next) => {

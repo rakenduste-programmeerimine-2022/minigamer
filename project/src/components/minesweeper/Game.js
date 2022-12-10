@@ -2,26 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import React from "react";
 import axios from "axios";
-import { useEffect } from "react";
 
-import "../components/nonogram/nonogram.css";
+import Board from "./Board";
 import { Skeleton } from "@mui/material";
-import Board from "../components/nonogram/Board";
 
-const Nonogram = ({ stateSetters, name }) => {
+const Game = ({ setGameWon }) => {
   const { isLoading, isFetching, error, data } = useQuery(
-    ["Nonogram", "Seed"],
+    ["Minesweeper Seed"],
     async () => {
       const res = await axios.get("../.netlify/functions/server/seed/random");
       return res.data;
     }
   );
-
-  useEffect(() => {
-    if (name !== "Nonogram") {
-      stateSetters.newGame(false);
-    }
-  });
 
   if (isLoading || isFetching) {
     return (
@@ -37,12 +29,11 @@ const Nonogram = ({ stateSetters, name }) => {
     return `Error: ${error}`;
   }
 
-  return <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />;
+  return <Board seed={data.object.seed} setGameWon={setGameWon} />;
 };
 
-Nonogram.propTypes = {
-  stateSetters: PropTypes.objectOf(PropTypes.func),
-  name: PropTypes.string,
+Game.propTypes = {
+  setGameWon: PropTypes.func,
 };
 
-export default Nonogram;
+export default Game;
