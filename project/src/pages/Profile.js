@@ -25,40 +25,57 @@ function Profile() {
 
   // check if user is signed in
   let USER = null;
-  let TOKEN = null;
+  let token = null;
   if (user[0]) {
     USER = user[0].username;
-    TOKEN = user[0].token;
+    token = user[0].TOKEN;
   }
 
-  let isDisabled = false;
-  function closeAccordions() {
-    isDisabled = true;
-  }
   const HandlefollowUser = async (e) => {
-    //e.preventDefault();
-    console.log("user followed : ", username);
-    setUserFollowed(true);
-    console.log(USER);
-    console.log(username);
-    const FollowURL = "../.netlify/functions/server/follow/follow";
-    axios
-      .post(
-        FollowURL,
-        { follower: USER, followee: username },
-        {
-          headers: { Content: "application/json" },
-          withCredentials: true,
-          auth: TOKEN,
-        }
-      )
-      .then((res) => {
-        console.log("then");
-      })
-      .catch((err) => {
-        console.log("err");
-        console.log(err);
-      });
+    if (userFollowed) {
+      const unFollowURL = "../.netlify/functions/server/follow/follow";
+      axios
+        .delete(unFollowURL, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+          data: {
+            follower: USER,
+            followee: username,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setUserFollowed(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log(userFollowed);
+      const FollowURL = "../.netlify/functions/server/follow/follow";
+      axios
+        .post(
+          FollowURL,
+          { follower: USER, followee: username },
+          {
+            headers: {
+              Content: "application/json",
+              authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setUserFollowed(true);
+          console.log(USER, " ", username);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(USER, " ", username);
+        });
+    }
   };
 
   const getFollowing = () => {
