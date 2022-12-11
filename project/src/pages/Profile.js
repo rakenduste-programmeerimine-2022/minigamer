@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "../Styles/Profile.scss";
 import { Box, Typography, Button, Modal, Skeleton } from "@mui/material";
@@ -6,41 +6,65 @@ import { UserContext } from "../App";
 import ErrorPage from "./ErrorPage";
 import axios from "axios";
 
-function Profile() {
+const Profile = () => {
   let navigate = useNavigate();
-  const user = useContext(UserContext);
   const [open, setOpen] = useState({ windowOpen: false, window: "" });
-  const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
   const [userFollowed, setUserFollowed] = useState(false);
-  let { username } = useParams();
   const handleOpen = (list) => setOpen({ windowOpen: true, window: list });
   const handleClose = () => setOpen({ windowOpen: false, window: "" });
+  const sessionUser = sessionStorage.getItem("user");
+  if (!sessionUser) {
+    throw new Error("Not logged in.");
+  }
+  const { username } = useParams();
+  const { token } = JSON.parse(sessionUser);
+  const user = JSON.parse(sessionUser).username;
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
-  let userExist = true;
-  if (!userExist) {
+  const followURL = `../.netlify/functions/server/user/profile/${username}`;
+
+  const getFollowData = async () => {
+    setLoading(true);
+    axios
+      .get(followURL)
+      .then((res) => {
+        setData(res.data);
+        setFollowing(res.data.object.following);
+        setFollowers(res.data.object.followers);
+        setUserFollowed(res.data.object.followers.includes(user));
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    getFollowData();
+  }, [followURL]);
+
+  console.log(followers);
+
+  if (error) {
     return <ErrorPage from={"profile"} />;
   }
-
-  // check if user is signed in
-  let USER = null;
-  let token = null;
-  if (user[0]) {
-    USER = user[0].username;
-    token = user[0].token;
-  }
-
   const HandlefollowUser = async (e) => {
+    const FollowURL = "../.netlify/functions/server/follow";
     if (userFollowed) {
-      const unFollowURL = "../.netlify/functions/server/follow/follow";
+      console.log(userFollowed);
       axios
-        .delete(unFollowURL, {
+        .delete(FollowURL, {
           headers: {
             authorization: `Bearer ${token}`,
           },
           data: {
-            follower: USER,
+            follower: user,
             followee: username,
           },
         })
@@ -53,11 +77,10 @@ function Profile() {
         });
     } else {
       console.log(userFollowed);
-      const FollowURL = "../.netlify/functions/server/follow/follow";
       axios
         .post(
           FollowURL,
-          { follower: USER, followee: username },
+          { follower: user, followee: username },
           {
             headers: {
               Content: "application/json",
@@ -69,45 +92,25 @@ function Profile() {
         .then((res) => {
           console.log(res);
           setUserFollowed(true);
-          console.log(USER, " ", username);
+          console.log(user, " ", username);
         })
         .catch((err) => {
           console.log(err);
-          console.log(USER, " ", username);
+          console.log(user, " ", username);
         });
     }
   };
 
   const getFollowing = () => {
+    getFollowData();
     let list = "Following";
     handleOpen(list); //list is either followers or following
-    setDataLoaded({ window: list });
-    const followingURL = `../.netlify/functions/server/follow/${username}/following`;
-    axios
-      .get(followingURL)
-      .then((res) => {
-        setFollowing(res.data.object.following);
-        setDataLoaded({ window: list, loaded: true });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   const getFollowers = () => {
+    getFollowData();
     let list = "Followers";
     handleOpen(list); //list is either followers or following
-    setDataLoaded({ window: list });
-    const followersURL = `../.netlify/functions/server/follow/${username}/followers`;
-    axios
-      .get(followersURL)
-      .then((res) => {
-        setFollowers(res.data.object.followers);
-        setDataLoaded({ window: list, loaded: true });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return (
@@ -115,7 +118,7 @@ function Profile() {
       <Box className="profileWrapper">
         <Box className="userSection">
           <Typography className="user">{username} profile</Typography>
-          {username !== USER && (
+          {username !== user && (
             <Button className="btn" onClick={HandlefollowUser}>
               {userFollowed ? "unfollow user" : "Follow user"}
             </Button>
@@ -139,7 +142,7 @@ function Profile() {
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {open.window}
               </Typography>
-              {dataLoaded.loaded ? (
+              {data ? (
                 open.window === "Followers" ? (
                   followers.length !== 0 ? (
                     <>
@@ -195,6 +198,6 @@ function Profile() {
       </Box>
     </Box>
   );
-}
+};
 
 export default Profile;
