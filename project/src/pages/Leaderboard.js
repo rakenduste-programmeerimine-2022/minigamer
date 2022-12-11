@@ -1,26 +1,20 @@
 import {
   Box,
-  Button,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
   TextField,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
-  FormGroup,
-  Checkbox,
   Table,
   TableBody,
   TableRow,
   TableCell,
 } from "@mui/material";
-import FormControl, { useFormControl } from "@mui/material/FormControl";
 import { Container } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useRadioGroup } from "@mui/material/RadioGroup";
 
 import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
