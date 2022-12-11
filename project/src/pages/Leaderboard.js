@@ -18,7 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
-export default function Leaderboard(props) {
+export default function Leaderboard() {
   const dropdownFilters = [
     {
       title: "game",
@@ -78,7 +78,6 @@ export default function Leaderboard(props) {
     changeData(custom, 2);
   }
 
-  // if custom selected fire event that opens textfield
   return (
     <Box className="leaderBoard">
       <Container disableGutters maxWidth="lg" className="container">

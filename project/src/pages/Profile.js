@@ -47,6 +47,7 @@ const Profile = () => {
   };
   useEffect(() => {
     getFollowData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [followURL]);
 
   if (error) {
