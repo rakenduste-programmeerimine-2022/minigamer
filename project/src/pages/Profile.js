@@ -154,7 +154,10 @@ const Profile = () => {
                             key={follower}
                             className="modalLink"
                           >
-                            <Typography> {follower}</Typography>
+                            <Typography>
+                              {" "}
+                              {follower !== user ? follower : "YOU"}
+                            </Typography>
                           </Link>
                         );
                       })}
@@ -172,7 +175,9 @@ const Profile = () => {
                           key={followee}
                           className="modalLink"
                         >
-                          <Typography>{followee}</Typography>
+                          <Typography>
+                            {followee !== user ? followee : "YOU"}
+                          </Typography>
                         </Link>
                       );
                     })}
