@@ -3,7 +3,7 @@ import SudokuImage from "../Images/sudoku_img.png";
 import NonogramImage from "../Images/nonogram_img.jpg";
 
 import MinesweeperThumb from "../Images/minesweeper_img.jpg";
-import SudokuThumb from "../Images/sudoku_img.png";
+//import SudokuThumb from "../Images/sudoku_img.png";
 import NonogramThumb from "../Images/nonogram_img.jpg";
 import NewThumb from "../Images/download-flat.png";
 
