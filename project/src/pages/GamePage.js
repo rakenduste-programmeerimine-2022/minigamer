@@ -1,5 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Box, Button, Typography, Skeleton, Alert } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Skeleton,
+  Alert,
+  Snackbar,
+} from "@mui/material";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
@@ -39,9 +46,10 @@ function GamePage() {
     gameWon: false,
     startTime: 0,
     endTime: Infinity,
+    scoreSent: false,
   });
 
-  const [scoreSent, setScoreSent] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const navToLeaderBoards = () => {
     // mangu id saata nii et leaderboardist tuleks see oige lahti
@@ -58,6 +66,7 @@ function GamePage() {
         startTime: performance.now(),
         endTime: state.endTime,
         gameName: id,
+        scoreSent: false,
       });
       if (state.showGame) {
         queryClient.refetchQueries();
@@ -80,14 +89,17 @@ function GamePage() {
     },
   };
 
-  const submitScore = () => {
+  const submitScore = (e) => {
+    e.preventDefault(); //doesnt show snackbar on mobile otherwise
+    setOpen(true);
     if (!state.gameWon) {
       return;
     }
     // millis
     const time = state.endTime - state.startTime;
     console.log(time);
-    setScoreSent(true);
+    setState({ scoreSent: true });
+    //setState({ scoreSent: false });
   };
 
   const currentGame =
@@ -99,6 +111,10 @@ function GamePage() {
     return <ErrorPage />;
   }
   const Game = gameComponents[currentGame.name];
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -113,9 +129,6 @@ function GamePage() {
             <Button onClick={submitScore} disabled={!state.gameWon}>
               Submit score
             </Button>
-            <Alert severity="success">
-              This is a success alert — check it out!
-            </Alert>
             <Box className="playableGame">
               {state.showGame ? (
                 <Game
@@ -134,6 +147,19 @@ function GamePage() {
                 </>
               )}
             </Box>
+            {open && (
+              <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                open={open}
+                onClose={handleClose}
+                message={
+                  state.scoreSent
+                    ? "Score saved. Check out leaderboards"
+                    : "Something went wrong"
+                }
+                key={"snackbar"}
+              />
+            )}
           </Box>
         </Box>
         <Box className="divider"></Box>

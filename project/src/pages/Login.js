@@ -49,9 +49,6 @@ const Login = (props) => {
         const localUser = { username, token };
         sessionStorage.setItem("user", JSON.stringify(localUser));
         setCurrentUser({ username, token });
-        console.log(currentUser);
-        console.log(localUser);
-        console.log(token);
         setOpen(true);
         nav("/");
       })
