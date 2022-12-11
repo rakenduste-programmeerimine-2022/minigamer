@@ -6,7 +6,6 @@ import {
   AccordionDetails,
   Typography,
   TextField,
-  FormControl,
   FormLabel,
   RadioGroup,
   FormControlLabel,
@@ -18,11 +17,12 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import FormControl, { useFormControl } from "@mui/material/FormControl";
 import { Container } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useRadioGroup } from "@mui/material/RadioGroup";
 
-import React from "react";
+import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
 export default function Leaderboard(props) {
   const dropdownFilters = [
@@ -62,6 +62,28 @@ export default function Leaderboard(props) {
       time: "5s",
     },
   ];
+
+  const [custom, setCustom] = useState("");
+  const [game, setGame] = useState("");
+  const [type, setType] = useState("");
+  const [usersearch, setusersearch] = useState("");
+  function changeData(e, field) {
+    if (field === 0) {
+      setGame(e);
+    } else if (field === 1) {
+      setType(e);
+    } else {
+      setusersearch(e);
+    }
+    console.log("valikuid muudetud");
+  }
+  console.log(game, type, usersearch);
+  function changeDatacustom(e) {
+    e.preventDefault();
+    console.log("valikuid muudetud");
+    changeData(custom, 2);
+  }
+
   // if custom selected fire event that opens textfield
   return (
     <Box className="leaderBoard">
@@ -73,33 +95,59 @@ export default function Leaderboard(props) {
             type="date"
             defaultValue="2017-05-24"
           />
-          {dropdownFilters.map((filter) => {
+          {dropdownFilters.map((filter, index) => {
             return (
               <Accordion className="filter" key={filter.title}>
                 <AccordionSummary
+                  className="accordionTitle"
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
                   id={`panel1a-header-${filter.title} `}
-                  key={"summary" + filter.title}
+                  key={index}
                 >
                   <Typography>{filter.title}</Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <FormGroup
+                <AccordionDetails className="dropdown">
+                  <RadioGroup
                     aria-labelledby={`${filter.title}-radio-group`}
                     name={`${filter.title}-radio-buttons-group`}
+                    defaultValue=""
                   >
                     {filter.options.map((element) => {
-                      return (
+                      return element !== "Custom" ? (
                         <FormControlLabel
                           value={element}
-                          control={<Checkbox />}
+                          onChange={(e) =>
+                            changeData(e.target.attributes.name.value, index)
+                          }
+                          name={element}
+                          control={<Radio />}
                           label={element}
-                          key={element}
+                          key={`${element} ${index}`}
                         />
+                      ) : (
+                        <FormControlLabel
+                          value={element}
+                          name={element}
+                          control={<Radio />}
+                          label={
+                            <Box
+                              component={"form"}
+                              autoComplete="off"
+                              onSubmit={changeDatacustom}
+                              key={"search"}
+                            >
+                              <TextField
+                                id={"Usersearch"}
+                                placeholder="search"
+                                onChange={(e) => setCustom(e.target.value)}
+                              ></TextField>
+                            </Box>
+                          }
+                        ></FormControlLabel>
                       );
                     })}
-                  </FormGroup>
+                  </RadioGroup>
                 </AccordionDetails>
               </Accordion>
             );

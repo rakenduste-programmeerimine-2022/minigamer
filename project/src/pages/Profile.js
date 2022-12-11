@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "../Styles/Profile.scss";
 import { Box, Typography, Button, Modal, Skeleton } from "@mui/material";
-import { UserContext } from "../App";
+//import { UserContext } from "../App";
 import ErrorPage from "./ErrorPage";
 import axios from "axios";
 
@@ -49,8 +49,6 @@ const Profile = () => {
     getFollowData();
   }, [followURL]);
 
-  console.log(followers);
-
   if (error) {
     return <ErrorPage from={"profile"} />;
   }
@@ -69,7 +67,6 @@ const Profile = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           setUserFollowed(false);
         })
         .catch((err) => {
@@ -90,13 +87,10 @@ const Profile = () => {
           }
         )
         .then((res) => {
-          console.log(res);
           setUserFollowed(true);
-          console.log(user, " ", username);
         })
         .catch((err) => {
           console.log(err);
-          console.log(user, " ", username);
         });
     }
   };
@@ -120,7 +114,7 @@ const Profile = () => {
           <Typography className="user">{username} profile</Typography>
           {username !== user && (
             <Button className="btn" onClick={HandlefollowUser}>
-              {userFollowed ? "unfollow user" : "Follow user"}
+              {!loading && userFollowed ? "unfollow user" : "Follow user"}
             </Button>
           )}
         </Box>
