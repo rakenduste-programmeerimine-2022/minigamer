@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Box, Button, Typography, Skeleton } from "@mui/material";
+import { Box, Button, Typography, Skeleton, Alert } from "@mui/material";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
@@ -40,6 +40,8 @@ function GamePage() {
     startTime: 0,
     endTime: Infinity,
   });
+
+  const [scoreSent, setScoreSent] = useState(false);
 
   const navToLeaderBoards = () => {
     // mangu id saata nii et leaderboardist tuleks see oige lahti
@@ -85,6 +87,7 @@ function GamePage() {
     // millis
     const time = state.endTime - state.startTime;
     console.log(time);
+    setScoreSent(true);
   };
 
   const currentGame =
@@ -110,6 +113,9 @@ function GamePage() {
             <Button onClick={submitScore} disabled={!state.gameWon}>
               Submit score
             </Button>
+            <Alert severity="success">
+              This is a success alert — check it out!
+            </Alert>
             <Box className="playableGame">
               {state.showGame ? (
                 <Game

@@ -25,17 +25,13 @@ const GamesSlider = ({ slides }) => {
   return (
     <Box className="gamesSlider">
       <Box className="thumbnailSection">
-        {GamesSliderData.map((item) => (
+        {GamesSliderData.map((item, index) => (
           <ImageListItem
             className="thumbImg"
             key={item.thumbnail}
-            onClick={() => setCurrent(item.nr)}
+            onClick={() => setCurrent(index)}
           >
-            <img
-              src={`${item.thumbnail}?w=164&h=164&fit=crop&auto=format`}
-              loading="lazy"
-              alt={`game_img` + item.nr}
-            />
+            <img src={item.thumbnail} alt={`game_img` + index} />
           </ImageListItem>
         ))}
       </Box>
