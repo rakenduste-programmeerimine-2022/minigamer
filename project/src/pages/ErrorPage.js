@@ -3,10 +3,7 @@ import Box from "@mui/material/Box";
 import "../Styles/ErrorPage.scss";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
 import "../Styles/ErrorPage.scss";
-import { Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 function ErrorPage({ from }) {
   let navigate = useNavigate();

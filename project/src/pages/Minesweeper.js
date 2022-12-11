@@ -38,7 +38,7 @@ const Minesweeper = ({ stateSetters, name }) => {
   }
 
   return (
-    <Box className={"Minesweeper"}>
+    <Box>
       <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />;
     </Box>
   );

@@ -44,14 +44,14 @@ const Login = (props) => {
         setSeverity("success");
         setLoginStatus(res.data.text);
         //setUserToken(res.data.object.token);
-        const TOKEN = res.data.object.token;
+        const token = res.data.object.token;
         //const name = res.data.object;
-        const localUser = { username, TOKEN };
+        const localUser = { username, token };
         sessionStorage.setItem("user", JSON.stringify(localUser));
-        setCurrentUser({ username, TOKEN });
+        setCurrentUser({ username, token });
         console.log(currentUser);
         console.log(localUser);
-        console.log(TOKEN);
+        console.log(token);
         setOpen(true);
         nav("/");
       })

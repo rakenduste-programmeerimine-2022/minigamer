@@ -28,7 +28,7 @@ function Profile() {
   let token = null;
   if (user[0]) {
     USER = user[0].username;
-    token = user[0].TOKEN;
+    token = user[0].token;
   }
 
   const HandlefollowUser = async (e) => {

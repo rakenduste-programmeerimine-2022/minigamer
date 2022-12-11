@@ -73,7 +73,7 @@ const Board = ({ seed, setGameWon }) => {
   });
 
   return (
-    <Box>
+    <Box className="Minesweeper">
       <Typography>{gameState}</Typography>
       <Box>
         {grid.map((singleRow, index1) => {
