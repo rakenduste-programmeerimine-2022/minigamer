@@ -20,8 +20,7 @@ const Board = ({ seed, setGameWon }) => {
       setGrid(newBoard.board);
     }
     freshBoard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [seed]);
 
   //FLAG -- RIGHT CLICK
   const updateFlag = (e, x, y) => {
