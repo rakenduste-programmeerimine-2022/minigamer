@@ -9,50 +9,44 @@ import { Box, Skeleton } from "@mui/material";
 import Board from "../components/minesweeper/Board";
 
 const Minesweeper = ({ stateSetters, name }) => {
-    const { isLoading, isFetching, error, data } = useQuery(
-        ["Minesweeper", "Seed"],
-        async () => {
-            const res = await axios.get(
-                "../.netlify/functions/server/seed/random"
-            );
-            return res.data;
-        }
-    );
-
-    useEffect(() => {
-        if (name !== "Minesweeper") {
-            stateSetters.newGame(false);
-        }
-    });
-
-    if (isLoading || isFetching) {
-        return (
-            <Skeleton
-                variant="rectangular"
-                height={500}
-                width={500}
-                animation={"wave"}
-            />
-        );
+  const { isLoading, isFetching, error, data } = useQuery(
+    ["Minesweeper", "Seed"],
+    async () => {
+      const res = await axios.get("../.netlify/functions/server/seed/random");
+      return res.data;
     }
-    if (error) {
-        return `Error: ${error}`;
-    }
+  );
 
+  useEffect(() => {
+    if (name !== "Minesweeper") {
+      stateSetters.newGame(false);
+    }
+  });
+
+  if (isLoading || isFetching) {
     return (
-        <Box className={"Minesweeper"}>
-            <Board
-                seed={data.object.seed}
-                setGameWon={stateSetters.setGameWon}
-            />
-            ;
-        </Box>
+      <Skeleton
+        variant="rectangular"
+        height={500}
+        width={500}
+        animation={"wave"}
+      />
     );
+  }
+  if (error) {
+    return `Error: ${error}`;
+  }
+
+  return (
+    <Box>
+      <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />;
+    </Box>
+  );
 };
 
 Minesweeper.propTypes = {
-    stateSetters: PropTypes.objectOf(PropTypes.func),
-    name: PropTypes.string,
+  stateSetters: PropTypes.objectOf(PropTypes.func),
+  name: PropTypes.string,
 };
 
 export default Minesweeper;

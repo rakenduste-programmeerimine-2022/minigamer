@@ -9,44 +9,40 @@ import { Skeleton } from "@mui/material";
 import Board from "../components/flood/Board";
 
 const Flood = ({ stateSetters, name }) => {
-    const { isLoading, isFetching, error, data } = useQuery(
-        ["Flood", "Seed"],
-        async () => {
-            const res = await axios.get(
-                "../.netlify/functions/server/seed/random"
-            );
-            return res.data;
-        }
-    );
-
-    useEffect(() => {
-        if (name !== "Flood") {
-            stateSetters.newGame(false);
-        }
-    });
-
-    if (isLoading || isFetching) {
-        return (
-            <Skeleton
-                variant="rectangular"
-                height={500}
-                width={500}
-                animation={"wave"}
-            />
-        );
+  const { isLoading, isFetching, error, data } = useQuery(
+    ["Flood", "Seed"],
+    async () => {
+      const res = await axios.get("../.netlify/functions/server/seed/random");
+      return res.data;
     }
-    if (error) {
-        return `Error: ${error}`;
-    }
+  );
 
+  useEffect(() => {
+    if (name !== "Flood") {
+      stateSetters.newGame(false);
+    }
+  });
+
+  if (isLoading || isFetching) {
     return (
-        <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />
+      <Skeleton
+        variant="rectangular"
+        height={500}
+        width={500}
+        animation={"wave"}
+      />
     );
+  }
+  if (error) {
+    return `Error: ${error}`;
+  }
+
+  return <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />;
 };
 
 Flood.propTypes = {
-    stateSetters: PropTypes.objectOf(PropTypes.func),
-    name: PropTypes.string,
+  stateSetters: PropTypes.objectOf(PropTypes.func),
+  name: PropTypes.string,
 };
 
 export default Flood;

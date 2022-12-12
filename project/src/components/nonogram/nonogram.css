@@ -46,3 +46,14 @@ th.EmptyCell {
 .BlackCell {
     background-color: #222;
 }
+
+table{
+    box-sizing: border-box;
+    border: 1px solid black
+}
+
+@media only screen and (max-width: 700px) {
+    .nonogram td, .nonogram th{
+        padding: 8px;
+    }
+}

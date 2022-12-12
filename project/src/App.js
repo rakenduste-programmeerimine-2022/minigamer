@@ -1,6 +1,11 @@
 import "./Styles/App.scss";
 import "./Styles/Variables.scss";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Leaderboard from "./pages/Leaderboard";
 import Games from "./pages/Games";
 import Profile from "./pages/Profile";
@@ -36,7 +41,12 @@ function App() {
             {/* <Route path="/games/nonogram" element={<Nonogram />} />
             <Route path="/games/flood" element={<Flood />} />
             <Route path="/games/minesweeper" element={<Minesweeper />} /> */}
-            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route
+              path="/leaderboard"
+              element={
+                currentUser ? <Leaderboard /> : <Navigate to={"/login"} />
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<ErrorPage />} />

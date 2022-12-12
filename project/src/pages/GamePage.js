@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Box, Button, Typography, Skeleton } from "@mui/material";
+import { Box, Button, Typography, Skeleton, Snackbar } from "@mui/material";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
@@ -13,166 +13,186 @@ import Flood from "../pages/Flood";
 import "../Styles/Game.scss";
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            refetchOnMount: false,
-            staleTime: Infinity,
-        },
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      staleTime: Infinity,
     },
+  },
 });
 
 const gameComponents = {
-    Nonogram,
-    Minesweeper,
-    Flood,
-    Daily,
+  Nonogram,
+  Minesweeper,
+  Flood,
+  Daily,
 };
 
 function GamePage() {
-    let navigate = useNavigate();
-    const { id } = useParams();
+  let navigate = useNavigate();
+  const { id } = useParams();
 
-    const [state, setState] = useState({
-        showGame: false,
-        gameID: 0,
+  const [state, setState] = useState({
+    showGame: false,
+    gameID: 0,
+    gameWon: false,
+    startTime: 0,
+    endTime: Infinity,
+    scoreSent: false,
+  });
+
+  const [open, setOpen] = useState(false);
+
+  const navToLeaderBoards = () => {
+    // mangu id saata nii et leaderboardist tuleks see oige lahti
+    //setstate({ data: { id } });
+    navigate("/leaderboard");
+  };
+
+  const stateSetters = {
+    newGame: (showGame = true) => {
+      setState({
+        showGame: showGame,
+        gameID: state.gameID + 1,
         gameWon: false,
-        startTime: 0,
-        endTime: Infinity,
-    });
+        startTime: performance.now(),
+        endTime: state.endTime,
+        gameName: id,
+        scoreSent: false,
+      });
+      if (state.showGame) {
+        queryClient.refetchQueries();
+        return;
+      }
+    },
 
-    const navToLeaderBoards = () => {
-        // mangu id saata nii et leaderboardist tuleks see oige lahti
-        //setstate({ data: { id } });
-        navigate("/leaderboard");
-    };
+    setGameWon: (isWon) => {
+      if (isWon === state.gameWon) {
+        return;
+      }
+      setState({
+        showGame: state.showGame,
+        gameID: state.gameID,
+        gameWon: isWon,
+        startTime: state.startTime,
+        endTime: isWon ? performance.now() : state.endTime,
+        gameName: id,
+      });
+    },
+  };
 
-    const stateSetters = {
-        newGame: (showGame = true) => {
-            setState({
-                showGame: showGame,
-                gameID: state.gameID + 1,
-                gameWon: false,
-                startTime: performance.now(),
-                endTime: state.endTime,
-                gameName: id,
-            });
-            if (state.showGame) {
-                queryClient.refetchQueries();
-                return;
-            }
-        },
-
-        setGameWon: (isWon) => {
-            if (isWon === state.gameWon) {
-                return;
-            }
-            setState({
-                showGame: state.showGame,
-                gameID: state.gameID,
-                gameWon: isWon,
-                startTime: state.startTime,
-                endTime: isWon ? performance.now() : state.endTime,
-                gameName: id,
-            });
-        },
-    };
-
-    const submitScore = () => {
-        if (!state.gameWon) {
-            return;
-        }
-        // millis
-        const time = state.endTime - state.startTime;
-        console.log(time);
-    };
-
-    const currentGame =
-        GamesSliderData.filter((game) => {
-            return game.name === id;
-        })[0] ?? null;
-
-    if (!currentGame) {
-        return <ErrorPage />;
+  const submitScore = (e) => {
+    e.preventDefault(); //doesnt show snackbar on mobile otherwise
+    setOpen(true);
+    if (!state.gameWon) {
+      return;
     }
-    const Game = gameComponents[currentGame.name];
+    // millis
+    const time = state.endTime - state.startTime;
+    console.log(time);
+    setState({ scoreSent: true });
+    //setState({ scoreSent: false });
+  };
 
-    return (
-        <QueryClientProvider client={queryClient}>
-            <Box className="game" id="game">
-                <Box className="gameWindowWrap">
-                    <Box className="gameWindow">
-                        <Typography variant="h3" className="title">
-                            {id === "Daily" ? `${id} challenge` : id}
-                            {state.gameWon ? " complete!" : ""}
-                        </Typography>
-                        <Button onClick={stateSetters.newGame}>New game</Button>
-                        <Button onClick={submitScore} disabled={!state.gameWon}>
-                            Submit score
-                        </Button>
-                        <Box className="playableGame">
-                            {state.showGame ? (
-                                <Game
-                                    key={`${state.gameName}-${state.gameID}`}
-                                    stateSetters={stateSetters}
-                                    name={state.gameName}
-                                />
-                            ) : (
-                                <>
-                                    <Skeleton
-                                        variant="rectangular"
-                                        height={500}
-                                        width={500}
-                                        animation={false}
-                                    />
-                                </>
-                            )}
-                        </Box>
-                    </Box>
-                </Box>
-                <Box className="divider"></Box>
-                <Box className="bottomWrap">
-                    <Box className="leftDiv">
-                        <Box className="leftContent">
-                            <Box className="instructions">
-                                <Typography className="title">
-                                    Instructions
-                                </Typography>
-                                <Typography
-                                    sx={{ color: "white" }}
-                                    className="text"
-                                >
-                                    {currentGame.instructions}
-                                </Typography>
-                            </Box>
+  const currentGame =
+    GamesSliderData.filter((game) => {
+      return game.name === id;
+    })[0] ?? null;
 
-                            <Link className="tutorial">
-                                <Button className="btn">Video tutorial</Button>
-                            </Link>
-                        </Box>
-                    </Box>
-                    <Box className="rightDiv">
-                        <Box className="rightContent">
-                            <Typography className="title">
-                                Want to get competetive ?
-                            </Typography>
-                            <Typography className="subtitle">
-                                Check out leaderboards
-                            </Typography>
+  if (!currentGame) {
+    return <ErrorPage />;
+  }
+  const Game = gameComponents[currentGame.name];
 
-                            <Button
-                                className="leaderboardsBtn btn"
-                                onClick={navToLeaderBoards}
-                                variant="primary"
-                            >
-                                Leaderboards
-                            </Button>
-                        </Box>
-                    </Box>
-                </Box>
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Box className="game" id="game">
+        <Box className="gameWindowWrap">
+          <Box className="gameWindow">
+            <Typography variant="h3" className="title">
+              {id === "Daily" ? `${id} challenge` : id}
+              {state.gameWon ? " complete!" : ""}
+            </Typography>
+            <Button onClick={stateSetters.newGame}>New game</Button>
+            <Button onClick={submitScore} disabled={!state.gameWon}>
+              Submit score
+            </Button>
+            <Box className="playableGame">
+              {state.showGame ? (
+                <Game
+                  key={`${state.gameName}-${state.gameID}`}
+                  stateSetters={stateSetters}
+                  name={state.gameName}
+                />
+              ) : (
+                <>
+                  <Skeleton
+                    variant="rectangular"
+                    height={500}
+                    width={500}
+                    animation={false}
+                  />
+                </>
+              )}
             </Box>
-        </QueryClientProvider>
-    );
+            {open && (
+              <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                open={open}
+                onClose={handleClose}
+                message={
+                  state.scoreSent
+                    ? "Score saved. Check out leaderboards"
+                    : "Something went wrong"
+                }
+                key={"snackbar"}
+              />
+            )}
+          </Box>
+        </Box>
+        <Box className="divider"></Box>
+        <Box className="bottomWrap">
+          <Box className="leftDiv">
+            <Box className="leftContent">
+              <Box className="instructions">
+                <Typography className="title">Instructions</Typography>
+                <Typography sx={{ color: "white" }} className="text">
+                  {currentGame.instructions}
+                </Typography>
+              </Box>
+
+              <Link className="tutorial">
+                <Button className="btn">Video tutorial</Button>
+              </Link>
+            </Box>
+          </Box>
+          <Box className="rightDiv">
+            <Box className="rightContent">
+              <Typography className="title">
+                Want to get competetive ?
+              </Typography>
+              <Typography className="subtitle">
+                Check out leaderboards
+              </Typography>
+
+              <Button
+                className="leaderboardsBtn btn"
+                onClick={navToLeaderBoards}
+                variant="primary"
+              >
+                Leaderboards
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </QueryClientProvider>
+  );
 }
 
 export default GamePage;
