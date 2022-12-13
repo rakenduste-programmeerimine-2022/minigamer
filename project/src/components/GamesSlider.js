@@ -23,70 +23,80 @@ const GamesSlider = ({ slides }) => {
   }
 
   return (
-    <Box className="gamesSlider">
-      <Box className="thumbnailSection">
-        {GamesSliderData.map((item) => (
-          <ImageListItem
-            className="thumbImg"
-            key={item.thumbnail}
-            onClick={() => setCurrent(item.nr)}
-          >
-            <img
-              src={`${item.thumbnail}?w=164&h=164&fit=crop&auto=format`}
-              loading="lazy"
-              alt={`game_img` + item.nr}
-            />
-          </ImageListItem>
-        ))}
-      </Box>
-      <Box className="slider">
-        <ArrowBackIosNewRoundedIcon
-          className="arrow left-arrow"
-          onClick={prevSlide}
-        />
-        <ArrowForwardIosRoundedIcon
-          className="arrow right-arrow"
-          onClick={nextSlide}
-        />
+      <Box className="gamesSlider">
+          <Box className="thumbnailSection">
+              {GamesSliderData.map((item) => (
+                  <ImageListItem
+                      className="thumbImg"
+                      key={item.thumbnail}
+                      onClick={() => setCurrent(item.nr)}
+                  >
+                      <img
+                          src={item.thumbnail}
+                          loading="lazy"
+                          alt={`game_img` + item.nr}
+                      />
+                  </ImageListItem>
+              ))}
+          </Box>
+          <Box className="slider">
+              <ArrowBackIosNewRoundedIcon
+                  className="arrow left-arrow"
+                  onClick={prevSlide}
+              />
+              <ArrowForwardIosRoundedIcon
+                  className="arrow right-arrow"
+                  onClick={nextSlide}
+              />
 
-        {GamesSliderData.map((slide, index) => {
-          return (
-            <Box
-              className={index === current ? "slide active" : "slide"}
-              key={index}
-            >
-              {index === current && (
-                <Box className="slideContent">
-                  <Box className="leftContent">
-                    <Box className="imgBox">
+              {GamesSliderData.map((slide, index) => {
+                  return (
                       <Box
-                        className="gameImg"
-                        component="img"
-                        src={slide.image}
-                      ></Box>
-                      <Box className="bgGradient"></Box>
-                      <Box className="gameName">{slide.name}</Box>
-                    </Box>
-                  </Box>
-                  <Box className="rightContent">
-                    <Box className="descWrap">
-                      <Box className="desc" sx={{ color: "white" }}>
-                        {slide.desc}
+                          className={
+                              index === current ? "slide active" : "slide"
+                          }
+                          key={index}
+                      >
+                          {index === current && (
+                              <Box className="slideContent">
+                                  <Box className="leftContent">
+                                      <Box className="imgBox">
+                                          <Box
+                                              className="gameImg"
+                                              component="img"
+                                              src={slide.image}
+                                          ></Box>
+                                          <Box className="bgGradient"></Box>
+                                          <Box className="gameName">
+                                              {slide.name}
+                                          </Box>
+                                      </Box>
+                                  </Box>
+                                  <Box className="rightContent">
+                                      <Box className="descWrap">
+                                          <Box
+                                              className="desc"
+                                              sx={{ color: "white" }}
+                                          >
+                                              {slide.desc}
+                                          </Box>
+                                      </Box>
+                                      <Box className="playBtnWrap">
+                                          <Link
+                                              className="playBtn"
+                                              to={slide.link}
+                                          >
+                                              <Box>PLAY</Box>
+                                          </Link>
+                                      </Box>
+                                  </Box>
+                              </Box>
+                          )}
                       </Box>
-                    </Box>
-                    <Box className="playBtnWrap">
-                      <Link className="playBtn" to={slide.link}>
-                        <Box>PLAY</Box>
-                      </Link>
-                    </Box>
-                  </Box>
-                </Box>
-              )}
-            </Box>
-          );
-        })}
+                  );
+              })}
+          </Box>
       </Box>
-    </Box>
   );
 };
 

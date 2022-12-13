@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const { errorResponse: errorMessage } = require("../utility/response");
+const { errorResponse } = require("../utility/response");
 
 const CLUSTER = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
 const DB = process.env.MONGO_TEST_DB;
@@ -13,7 +13,9 @@ exports.connect = (req, res, next) => {
     }
 
     mongoose.connect(CLUSTER, { dbName: DB }).catch((error) => {
-        res.status(500).send(errorMessage(`An error occurred: ${error}`, true));
+        res.status(500).send(
+            errorResponse(`An error occurred: ${error}`, true)
+        );
     });
     next();
 };
