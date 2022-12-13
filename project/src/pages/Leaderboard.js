@@ -12,6 +12,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableContainer,
+  TablePagination,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -19,6 +21,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
 export default function Leaderboard() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const handleChangePage = (e, newPage) => {
+    setPage(newPage);
+    console.log("page");
+  };
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(+e.target.value);
+    setPage(0);
+    console.log("a");
+  };
   const dropdownFilters = [
     {
       title: "game",
@@ -146,7 +159,7 @@ export default function Leaderboard() {
             );
           })}
         </Box>
-        <Box className="board">
+        <TableContainer className="board">
           <Table className="boardTable">
             <TableBody>
               <TableRow className="titleRow">
@@ -156,20 +169,31 @@ export default function Leaderboard() {
                 <TableCell>Score</TableCell>
                 <TableCell>Time</TableCell>
               </TableRow>
-              {testscoreData.map((data) => {
-                return (
-                  <TableRow className="dataRow">
-                    <TableCell>{data.user}</TableCell>
-                    <TableCell>{data.game}</TableCell>
-                    <TableCell>{data.challegeType}</TableCell>
-                    <TableCell>{data.score}</TableCell>
-                    <TableCell>{data.time}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {testscoreData
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((data) => {
+                  return (
+                    <TableRow className="dataRow">
+                      <TableCell>{data.user}</TableCell>
+                      <TableCell>{data.game}</TableCell>
+                      <TableCell>{data.challegeType}</TableCell>
+                      <TableCell>{data.score}</TableCell>
+                      <TableCell>{data.time}</TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
-        </Box>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[2, 5, 10]}
+          component={"div"}
+          count={testscoreData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        ></TablePagination>
       </Container>
     </Box>
   );
