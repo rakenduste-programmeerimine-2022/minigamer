@@ -20,7 +20,7 @@ app.use(`${SERVER}/follow`, followingRouter);
 app.use(`${SERVER}/seed`, seedRouter);
 app.use(`${SERVER}/score`, scoreRouter);
 app.use(`${SERVER}/*`, (req, res) => {
-    res.status(404).send(errorResponse(404, "Nothing here."));
+  res.status(404).send(errorResponse(404, "Nothing here."));
 });
 
 // module.exports = app;
