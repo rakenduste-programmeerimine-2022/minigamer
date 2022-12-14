@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Box, Button, Typography, Skeleton } from "@mui/material";
+import { Box, Button, Typography, Skeleton, Snackbar } from "@mui/material";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
@@ -11,6 +11,7 @@ import Daily from "./DailyChallenge";
 import ErrorPage from "./ErrorPage";
 import Flood from "../pages/Flood";
 import "../Styles/Game.scss";
+import axios from "axios";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -29,17 +30,33 @@ const gameComponents = {
     Daily,
 };
 
+const tokenURL = "../.netlify/functions/server/score/token";
+const submitURL = "../.netlify/functions/server/score/submit";
+
 function GamePage() {
     let navigate = useNavigate();
     const { id } = useParams();
 
-    const [state, setState] = useState({
-        showGame: false,
-        gameID: 0,
-        gameWon: false,
-        startTime: 0,
-        endTime: Infinity,
+    const [gameState, setGameState] = useState({
+        show: false,
+        sessionID: 0,
+        won: false,
+        name: id,
+        // start: 0,
+        // end: Infinity,
+        // sent: false,
+        // multiplier: 1,
     });
+
+    const [scoreState, setScoreState] = useState({
+        start: 0,
+        end: Infinity,
+        submitted: false,
+        multiplier: 1,
+        error: "",
+    });
+
+    const [open, setOpen] = useState(false);
 
     const navToLeaderBoards = () => {
         // mangu id saata nii et leaderboardist tuleks see oige lahti
@@ -49,42 +66,117 @@ function GamePage() {
 
     const stateSetters = {
         newGame: (showGame = true) => {
-            setState({
-                showGame: showGame,
-                gameID: state.gameID + 1,
-                gameWon: false,
-                startTime: performance.now(),
-                endTime: state.endTime,
-                gameName: id,
+            // setState on asynchronous, seega targem kohe showGame siin kasutada
+            setGameState({
+                show: showGame,
+                sessionID: gameState.sessionID + 1,
+                won: false,
+                name: id,
             });
-            if (state.showGame) {
+            setScoreState({
+                start: performance.now(),
+                end: scoreState.end,
+                submitted: false,
+                multiplier: 1,
+                error: "",
+            });
+            if (showGame) {
                 queryClient.refetchQueries();
                 return;
             }
         },
 
-        setGameWon: (isWon) => {
-            if (isWon === state.gameWon) {
+        setGameWon: (isWon, multiplier = 1) => {
+            if (isWon === gameState.won) {
                 return;
             }
-            setState({
-                showGame: state.showGame,
-                gameID: state.gameID,
-                gameWon: isWon,
-                startTime: state.startTime,
-                endTime: isWon ? performance.now() : state.endTime,
-                gameName: id,
+            setGameState({
+                show: gameState.show,
+                sessionID: gameState.sessionID,
+                won: isWon,
+                name: id,
+            });
+            setScoreState({
+                start: scoreState.start,
+                end: isWon ? performance.now() : scoreState.end,
+                multiplier,
+                submitted: false,
+                error: "",
             });
         },
     };
 
-    const submitScore = () => {
-        if (!state.gameWon) {
+    const submitScore = async (e) => {
+        e.preventDefault(); //doesnt show snackbar on mobile otherwise
+        setOpen(true);
+        if (!gameState.won) {
             return;
         }
-        // millis
-        const time = state.endTime - state.startTime;
-        console.log(time);
+        const time = scoreState.end - scoreState.start;
+        const score = time * scoreState.multiplier;
+        const { username, token } = JSON.parse(sessionStorage.getItem("user"));
+        const game = currentGame.name.toLowerCase();
+        let error = false;
+        let errorMessage = "";
+
+        const tokenRes = await axios.post(
+            tokenURL,
+            {
+                game,
+                score,
+            },
+            {
+                headers: {
+                    content: "application/json",
+                    authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        if (tokenRes.data.error) {
+            error = true;
+            errorMessage += tokenRes.data.text;
+        }
+
+        const gameToken = tokenRes.data.object.token;
+
+        const submitRes = await axios.post(
+            submitURL,
+            {
+                username,
+                gameID: GamesSliderData.indexOf(currentGame),
+                score,
+            },
+            {
+                headers: {
+                    content: "application/json",
+                    authorization: `Bearer ${token}, Bearer ${gameToken}`,
+                },
+            }
+        );
+
+        if (submitRes.data.error) {
+            error = true;
+            errorMessage += tokenRes.data.text;
+        }
+
+        if (error) {
+            return setScoreState({
+                start: scoreState.start,
+                end: scoreState.end,
+                submitted: false,
+                multiplier: scoreState.multiplier,
+                error: errorMessage,
+            });
+        }
+        setScoreState({
+            start: scoreState.start,
+            end: scoreState.end,
+            submitted: true,
+            multiplier: scoreState.multiplier,
+            error: "",
+        });
+        //setState({ sent: false });
     };
 
     const currentGame =
@@ -96,6 +188,11 @@ function GamePage() {
         return <ErrorPage />;
     }
     const Game = gameComponents[currentGame.name];
+    console.log(currentGame);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -104,18 +201,18 @@ function GamePage() {
                     <Box className="gameWindow">
                         <Typography variant="h3" className="title">
                             {id === "Daily" ? `${id} challenge` : id}
-                            {state.gameWon ? " complete!" : ""}
+                            {gameState.won ? " complete!" : ""}
                         </Typography>
                         <Button onClick={stateSetters.newGame}>New game</Button>
-                        <Button onClick={submitScore} disabled={!state.gameWon}>
+                        <Button onClick={submitScore} disabled={!gameState.won}>
                             Submit score
                         </Button>
                         <Box className="playableGame">
-                            {state.showGame ? (
+                            {gameState.show ? (
                                 <Game
-                                    key={`${state.gameName}-${state.gameID}`}
+                                    key={`${gameState.name}-${gameState.sessionID}`}
                                     stateSetters={stateSetters}
-                                    name={state.gameName}
+                                    name={gameState.name}
                                 />
                             ) : (
                                 <>
@@ -128,6 +225,22 @@ function GamePage() {
                                 </>
                             )}
                         </Box>
+                        {open && (
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center",
+                                }}
+                                open={open}
+                                onClose={handleClose}
+                                message={
+                                    scoreState.sent
+                                        ? "Score saved. Check out the leaderboards!"
+                                        : scoreState.error
+                                }
+                                key={"snackbar"}
+                            />
+                        )}
                     </Box>
                 </Box>
                 <Box className="divider"></Box>

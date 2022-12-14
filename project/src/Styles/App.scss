@@ -21,6 +21,7 @@ body::-webkit-scrollbar {
   overflow: hidden;
   height: 100%;
   width: 100%;
+  scroll-behavior: smooth;
   .btn{
     margin-top: 20px;
     padding: 10px 15px;

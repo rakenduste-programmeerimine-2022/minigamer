@@ -1,180 +1,58 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React from "react";
 import "../Styles/Profile.scss";
-import {
-  Box,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Button,
-  Modal,
-  Skeleton,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { UserContext } from "../App";
+import { Box } from "@mui/material";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import FollowModal from "../components/FollowModal";
 
-function Profile() {
-  let navigate = useNavigate();
-  const user = useContext(UserContext);
-  let Currentusername = null;
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      staleTime: 1000,
+    },
+  },
+});
 
-  if (user[0]) {
-    Currentusername = user[0].username;
-  }
+const Profile = () => {
+  //const [data, setData] = useState(null);
+  //const [error, setError] = useState(null);
 
-  let { username } = useParams();
-  let following = ["juss", "suss", "muss", "kuss"];
-  let followers = ["juss", "suss", "muss", "kuss"];
-  let isDisabled = false;
-  function closeAccordions() {
-    isDisabled = true;
-  }
-  function followUser(name) {
-    console.log("user followed : ", name);
-  }
-
-  const [open, setOpen] = useState({ windowOpen: false, window: "" });
-  const handleOpen = (list) => setOpen({ windowOpen: true, window: list });
-  const handleClose = () => setOpen({ windowOpen: false, window: "" });
-  const [dataLoaded, setDataLoaded] = useState({ window: "", loaded: false });
-
-  const getFollowData = (list) => {
-    handleOpen(list); //list is either followers or following
-    setDataLoaded({ window: list });
-    setTimeout(() => {
-      // timeout for testing load time
-      setDataLoaded({ window: list, loaded: true });
-      console.log(dataLoaded);
-    }, 1500);
+  //OLD
+  /* 
+  const getFollowData = async () => {
+    setLoading(true);
+    axios
+      .get(followURL)
+      .then((res) => {
+        setData(res.data);
+        setFollowing(res.data.object.following);
+        setFollowers(res.data.object.followers);
+        setUserFollowed(res.data.object.followers.includes(user));
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+  useEffect(() => {
+    getFollowData();
+  }, [followURL]);
 
+  if (error) {
+    return <ErrorPage from={"profile"} />;
+  } */
   return (
-    <Box className="profile" id="profile">
-      <Box className="profileWrapper">
-        <Box className="userSection">
-          <Typography className="user">{username} profile</Typography>
-          {username !== Currentusername && (
-            <Button className="btn" onClick={() => followUser(username)}>
-              Follow user
-            </Button>
-          )}
-        </Box>
-        <Box className="divider"></Box>
-        <Box className="followPopUpSection">
-          <Button onClick={() => getFollowData("Followers")} className="btn">
-            Followers
-          </Button>
-          <Button onClick={() => getFollowData("Following")} className="btn">
-            Following
-          </Button>
-          <Modal
-            open={open.windowOpen}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box className="popup">
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                {open.window}
-              </Typography>
-              {dataLoaded.loaded && dataLoaded.window === open.window ? (
-                open.window === "Followers" ? (
-                  <>
-                    {followers.map((follower) => {
-                      return (
-                        <Link
-                          to={`/profile/${follower}`}
-                          onClick={handleClose}
-                          key={follower}
-                          className="modalLink"
-                        >
-                          <Typography> {follower}</Typography>
-                        </Link>
-                      );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    {following.map((followee) => {
-                      return (
-                        <Link
-                          onClick={handleClose}
-                          to={`/profile/${followee}`}
-                          key={followee}
-                          className="modalLink"
-                        >
-                          <Typography>{followee}</Typography>
-                        </Link>
-                      );
-                    })}
-                  </>
-                )
-              ) : (
-                <>
-                  <Skeleton animation="wave"></Skeleton>
-                  <Skeleton animation="wave"></Skeleton>
-                  <Skeleton animation="wave"></Skeleton>
-                </>
-              )}
-            </Box>
-          </Modal>
-        </Box>
-        <Box className="gameDataSection">
-          <Button className="btn" onClick={() => navigate("/leaderboard")}>
-            Scores
-          </Button>
-        </Box>
-
-        <Box className="followSection">
-          <Box className="following">
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Following</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {followers.map((follower) => {
-                  return (
-                    <Link to={`/profile/${follower}`} key={follower}>
-                      <Typography> {follower}</Typography>
-                    </Link>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-          <Box className="followers">
-            <Accordion disabled={isDisabled}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Following</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {following.map((followee) => {
-                  return (
-                    <Link
-                      onClick={() => closeAccordions()}
-                      to={`/profile/${followee}`}
-                      key={followee}
-                    >
-                      <Typography>{followee}</Typography>
-                    </Link>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion>
-          </Box>
+    <QueryClientProvider client={queryClient}>
+      <Box className="profile" id="profile">
+        <Box className="profileWrapper">
+          <FollowModal></FollowModal>
         </Box>
       </Box>
-    </Box>
+    </QueryClientProvider>
   );
-}
+};
 
 export default Profile;

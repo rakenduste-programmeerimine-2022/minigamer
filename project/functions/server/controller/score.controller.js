@@ -10,12 +10,7 @@ const {
     validateGame,
     validateDate,
 } = require("../middleware/validation");
-const {
-    response: message,
-    errorResponse: errorMessage,
-    response,
-    errorResponse,
-} = require("../utility/response");
+const { response, errorResponse } = require("../utility/response");
 const DailyChallenge = require("../model/dailyChallenge.model");
 const Following = require("../model/following.model");
 const Score = require("../model/score.model");
@@ -115,7 +110,7 @@ exports.methods = {
             {
                 username: { $in: usernames },
                 gameID: useGame
-                    ? games.getGameIDByName(game)
+                    ? games.gameID({ byName: true, name: game })
                     : { $gte: 0, $lte: 2 },
                 date: useDate ? dateObj : { $gt: BEGINNING },
             },
