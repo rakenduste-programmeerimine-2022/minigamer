@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,13 +9,18 @@ import {
   Box,
   Button,
   Skeleton,
+  Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { DataGrid } from "@mui/x-data-grid";
 
 const Lborad = ({ testscoreData, searchSetter, changeData }) => {
-  const [page, setPage] = useState(0);
+  //const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
     //console.log("page");
@@ -24,89 +29,119 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
     setRowsPerPage(+e.target.value);
     setPage(0);
   };
-  //console.log(searchSetter.newSearch);
-  //const searchParams = changeData();
-  //const GAME = searchParams[0].game;
-  //const date = searchParams[0].date;
-  // const date = "2022-12-09";
-  //const user = searchParams[0].usersearch;
-  //console.log(GAME, date, user);
-  //const PAGE = 1;
+
   const sessionUser = sessionStorage.getItem("user");
   const { username } = JSON.parse(sessionUser);
+  console.log(sessionUser);
   const searchParams = changeData();
   let GAME = searchParams[0].game;
   let DATE = searchParams[0].date;
   let USER = searchParams[0].usersearch;
-  let type = searchParams[0].type;
-  if (!GAME) GAME = "nonogram";
-  if (!DATE) DATE = "2022-12-09";
-  if (!USER) USER = "";
-  if (!type) type = "Default";
-  const PAGE = 1;
-  //let URL = `../.netlify/functions/server/score/u/password/following/1?game=nonogram&date=2022-12-09`;
-
-  // Returns scores sorted by game, score, date.
-  let URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}?date=${DATE}`;
-
-  // Returns daily challenge scores of that day. //make game and daily exclusive cant pick both
-  if (type === "Daily") {
-    USER = username;
-    URL = `../.netlify/functions/server/score/d/${DATE}/${PAGE}`;
-  }
-
+  const [PAGE, setPAGE] = useState(1);
+  let scores = [];
+  console.log(GAME, DATE, USER);
+  /* 
   // Returns scores of users followed by {USER}.
-  if (USER === "Followed" && type !== "Daily") {
-    type = "Default";
-    let curUser = username;
-    URL = `../.netlify/functions/server/score/u/${curUser}/following/${PAGE}?game=${GAME}&date=${DATE}`;
+  if (USER === "Followed" && GAME !== "Daily") {
+    URL = `../.netlify/functions/server/score/u/${username}/following/${PAGE}?game=${GAME}&date=${DATE}`;
   }
-
+  // Returns scores made by {USER}. you
+  if (USER === "You" && GAME !== "Daily") {
+    curUser = username;
+    URL = `../.netlify/functions/server/score/u/${curUser}/${PAGE}?game=${GAME}&date=${DATE}`;
+  }
   // Returns scores made by {USER}.
-  if (USER === username && type !== "Daily") {
-    URL = `../.netlify/functions/server/score/u/${USER}/${PAGE}?game=${GAME}&date=${DATE}`;
+  if (
+    USER !== "You" &&
+    USER !== "Followed" &&
+    USER !== "everyone" &&
+    GAME !== "Daily"
+  ) {
+    curUser = USER;
+    URL = `../.netlify/functions/server/score/u/${curUser}/${PAGE}?game=${GAME}&date=${DATE}`;
   }
 
+  if (GAME === "All") {
+    URL = `../.netlify/functions/server/score/u/testuser/1?date=2022-12-14`;
+  } */
+
+  let URL = `../.netlify/functions/server/score/g/nonogram/${PAGE}`;
+  // search games by date or all dates
+  if (GAME && GAME !== "Daily" && !USER) {
+    URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}`;
+    if (DATE) {
+      URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}?date=${DATE}`;
+    }
+  }
+
+  //Daily challenge of set day
+  if (GAME === "Daily") {
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = today.getFullYear();
+    today = yyyy + "-" + mm + "-" + dd;
+    console.log(today);
+    URL = `../.netlify/functions/server/score/d/${today}/${PAGE}`;
+    if (DATE) URL = `../.netlify/functions/server/score/d/${DATE}/${PAGE}`;
+  }
+
+  //score by followed users
+  if (USER === "Followed" && GAME !== "Daily") {
+    let gameaddon = "";
+    let dateaddon = "";
+    if (GAME) {
+      gameaddon = `?game=${GAME}`;
+    }
+    if (DATE && !GAME) {
+      dateaddon = `?date=${DATE}`;
+    } else if (DATE && GAME) {
+      dateaddon = `&date=${DATE}`;
+    }
+    URL = `../.netlify/functions/server/score/u/${username}/following/${PAGE}${gameaddon}${dateaddon}`;
+  }
+
+  //scores made by user
+  if (USER && USER !== "Followed" && USER !== "everyone") {
+    let gameaddon = "";
+    let dateaddon = "";
+    if (USER === "You") USER = username;
+    if (GAME) {
+      gameaddon = `?game=${GAME}`;
+    }
+    if (DATE && !GAME) dateaddon = `?date=${DATE}`;
+    else if (DATE && GAME) dateaddon = `&date=${DATE}`;
+    URL = `../.netlify/functions/server/score/u/${USER}/${PAGE}${gameaddon}${dateaddon}`;
+  }
+
+  const [page, setPage] = useState(1);
   const { isLoading, isFetching, error, data } = useQuery(
     ["Leaderboards", searchParams[0]],
     async () => {
       const res = await axios.get(URL);
       return res.data;
     }
+    /* { initialData: "" } */
   );
+
   if (!isLoading) {
     //console.log(data);
   }
-  if (error) {
-    console.log(error);
-  }
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      setOpen(true);
+    }
+  }, [error]);
+
   if (data) {
+    scores = data.object.scores;
     console.log(data);
   }
 
-  const HandleDailySearch = () => {};
-
-  function HandleRegularSearch() {}
-
   return (
     <>
-      <Box
-        className="searchButtons"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 3,
-          padding: 2,
-        }}
-      >
-        <Button className="btn" onClick={HandleDailySearch}>
-          Search daily
-        </Button>
-        <Button className="btn" onClick={HandleRegularSearch}>
-          Search regular
-        </Button>
-      </Box>
       <TableContainer className="board">
         <Table className="boardTable">
           <TableBody>
@@ -117,34 +152,48 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
               <TableCell key={"Score"}>Score</TableCell>
               <TableCell key={"Time"}>Time</TableCell>
             </TableRow>
-
-            {!isLoading ? (
-              testscoreData
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            {data ? (
+              scores //scores //testscoreData
+                /*.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)*/
                 .map((data, index) => {
                   return (
                     <TableRow key={index} className="dataRow">
-                      <TableCell key={data.user}>{data.user}</TableCell>
-                      <TableCell key={data.game}>{data.game}</TableCell>
-                      <TableCell key={data.challegeType}>
-                        {data.challegeType}
+                      <TableCell key={data.username + index}>
+                        {data.username}
+                      </TableCell>
+                      <TableCell key={data.gameID + index + "game"}>
+                        {USER !== "everyone"
+                          ? data.gameID === 0
+                            ? "Nonogram"
+                            : data.gameID === 1
+                            ? "Minesweeper"
+                            : "Flood"
+                          : GAME}
+                      </TableCell>
+                      <TableCell
+                        key={
+                          GAME === "Daily" + index ? GAME : "Default" + index
+                        }
+                      >
+                        {GAME === "Daily" ? GAME : "Default"}
                       </TableCell>
                       <TableCell key={data.score}>{data.score}</TableCell>
-                      <TableCell key={data.time}>{data.time}</TableCell>
+                      <TableCell key={DATE}>{data.date}</TableCell>
                     </TableRow>
                   );
                 })
             ) : (
               <>
-                <Skeleton animation="wave"></Skeleton>
-                <Skeleton animation="wave"></Skeleton>
-                <Skeleton animation="wave"></Skeleton>
+                <TableRow
+                  className="dataRow placeholder"
+                  sx={{ width: 500, height: 500 }}
+                ></TableRow>
               </>
             )}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      {/* <TablePagination
         rowsPerPageOptions={[2, 5, 10]}
         component={"div"}
         count={testscoreData.length}
@@ -152,7 +201,17 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      ></TablePagination>
+      ></TablePagination> */}
+      {error && (
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={open}
+          onClose={() => setOpen(false)}
+          key={"snackbar"}
+        >
+          <Alert severity="error">Something went wrong</Alert>
+        </Snackbar>
+      )}
     </>
   );
 };

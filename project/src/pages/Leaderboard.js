@@ -29,19 +29,18 @@ const queryClient = new QueryClient({
 
 export default function Leaderboard() {
   const sessionUser = sessionStorage.getItem("user");
-  const { user } = JSON.parse(sessionUser);
+  const { username } = JSON.parse(sessionUser);
+  const [disabelUserSelection, setDisableUserSelection] = useState(false);
+  const [disableEvery, setDisableEvery] = useState(false);
+  const [disableAll, setDisableAll] = useState(false);
   const dropdownFilters = [
     {
       title: "game",
-      options: ["All", "minesweeper", "flood", "nonogram"],
-    },
-    {
-      title: "Type",
-      options: ["Default", "Daily"],
+      options: ["All", "minesweeper", "flood", "nonogram", "Daily"],
     },
     {
       title: "User",
-      options: ["You", "Followed", "All", "Custom"],
+      options: ["You", "Followed", "everyone", "Custom"],
     },
   ];
   const testscoreData = [
@@ -76,11 +75,24 @@ export default function Leaderboard() {
   function changeData(e, field) {
     if (field === 0) {
       setGame(e);
+      if (e === "Daily") {
+        setDisableUserSelection(true);
+      } else {
+        setDisableUserSelection(false);
+      }
+      if (e === "") {
+        setDisableEvery(true);
+      } else {
+        setDisableEvery(false);
+      }
     } else if (field === 1) {
-      setType(e);
-    } else if (field === 2) {
       setusersearch(e);
-    } else if (field === 3) {
+      if (e === "everyone") {
+        setDisableAll(true);
+      } else {
+        setDisableAll(false);
+      }
+    } else if (field === 2) {
       setDate(e);
     }
     let data = [
@@ -96,14 +108,14 @@ export default function Leaderboard() {
   }
 
   function setDateData(e) {
-    changeData(e, 3);
+    changeData(e, 2);
   }
 
   //console.log(game, type, usersearch);
   function changeDatacustom(e) {
     e.preventDefault();
     console.log("valikuid muudetud");
-    changeData(custom, 2);
+    changeData(custom, 1);
   }
 
   const [search, setSearch] = useState({
@@ -132,7 +144,7 @@ export default function Leaderboard() {
               className="filter"
               id="date"
               type="date"
-              defaultValue="2017-05-24"
+              defaultValue="2022-12-09"
               onChange={(e) => setDateData(e.target.value)}
             />
             {dropdownFilters.map((filter, index) => {
@@ -156,19 +168,24 @@ export default function Leaderboard() {
                     <RadioGroup
                       aria-labelledby={`${filter.title}-radio-group`}
                       name={`${filter.title}-radio-buttons-group`}
-                      defaultValue=""
+                      defaultValue={index === 0 ? "nonogram" : "everyone"}
                       key={"radioGroup" + index}
                     >
                       {filter.options.map((element) => {
                         return element !== "Custom" ? (
                           <FormControlLabel
-                            value={element}
+                            value={element !== "All" ? element : ""}
                             onChange={(e) =>
                               changeData(e.target.attributes.name.value, index)
                             }
-                            name={element}
+                            name={element !== "All" ? element : ""}
                             control={<Radio />}
                             label={element}
+                            disabled={
+                              (disabelUserSelection && index === 1) ||
+                              (disableAll && element === "All") ||
+                              (disableEvery && element === "everyone")
+                            }
                             key={`${element} ${index}`}
                           />
                         ) : (
@@ -177,6 +194,7 @@ export default function Leaderboard() {
                             name={element}
                             control={<Radio />}
                             key={`${element} ${index}`}
+                            disabled={disabelUserSelection && index === 1}
                             label={
                               <Box
                                 component={"form"}
