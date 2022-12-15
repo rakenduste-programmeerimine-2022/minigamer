@@ -15,7 +15,7 @@ import Lborad from "../components/Lborad";
 import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { isPast, parseISO } from "date-fns";
+//import { isPast, parseISO } from "date-fns";
 //import { add, parseISO, formatRFC3339 } from "date-fns";
 
 const queryClient = new QueryClient({
@@ -67,7 +67,7 @@ export default function Leaderboard() {
       } else {
         setDisableAll(false);
       }
-    } else if (field === 2 && isPast(parseISO(e))) {
+    } else if (field === 2) {
       setDate(e);
     }
     let data = [

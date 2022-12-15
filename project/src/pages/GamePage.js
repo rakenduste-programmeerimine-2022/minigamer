@@ -45,8 +45,6 @@ function GamePage() {
   const [open, setOpen] = useState(false);
 
   const navToLeaderBoards = () => {
-    // mangu id saata nii et leaderboardist tuleks see oige lahti
-    //setstate({ data: { id } });
     navigate("/leaderboard");
   };
 
