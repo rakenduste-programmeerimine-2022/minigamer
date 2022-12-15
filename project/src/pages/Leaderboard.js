@@ -8,7 +8,6 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Button,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -16,12 +15,13 @@ import Lborad from "../components/Lborad";
 import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { add, parseISO, formatRFC3339 } from "date-fns";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
       staleTime: Infinity,
     },
   },
@@ -41,29 +41,6 @@ export default function Leaderboard() {
     {
       title: "User",
       options: ["You", "Followed", "everyone", "Custom"],
-    },
-  ];
-  const testscoreData = [
-    {
-      user: "jajaj",
-      game: "minesweeper",
-      score: "2",
-      challegeType: "daily",
-      time: "00:00:20",
-    },
-    {
-      user: "justnii",
-      game: "nonogram",
-      score: "22232",
-      challegeType: "daily",
-      time: "22s",
-    },
-    {
-      user: "mhm",
-      game: "flood",
-      score: "43",
-      challegeType: "default",
-      time: "5s",
     },
   ];
 
@@ -117,23 +94,6 @@ export default function Leaderboard() {
     console.log("valikuid muudetud");
     changeData(custom, 1);
   }
-
-  const [search, setSearch] = useState({
-    game: "flood",
-    type: "default",
-    usersearch: "testuser",
-    date: "2022-12-10",
-  });
-
-  const searchSetter = {
-    newSearch: () => {
-      setSearch({
-        game: game,
-        type: type,
-        usersearch: usersearch,
-      });
-    },
-  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -217,28 +177,7 @@ export default function Leaderboard() {
               );
             })}
           </Box>
-          {/* <Box
-            className="searchButtons"
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              margin: 3,
-              padding: 2,
-            }}
-          >
-            <Button className="btn" onClick={searchSetter.newSearch}>
-              Search daily
-            </Button>
-            <Button className="btn" onClick={searchSetter.newSearch}>
-              Search regular
-            </Button>
-          </Box> */}
-          <Lborad
-            testscoreData={testscoreData}
-            searchSetter={searchSetter}
-            changeData={changeData}
-          />
+          <Lborad changeData={changeData} />
         </Container>
       </Box>
     </QueryClientProvider>

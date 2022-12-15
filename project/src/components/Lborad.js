@@ -17,7 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 
-const Lborad = ({ testscoreData, searchSetter, changeData }) => {
+const Lborad = ({ changeData }) => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [PAGE, setPAGE] = useState(1);
   const [open, setOpen] = useState(false);
@@ -50,6 +50,11 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
     if (DATE) {
       URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}?date=${DATE}`;
     }
+  }
+  //first load condition if user decides to change date
+  if (DATE && !GAME) {
+    GAME = "nonogram";
+    URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}?date=${DATE}`;
   }
 
   //Daily challenge of set day
@@ -106,13 +111,17 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
       console.log(error);
       setOpen(true);
     }
-  }, [error]);
+    if (data && data.object.scores.length === 0) {
+      setPAGE(1);
+    }
+  }, [error, data]);
 
   if (data) {
     scores = data.object.scores;
     console.log(data);
     console.log(data.object.scores.length);
   }
+  const titleRow = ["Rank", "User", "Game", "Score", "Time"];
 
   return (
     <>
@@ -120,13 +129,11 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
         <Table className="boardTable">
           <TableBody>
             <TableRow className="titleRow">
-              <TableCell key={"rank"}>Rank</TableCell>
-              <TableCell key={"user"}>User</TableCell>
-              <TableCell key={"game"}>Game</TableCell>
-              <TableCell key={"Score"}>Score</TableCell>
-              <TableCell key={"Time"}>Time</TableCell>
+              {titleRow.map((title) => {
+                return <TableCell key={title}>{title}</TableCell>;
+              })}
             </TableRow>
-            {data ? (
+            {data && data.object.scores.length !== 0 ? (
               scores.map((data, index) => {
                 return (
                   <TableRow key={index} className="dataRow">
@@ -143,22 +150,32 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
                           ? "Nonogram"
                           : data.gameID === 1
                           ? "Minesweeper"
-                          : data.gameID === 2
-                          ? "Flood"
-                          : "Nonogram" /* default search is nonogram */
-                        : GAME}
+                          : data.gameID === 2 && "Flood"
+                        : GAME
+                        ? GAME
+                        : "nonogram"}{" "}
+                      {/* nonogram is the default search when nothing is picked */}
                     </TableCell>
                     <TableCell key={data.score}>{data.score}</TableCell>
-                    <TableCell key={DATE}>{data.date?.split("T")[0]}</TableCell>
+                    <TableCell key={DATE}>
+                      {data.date ? data.date.split("T")[0] : DATE}
+                    </TableCell>
                   </TableRow>
                 );
               })
             ) : (
               <>
-                <TableRow
-                  className="dataRow placeholder"
-                  sx={{ width: 500, height: 500 }}
-                ></TableRow>
+                {titleRow.map((title) => {
+                  return (
+                    <TableRow className="dataRow" key={title}>
+                      {titleRow.map((title, index) => {
+                        return (
+                          <TableCell key={title + index}>No data</TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
               </>
             )}
           </TableBody>
