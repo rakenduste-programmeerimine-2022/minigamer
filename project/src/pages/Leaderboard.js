@@ -144,7 +144,6 @@ export default function Leaderboard() {
               className="filter"
               id="date"
               type="date"
-              defaultValue="2022-12-09"
               onChange={(e) => setDateData(e.target.value)}
             />
             {dropdownFilters.map((filter, index) => {

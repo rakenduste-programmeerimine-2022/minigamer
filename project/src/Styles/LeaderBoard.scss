@@ -66,8 +66,15 @@
         justify-content: center;
         align-items: center;
         border: 2px solid $black;
+       td{
+        text-align: center;
+       }
         .titleRow{
             background-color: $darkBlue;
+            text-align: center;
+            td{
+                color: white;
+            }
           
             
         }
