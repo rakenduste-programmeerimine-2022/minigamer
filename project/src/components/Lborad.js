@@ -6,16 +6,11 @@ import {
   TableCell,
   TableContainer,
   TablePagination,
-  Box,
-  Button,
-  Skeleton,
-  Typography,
   Snackbar,
   Alert,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { DataGrid } from "@mui/x-data-grid";
 
 const Lborad = ({ changeData }) => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
@@ -78,14 +73,14 @@ const Lborad = ({ changeData }) => {
     }
     if (DATE && !GAME) {
       dateaddon = `?date=${DATE}`;
-    } else if (DATE && GAME) {
+    } else if (DATE && GAME && GAME !== "Daily") {
       dateaddon = `&date=${DATE}`;
     }
     URL = `../.netlify/functions/server/score/u/${username}/following/${PAGE}${gameaddon}${dateaddon}`;
   }
 
   //scores made by user
-  if (USER && USER !== "Followed" && USER !== "everyone") {
+  if (USER && USER !== "Followed" && USER !== "everyone" && GAME !== "Daily") {
     let gameaddon = "";
     let dateaddon = "";
     if (USER === "You") USER = username;
@@ -97,7 +92,7 @@ const Lborad = ({ changeData }) => {
     URL = `../.netlify/functions/server/score/u/${USER}/${PAGE}${gameaddon}${dateaddon}`;
   }
 
-  const { isLoading, isFetching, error, data } = useQuery(
+  const { isLoading, error, data } = useQuery(
     ["Leaderboards", PAGE, searchParams[0]],
     async () => {
       const res = await axios.get(URL);
@@ -165,17 +160,15 @@ const Lborad = ({ changeData }) => {
               })
             ) : (
               <>
-                {titleRow.map((title) => {
-                  return (
-                    <TableRow className="dataRow" key={title}>
-                      {titleRow.map((title, index) => {
-                        return (
-                          <TableCell key={title + index}>No data</TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                <TableRow className="dataRow" key={"noData"}>
+                  {titleRow.map((title, index) => {
+                    return (
+                      <TableCell key={title + index}>
+                        {isLoading ? "loading data" : "no data"}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
               </>
             )}
           </TableBody>

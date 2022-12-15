@@ -8,7 +8,6 @@ import LeaderBoardsSection from "../components/LeaderBoardsSection";
 import DailyChallengeSection from "../components/DailyChallengeSection";
 import "../Styles/DailyChallengeSection.scss";
 import "../Styles/LeaderBoardsSection.scss";
-import { Container } from "@mui/system";
 
 function Home() {
   return (

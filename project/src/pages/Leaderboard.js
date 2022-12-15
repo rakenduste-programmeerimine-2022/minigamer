@@ -15,7 +15,8 @@ import Lborad from "../components/Lborad";
 import React, { useState } from "react";
 import "../Styles/LeaderBoard.scss";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { add, parseISO, formatRFC3339 } from "date-fns";
+import { isPast, parseISO } from "date-fns";
+//import { add, parseISO, formatRFC3339 } from "date-fns";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,8 +29,6 @@ const queryClient = new QueryClient({
 });
 
 export default function Leaderboard() {
-  const sessionUser = sessionStorage.getItem("user");
-  const { username } = JSON.parse(sessionUser);
   const [disabelUserSelection, setDisableUserSelection] = useState(false);
   const [disableEvery, setDisableEvery] = useState(false);
   const [disableAll, setDisableAll] = useState(false);
@@ -46,7 +45,6 @@ export default function Leaderboard() {
 
   const [custom, setCustom] = useState("");
   const [game, setGame] = useState("");
-  const [type, setType] = useState("");
   const [usersearch, setusersearch] = useState("");
   const [date, setDate] = useState("");
   function changeData(e, field) {
@@ -69,13 +67,12 @@ export default function Leaderboard() {
       } else {
         setDisableAll(false);
       }
-    } else if (field === 2) {
+    } else if (field === 2 && isPast(parseISO(e))) {
       setDate(e);
     }
     let data = [
       {
         game: game,
-        type: type,
         date: date,
         usersearch: usersearch,
       },
