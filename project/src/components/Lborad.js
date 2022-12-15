@@ -140,7 +140,7 @@ const Lborad = ({ changeData }) => {
                       {data.username}
                     </TableCell>
                     <TableCell key={data.gameID + index + "game"}>
-                      {USER !== "everyone"
+                      {data.gameID
                         ? data.gameID === 0
                           ? "Nonogram"
                           : data.gameID === 1
