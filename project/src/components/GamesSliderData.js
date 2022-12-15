@@ -1,10 +1,9 @@
-import MinesweeperImage from "../Images/minesweeper_img.jpg";
+import MinesweeperImage from "../Images/minesweeper.jpg";
 import SudokuImage from "../Images/sudoku_img.png";
-import NonogramImage from "../Images/nonogram_img.jpg";
+import NonogramImage from "../Images/nonogram.jpg";
 
-import MinesweeperThumb from "../Images/minesweeper_img.jpg";
 //import SudokuThumb from "../Images/sudoku_img.png";
-import NonogramThumb from "../Images/nonogram_img.jpg";
+import NonogramThumb from "../Images/nonogram.jpg";
 import NewThumb from "../Images/download-flat.png";
 import FloodImage from "../Images/flood.jpg";
 import DailyImage from "../Images/question-markpng.png"; //<a href="https://www.flaticon.com/free-icons/question" title="question icons">Question icons created by Dave Gandy - Flaticon</a>
@@ -18,7 +17,7 @@ export const GamesSliderData = [
     instructions:
       "To win a round of Minesweeper, you must click on the board every square that doesn't have a mine under it. Once you've done so, the game will be over. If you accidentally click a square that has a mine beneath it, the game will be over. You'll have the option of starting a new game or redoing the one you just played.",
     videoTutorial: "",
-    thumbnail: MinesweeperThumb,
+    thumbnail: MinesweeperImage,
     nr: 0,
   },
   {
