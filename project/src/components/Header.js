@@ -153,7 +153,13 @@ function ResponsiveAppBar() {
               </Link>
             )}
             {username ? (
-              <Box className="mobileLogin">Log out</Box>
+              <Box
+                className="mobileLogin"
+                sx={{ cursor: "pointer" }}
+                onClick={() => logout()}
+              >
+                Log out
+              </Box>
             ) : (
               <Link to={`/login`} className="mobileLogin">
                 Login

@@ -3,7 +3,7 @@ import createBoard from "./createBoard";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
 import PropTypes from "prop-types";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 const Board = ({ seed, setGameWon }) => {
   const [grid, setGrid] = useState([]);
