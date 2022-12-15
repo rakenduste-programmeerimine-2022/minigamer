@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
-const gamesDropdown = ["Minesweeper", "Flood", "Nonogram"];
+const gamesDropdown = ["Minesweeper", "Flood", "Nonogram", "Daily"];
 // let username = "Username";
 
 function ResponsiveAppBar() {

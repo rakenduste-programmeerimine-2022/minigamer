@@ -6,6 +6,8 @@ import MinesweeperThumb from "../Images/minesweeper_img.jpg";
 //import SudokuThumb from "../Images/sudoku_img.png";
 import NonogramThumb from "../Images/nonogram_img.jpg";
 import NewThumb from "../Images/download-flat.png";
+import FloodImage from "../Images/flood.jpg";
+import DailyImage from "../Images/question-markpng.png"; //<a href="https://www.flaticon.com/free-icons/question" title="question icons">Question icons created by Dave Gandy - Flaticon</a>
 
 export const GamesSliderData = [
   {
@@ -22,12 +24,12 @@ export const GamesSliderData = [
   {
     link: "/games/Flood",
     name: "Flood",
-    image: SudokuImage,
+    image: FloodImage,
     desc: "Flood is a color-based puzzle game where you have to make the entire grid a single color and do it in the least amount of clicks. Clicking on a cell changes the top-left cell and its similarly-colored neighbors to that color, thus increasing the surface area the clicked cell's color has.",
     instructions:
       "To play Flood, click any cell on the grid. The top-left cell and its same-color neighbors will change to the clicked cell's color, expanding the color's surface area. To win, the entire grid must contain a single color.",
     videoTutorial: "",
-    thumbnail: NewThumb,
+    thumbnail: FloodImage,
     nr: 1,
   },
   {
@@ -44,11 +46,11 @@ export const GamesSliderData = [
   {
     link: "/games/Daily",
     name: "Daily",
-    image: NewThumb,
+    image: DailyImage,
     desc: "Daily Challenge",
     instructions: "Daily Challenge",
     videoTutorial: undefined,
-    thumbnail: NewThumb,
+    thumbnail: DailyImage,
     nr: 3,
   },
 ];
