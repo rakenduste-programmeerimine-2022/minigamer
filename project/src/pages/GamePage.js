@@ -118,10 +118,18 @@ function GamePage() {
               {id === "Daily" ? `${id} challenge` : id}
               {state.gameWon ? " complete!" : ""}
             </Typography>
-            <Button onClick={stateSetters.newGame}>New game</Button>
-            <Button onClick={submitScore} disabled={!state.gameWon}>
-              Submit score
-            </Button>
+            <Box className="upperContent">
+              <Button className="btn newgameBtn" onClick={stateSetters.newGame}>
+                New game
+              </Button>
+              <Button
+                className="btn sumbitbtn"
+                onClick={submitScore}
+                disabled={!state.gameWon}
+              >
+                Submit score
+              </Button>
+            </Box>
             <Box className="playableGame">
               {state.showGame ? (
                 <Game

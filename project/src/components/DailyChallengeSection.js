@@ -7,10 +7,7 @@ function DailyChallengeSection() {
   let navigate = useNavigate();
 
   return (
-    <Box
-      className="dailyChallengeSection"
-      sx={{ p: 2, backgroundColor: "black" }}
-    >
+    <Box className="dailyChallengeSection">
       <Container className="dailyChallengeWrapper">
         <Box
           className="leftDiv"

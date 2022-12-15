@@ -67,7 +67,7 @@ const Lborad = ({ testscoreData, searchSetter, changeData }) => {
 
   let URL = `../.netlify/functions/server/score/g/nonogram/${PAGE}`;
   // search games by date or all dates
-  if (GAME && GAME !== "Daily" && !USER) {
+  if (GAME && GAME !== "Daily") {
     URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}`;
     if (DATE) {
       URL = `../.netlify/functions/server/score/g/${GAME}/${PAGE}?date=${DATE}`;
