@@ -32,8 +32,6 @@ const Lborad = ({ changeData }) => {
   let GAME = searchParams[0].game;
   let DATE = searchParams[0].date;
   let USER = searchParams[0].usersearch;
-  let callQuery = searchParams[0].callQuery;
-  console.log(callQuery);
   let scores = [];
   console.log(GAME, DATE, USER);
   if (!USER) USER = "everyone";
