@@ -58,7 +58,7 @@ const Daily = ({ stateSetters, name }) => {
         );
     }
     if (error) {
-        return error;
+        return `${error}`;
     }
 
     const { daily } = data.object;
