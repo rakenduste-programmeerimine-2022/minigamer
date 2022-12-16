@@ -24,8 +24,6 @@ const Daily = ({ stateSetters, name }) => {
                 throw new Error("Not logged in.");
             }
             const { token } = JSON.parse(sessionUser);
-            console.log(JSON.parse(sessionUser));
-            console.log({ token });
             const res = await axios.get(
                 "../.netlify/functions/server/seed/daily",
                 {
