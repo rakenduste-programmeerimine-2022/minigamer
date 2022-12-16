@@ -1,5 +1,6 @@
 const games = ["nonogram", "minesweeper", "flood", "daily"];
 
+// it appears these were not on netlify
 const env = [
     process.env.NONOGRAM_KEY,
     process.env.MINESWEEPER_KEY,
