@@ -16,61 +16,62 @@ import { default as Flood } from "../components/flood/Board";
 const games = [Nonogram, Minesweeper, Flood];
 
 const Daily = ({ stateSetters, name }) => {
-  const { isLoading, isFetching, error, data } = useQuery(
-    ["Daily", "Seed"],
-    async () => {
-      const sessionUser = sessionStorage.getItem("user");
-      if (!sessionUser) {
-        throw new Error("Not logged in.");
-      }
-      const { token } = JSON.parse(sessionUser);
-      console.log(JSON.parse(sessionUser));
-      console.log({ token });
-      const res = await axios.get("../.netlify/functions/server/seed/daily", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.data.error) {
-        throw new Error(res.data.text);
-      }
-      return res.data;
-    }
-  );
-
-  useEffect(() => {
-    if (name !== "Daily") {
-      stateSetters.newGame(false);
-    }
-  });
-
-  if (isLoading || isFetching) {
-    return (
-      <Skeleton
-        variant="rectangular"
-        height={500}
-        width={500}
-        animation={"wave"}
-      />
+    const { isLoading, isFetching, error, data } = useQuery(
+        ["Daily", "Seed"],
+        async () => {
+            const sessionUser = sessionStorage.getItem("user");
+            if (!sessionUser) {
+                throw new Error("Not logged in.");
+            }
+            const { token } = JSON.parse(sessionUser);
+            const res = await axios.get(
+                "../.netlify/functions/server/seed/daily",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            if (res.data.error) {
+                throw new Error(res.data.text);
+            }
+            return res.data;
+        }
     );
-  }
-  if (error) {
-    return `Error: ${error}`;
-  }
 
-  const { daily } = data.object;
-  const Game = games[daily.gameID];
+    useEffect(() => {
+        if (name !== "Daily") {
+            stateSetters.newGame(false);
+        }
+    });
 
-  return (
-    <Box className={"Daily"}>
-      <Game seed={daily.seed} setGameWon={stateSetters.setGameWon} />
-    </Box>
-  );
+    if (isLoading || isFetching) {
+        return (
+            <Skeleton
+                variant="rectangular"
+                height={500}
+                width={500}
+                animation={"wave"}
+            />
+        );
+    }
+    if (error) {
+        return `${error}`;
+    }
+
+    const { daily } = data.object;
+    const Game = games[daily.gameID];
+
+    return (
+        <Box className={"Daily"}>
+            <Game seed={daily.seed} setGameWon={stateSetters.setGameWon} />
+        </Box>
+    );
 };
 
 Daily.propTypes = {
-  stateSetters: PropTypes.objectOf(PropTypes.func),
-  name: PropTypes.string,
+    stateSetters: PropTypes.objectOf(PropTypes.func),
+    name: PropTypes.string,
 };
 
 export default Daily;

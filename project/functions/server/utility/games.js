@@ -1,5 +1,6 @@
 const games = ["nonogram", "minesweeper", "flood", "daily"];
 
+// it appears these were not on netlify
 const env = [
     process.env.NONOGRAM_KEY,
     process.env.MINESWEEPER_KEY,
@@ -15,8 +16,8 @@ exports.environmentVariable = (name) => {
     return env[id];
 };
 
-exports.gameID = ({ byName = true, name = "", env = "" }) => {
-    return byName ? games.indexOf(name) : env.indexOf(env);
+exports.gameID = ({ byName = true, name = "", envVar = "" }) => {
+    return byName ? games.indexOf(name) : env.indexOf(envVar);
 };
 
 exports.name = (id) => {

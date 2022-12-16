@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { errorResponse: errorMessage } = require("../utility/response");
+const { errorResponse } = require("../utility/response");
 const games = require("../utility/games");
 
 const hasBearerToken = (token) => {
@@ -22,15 +22,15 @@ const checkLogin = (req, res, next) => {
     if (!auth) {
         return res
             .status(401)
-            .send(errorMessage("Log in to perform this action."));
+            .send(errorResponse(401, "Log in to perform this action."));
     }
     const token = hasBearerToken(auth);
     if (!token) {
-        return res.status(400).send(errorMessage("Invalid token."));
+        return res.status(400).send(400, errorResponse("Invalid token."));
     }
     jwt.verify(token, process.env.JWT_USER_KEY, (error, result) => {
         if (error || !result) {
-            return res.status(403).send(errorMessage("Invalid token."));
+            return res.status(403).send(403, errorResponse("Invalid token."));
         }
         next();
     });
@@ -42,20 +42,20 @@ const checkUser = (req, res, next) => {
     if (!auth) {
         return res
             .status(401)
-            .send(errorMessage("Log in to perform this action."));
+            .send(errorResponse(401, "Log in to perform this action."));
     }
     const token = hasBearerToken(auth);
     if (!token) {
-        return res.status(400).send(errorMessage("Invalid token."));
+        return res.status(400).send(400, errorResponse("Invalid token."));
     }
     jwt.verify(token, process.env.JWT_USER_KEY, (error, result) => {
         if (error || !result) {
-            return res.status(403).send(errorMessage("Invalid token."));
+            return res.status(403).send(403, errorResponse("Invalid token."));
         }
         if (_username != result.username) {
             return res
                 .status(401)
-                .send(errorMessage("Cannot perform this action."));
+                .send(errorResponse(401, "Cannot perform this action."));
         }
         next();
     });
@@ -66,26 +66,28 @@ const checkUserAndGame = (req, res, next) => {
     if (!authHeader) {
         return res
             .status(401)
-            .send(errorMessage("Log in to perform this action."));
+            .send(errorResponse(401, "Log in to perform this action."));
     }
     const auth = authHeader.split(",");
     if (auth.length != 2) {
-        return res.status(403).send(errorMessage("Missing token."));
+        return res.status(403).send(403, errorResponse("Missing token."));
     }
     const { _username, _gameID, _seed, _score } = req.body;
     const userToken = hasBearerToken(auth[0].trim());
     const gameToken = hasBearerToken(auth[1].trim());
     if (!userToken || !gameToken) {
-        return res.status(400).send(errorMessage("Missing token."));
+        return res.status(400).send(400, errorResponse("Missing token."));
     }
     jwt.verify(userToken, process.env.JWT_USER_KEY, (error, result) => {
         if (error || !result) {
-            return res.status(403).send(errorMessage("Invalid user token."));
+            return res
+                .status(403)
+                .send(403, errorResponse("Invalid user token."));
         }
         if (_username != result.username) {
             return res
                 .status(401)
-                .send(errorMessage("Cannot perform this action."));
+                .send(errorResponse(401, "Cannot perform this action."));
         }
     });
     jwt.verify(gameToken, process.env.JWT_GAME_KEY, (error, result) => {
@@ -94,7 +96,8 @@ const checkUserAndGame = (req, res, next) => {
             return res
                 .status(403)
                 .send(
-                    errorMessage(
+                    errorResponse(
+                        403,
                         expired
                             ? "Game token has expired."
                             : "Invalid game token."
@@ -103,11 +106,19 @@ const checkUserAndGame = (req, res, next) => {
         }
         if (
             result.score != _score ||
-            games.gameID({ byName: false, env: result.env }) != _gameID
+            games.gameID({ byName: false, envVar: result.env }) != _gameID
         ) {
             return res
                 .status(400)
-                .send(errorMessage("Token data does not match."));
+                .send(
+                    errorResponse(
+                        400,
+                        `Token data does not match: ${games.gameID({
+                            byName: false,
+                            envVar: result.env,
+                        })}, ${_gameID}, ${_score}`
+                    )
+                );
         }
         next();
     });

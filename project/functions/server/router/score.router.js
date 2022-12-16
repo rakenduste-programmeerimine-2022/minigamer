@@ -54,6 +54,7 @@ router.get(
 );
 
 // .netlify/functions/server/score/u/{USER}/{PAGE}?game={GAME}&date=YYYY-MM-DD
+
 // params require:
 //  {USER} - username
 //  {PAGE} - integer, minimum 1

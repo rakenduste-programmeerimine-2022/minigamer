@@ -38,9 +38,9 @@ const Minesweeper = ({ stateSetters, name }) => {
   }
 
   return (
-    <Box>
-      <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />;
-    </Box>
+      <Box>
+          <Board seed={data.object.seed} setGameWon={stateSetters.setGameWon} />
+      </Box>
   );
 };
 

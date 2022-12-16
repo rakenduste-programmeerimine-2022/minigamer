@@ -42,7 +42,7 @@ exports.methods = {
             errorResponse(400, "No date provided.");
         }
         const dateObj = startOfDay(new Date(date));
-        console.log(typeof before);
+        // console.log(typeof before);
         const query = await DailyChallenge.find({
             date: before ? { $lt: dateObj } : { $gt: dateObj },
         })

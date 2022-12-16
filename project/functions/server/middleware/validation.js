@@ -1,5 +1,5 @@
 const { validationResult, body, param, query } = require("express-validator");
-const { errorResponse: errorMessage } = require("../utility/response");
+const { errorResponse } = require("../utility/response");
 
 const FUNCTIONS = {
     body,
@@ -78,7 +78,7 @@ exports.finishValidation = (req, res, next) => {
             return `${total}${current.msg}\n`;
         }, "");
         message = message.trim();
-        return res.status(400).send(errorMessage(message));
+        return res.status(400).send(errorResponse(message));
     }
     next();
 };
