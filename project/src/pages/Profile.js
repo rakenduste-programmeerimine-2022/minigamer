@@ -15,35 +15,7 @@ const queryClient = new QueryClient({
 });
 
 const Profile = () => {
-  //const [data, setData] = useState(null);
-  //const [error, setError] = useState(null);
-
-  //OLD
-  /* 
-  const getFollowData = async () => {
-    setLoading(true);
-    axios
-      .get(followURL)
-      .then((res) => {
-        setData(res.data);
-        setFollowing(res.data.object.following);
-        setFollowers(res.data.object.followers);
-        setUserFollowed(res.data.object.followers.includes(user));
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-  useEffect(() => {
-    getFollowData();
-  }, [followURL]);
-
-  if (error) {
-    return <ErrorPage from={"profile"} />;
-  } */
+  
   return (
     <QueryClientProvider client={queryClient}>
       <Box className="profile" id="profile">

@@ -1,10 +1,12 @@
-import MinesweeperImage from "../Images/minesweeper_img.jpg";
-import SudokuImage from "../Images/sudoku_img.png";
-import NonogramImage from "../Images/nonogram_img.jpg";
+import MinesweeperImage from "../Images/minesweeper.jpg";
+import NonogramImage from "../Images/nonogram.jpg";
+import FloodImage from "../Images/flood.jpg";
+import DailyImage from "../Images/daily.png";
 
 import MinesweeperThumb from "../Images/minesweeper_thumb.jpg";
 import NonogramThumb from "../Images/nonogram_thumb.jpg";
-import NewThumb from "../Images/download-flat.png";
+import FloodThumb from "../Images/flood_thumb.png";
+import DailyThumb from "../Images/daily_thumb.png";
 
 export const GamesSliderData = [
     {
@@ -30,20 +32,21 @@ export const GamesSliderData = [
     {
         link: "/games/Flood",
         name: "Flood",
-        image: SudokuImage,
+        image: FloodImage,
         desc: "Flood is a color-based puzzle game where you have to make the entire grid a single color and do it in the least amount of clicks. Clicking on a cell changes the top-left cell and its similarly-colored neighbors to that color, thus increasing the surface area the clicked cell's color has.",
         instructions:
             "To play Flood, click any cell on the grid. The top-left cell and its same-color neighbors will change to the clicked cell's color, expanding the color's surface area. To win, the entire grid must contain a single color.",
         videoTutorial: "",
-        thumbnail: NewThumb,
+        thumbnail: FloodThumb,
     },
     {
         link: "/games/Daily",
         name: "Daily",
-        image: NewThumb,
-        desc: "Daily Challenge",
-        instructions: "Daily Challenge",
+        image: DailyImage,
+        desc: "Every day, there's a game that is the same for each user. Compete and show your mastery of Minigamer's array of games by becoming the best player of the day!",
+        instructions:
+            "You can find the instructions of the daily challenge game on its corresponding game page.",
         videoTutorial: undefined,
-        thumbnail: NewThumb,
+        thumbnail: DailyThumb,
     },
 ];

@@ -3,35 +3,23 @@ import { Button, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
+import leaderBoardImg from "../Images/leaderboard.jpg";
 
 function LeaderBoards_Section() {
   let navigate = useNavigate();
 
   return (
-    <Box
-      className="leaderBoardsSection"
-      sx={{
-        p: 2,
-        backgroundColor: "gray",
-      }}
-    >
-      <Container className="LeaderBoards">
+    <Box className="leaderBoardsSection">
+      <Container className="LeaderBoards" maxWidth="lg">
         <Box className="LeaderBoardsTextWrapper">
           <Box className="LeaderBoardsText">
             <Typography className="title">Compete with others</Typography>
 
             <Typography className="text">
               Registered users can record their score and Compete with others.
-              Stats are kept for every day but also across all time. Make your
-              mark. More text vMore textMore textMore textMore textMore textMore
-              textMore textMore textMore textMore textMore textMore textMore
-              textMore textMore textMore textMore textMore textMore textMore
-              textMore textMore textMore text
+              Compete in both daily Challenges and regular challenges across 3
+              diffrent games.
             </Typography>
-            <Box
-              className="divider"
-              sx={{ width: 1, height: 2, backgroundColor: "gray" }}
-            ></Box>
             <Box className="btn_wrap">
               <Button
                 className="leaderBoards_btn btn"
@@ -49,17 +37,21 @@ function LeaderBoards_Section() {
             </Box>
           </Box>
         </Box>
-        <Box className="LeaderBoardsImage">
-          <Box
-            className="image"
-            sx={
-              {
-                //backgroundColor: "red",
-                //display: "flex",
-                //justifyContent: "flex-end",
+        <Box className="LeaderBoardsImageWrapper">
+          <Box className="LeaderBoardsImage">
+            <Box
+              className="image"
+              component={"img"}
+              src={leaderBoardImg}
+              sx={
+                {
+                  //backgroundColor: "red",
+                  //display: "flex",
+                  //justifyContent: "flex-end",
+                }
               }
-            }
-          ></Box>
+            ></Box>
+          </Box>
         </Box>
       </Container>
     </Box>

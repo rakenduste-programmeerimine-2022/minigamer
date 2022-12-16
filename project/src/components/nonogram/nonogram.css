@@ -52,8 +52,16 @@ table{
     border: 1px solid black
 }
 
-@media only screen and (max-width: 700px) {
+.nonogram td, .nonogram th{
+    padding: 0.7vw 1.2vw;
+}
+@media only screen and (max-width: 1000px) {
     .nonogram td, .nonogram th{
-        padding: 8px;
+        padding: 1vh 2.2vw;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .nonogram td, .nonogram th{   
+        padding: 1.2vw 2.3vw;
     }
 }

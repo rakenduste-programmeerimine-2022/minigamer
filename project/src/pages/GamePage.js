@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Box, Button, Typography, Skeleton, Snackbar } from "@mui/material";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import React from "react";
 
@@ -59,8 +59,6 @@ function GamePage() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const navToLeaderBoards = () => {
-        // mangu id saata nii et leaderboardist tuleks see oige lahti
-        //setstate({ data: { id } });
         navigate("/leaderboard");
     };
 
@@ -216,10 +214,21 @@ function GamePage() {
                             {id === "Daily" ? `${id} challenge` : id}
                             {gameState.won ? " complete!" : ""}
                         </Typography>
-                        <Button onClick={stateSetters.newGame}>New game</Button>
-                        <Button onClick={submitScore} disabled={!gameState.won}>
-                            Submit score
-                        </Button>
+                        <Box className="upperContent">
+                            <Button
+                                className="btn newgameBtn"
+                                onClick={stateSetters.newGame}
+                            >
+                                New game
+                            </Button>
+                            <Button
+                                className="btn sumbitbtn"
+                                onClick={submitScore}
+                                disabled={!gameState.won}
+                            >
+                                Submit score
+                            </Button>
+                        </Box>
                         <Box className="playableGame">
                             {gameState.show ? (
                                 <Game
@@ -273,9 +282,9 @@ function GamePage() {
                                 </Typography>
                             </Box>
 
-                            <Link className="tutorial">
+                            {/* <Link className="tutorial">
                                 <Button className="btn">Video tutorial</Button>
-                            </Link>
+                            </Link> */}
                         </Box>
                     </Box>
                     <Box className="rightDiv">

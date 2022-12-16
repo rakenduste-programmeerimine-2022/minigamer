@@ -3,7 +3,7 @@ import createBoard from "./createBoard";
 import Cell from "./Cell";
 import { revealed } from "./reveal";
 import PropTypes from "prop-types";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 const Board = ({ seed, setGameWon }) => {
   const [grid, setGrid] = useState([]);
@@ -11,15 +11,15 @@ const Board = ({ seed, setGameWon }) => {
   const [minelocations, setMinelocations] = useState([]);
   const [gameState, setGameState] = useState("");
   useEffect(() => {
-      function freshBoard() {
-          const SIZE = 10;
-          const BOMBS = 15;
-          const newBoard = createBoard(SIZE, SIZE, BOMBS, seed);
-          setNonMines(SIZE * SIZE - BOMBS);
-          setMinelocations(newBoard.mineLocation);
-          setGrid(newBoard.board);
-      }
-      freshBoard();
+    function freshBoard() {
+      const SIZE = 10;
+      const BOMBS = 15;
+      const newBoard = createBoard(SIZE, SIZE, BOMBS, seed);
+      setNonMines(SIZE * SIZE - BOMBS);
+      setMinelocations(newBoard.mineLocation);
+      setGrid(newBoard.board);
+    }
+    freshBoard();
   }, [seed]);
 
   //FLAG -- RIGHT CLICK
@@ -73,25 +73,22 @@ const Board = ({ seed, setGameWon }) => {
 
   return (
       <Box className="Minesweeper">
-          <Typography>{gameState}</Typography>
-          <Box>
-              {grid.map((singleRow, index1) => {
-                  return (
-                      <Box className="row" key={index1}>
-                          {singleRow.map((singleBlock, index2) => {
-                              return (
-                                  <Cell
-                                      details={singleBlock}
-                                      updateFlag={updateFlag}
-                                      revealCell={revealCell}
-                                      key={index2}
-                                  />
-                              );
-                          })}
-                      </Box>
-                  );
-              })}
-          </Box>
+          {grid.map((singleRow, index1) => {
+              return (
+                  <Box className="row" key={index1}>
+                      {singleRow.map((singleBlock, index2) => {
+                          return (
+                              <Cell
+                                  details={singleBlock}
+                                  updateFlag={updateFlag}
+                                  revealCell={revealCell}
+                                  key={index2}
+                              />
+                          );
+                      })}
+                  </Box>
+              );
+          })}
       </Box>
   );
 };

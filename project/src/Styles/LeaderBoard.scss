@@ -1,45 +1,7 @@
 @import 'Variables.scss'; 
 
 .leaderBoard{
-   
- /*    .filters{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .leaderboardsBtn{
-        margin-right: 25px;
-        margin-left: 25px;
-        width: 100%;
-        .bar{
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            width: 10px;
-            height: 4px;
-            background-color: $white;
-            &.left{
-                transform: rotate(-45deg);
-            }
-            &.right{
-                transform: rotate(45deg);
-                right: 15px;
-            }
-        }
-        &.open{
-            .bar{
-                &.left{
-                    transform: rotate(45deg);
-                }
-                &.right{
-                    transform: rotate(-45deg);
-                }
-            }
-        }
-        &:hover .bar{
-            background-color: $darkBlue;
-        }
-    } */
+    min-height: 76vh;
     .filtering{
         margin-top: 70px;
         display: flex;
@@ -66,8 +28,15 @@
         justify-content: center;
         align-items: center;
         border: 2px solid $black;
+       td{
+        text-align: center;
+       }
         .titleRow{
             background-color: $darkBlue;
+            text-align: center;
+            td{
+                color: white;
+            }
           
             
         }

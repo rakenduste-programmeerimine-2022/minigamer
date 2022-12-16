@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { errorResponse } = require("../utility/response");
 
 const CLUSTER = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@minigamer.acixzgo.mongodb.net/?retryWrites=true&w=majority`;
-const DB = process.env.MONGO_TEST_DB;
+const DB = process.env.MONGO_PROD_DB;
 
 // this is alright to do with netlify since there isn't a port always running an instance of the backend
 exports.connect = (req, res, next) => {

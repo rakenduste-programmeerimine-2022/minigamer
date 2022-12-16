@@ -12,7 +12,7 @@
     }   
 
     .gameWindow{
-        background-color: aqua;
+        background-color: $lightBlue;
         //max-width: calc(100vh - $headerHeight);
         max-width: 93vh;
         position: relative;
@@ -26,10 +26,23 @@
             display: block;
             padding-top: 100%;
         }
+        .title{
+            text-align: center;
+        }
+        .upperContent{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
         .playableGame{
             position: absolute;
             width: 100%;
-            height: 100%;
+            //height: 100%;
+            display: grid;
+            align-items: baseline;
+            justify-content: center;
         }
     }
     .bottomWrap{
@@ -68,7 +81,7 @@
         flex-direction: column;
     }
     .rightDiv{
-        background-color: rgb(160, 128, 128);
+        background-color: $lightBlue;
         
         .title{
             font-size: $h4_scaling;
@@ -91,6 +104,24 @@
         }
         .gameWindow{
             height: 93vh;
+        }
+    }
+    @media only screen and (max-width: 1000px) {
+        .gameWindow{
+            .upperContent{
+                .btn{
+                    padding: 6px;
+                }
+            }
+        }
+    }
+    @media only screen and (max-width: 800px) {
+        .gameWindow{
+            .upperContent{
+                .btn{
+                    padding: 4px;
+                }
+            }
         }
     }
 }
