@@ -56,7 +56,7 @@ function GamePage() {
         error: "",
     });
 
-    const [open, setOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const navToLeaderBoards = () => {
         // mangu id saata nii et leaderboardist tuleks see oige lahti
@@ -73,13 +73,13 @@ function GamePage() {
                 won: false,
                 name: id,
             });
-            setScoreState({
-                start: performance.now(),
-                end: scoreState.end,
-                submitted: false,
-                multiplier: 1,
-                error: "",
-            });
+            // setScoreState({
+            //     start: performance.now(),
+            //     end: scoreState.end,
+            //     submitted: false,
+            //     multiplier: 1,
+            //     error: "",
+            // });
             if (showGame) {
                 queryClient.refetchQueries();
                 return;
@@ -107,13 +107,23 @@ function GamePage() {
     };
 
     const submitScore = async (e) => {
-        e.preventDefault(); //doesnt show snackbar on mobile otherwise
-        setOpen(true);
         if (!gameState.won) {
             return;
         }
+        e.preventDefault(); //doesnt show snackbar on mobile otherwise
         const time = scoreState.end - scoreState.start;
         const score = time * scoreState.multiplier;
+        if (!("user" in sessionStorage)) {
+            setScoreState({
+                start: scoreState.start,
+                end: scoreState.end,
+                submitted: false,
+                multiplier: scoreState.multiplier,
+                error: "You have to be logged in to submit scores!",
+            });
+            setSnackbarOpen(true);
+            return stateSetters.newGame();
+        }
         const { username, token } = JSON.parse(sessionStorage.getItem("user"));
         const game = currentGame.name.toLowerCase();
         let error = false;
@@ -139,12 +149,13 @@ function GamePage() {
         }
 
         const gameToken = tokenRes.data.object.token;
+        const gameID = GamesSliderData.indexOf(currentGame);
 
         const submitRes = await axios.post(
             submitURL,
             {
                 username,
-                gameID: GamesSliderData.indexOf(currentGame),
+                gameID,
                 score,
             },
             {
@@ -161,22 +172,25 @@ function GamePage() {
         }
 
         if (error) {
-            return setScoreState({
+            setScoreState({
                 start: scoreState.start,
                 end: scoreState.end,
                 submitted: false,
                 multiplier: scoreState.multiplier,
                 error: errorMessage,
             });
+        } else {
+            setScoreState({
+                start: scoreState.start,
+                end: scoreState.end,
+                submitted: true,
+                multiplier: scoreState.multiplier,
+                error: "",
+            });
         }
-        setScoreState({
-            start: scoreState.start,
-            end: scoreState.end,
-            submitted: true,
-            multiplier: scoreState.multiplier,
-            error: "",
-        });
+        setSnackbarOpen(true);
         //setState({ sent: false });
+        stateSetters.newGame();
     };
 
     const currentGame =
@@ -188,10 +202,9 @@ function GamePage() {
         return <ErrorPage />;
     }
     const Game = gameComponents[currentGame.name];
-    console.log(currentGame);
 
     const handleClose = () => {
-        setOpen(false);
+        setSnackbarOpen(false);
     };
 
     return (
@@ -225,16 +238,17 @@ function GamePage() {
                                 </>
                             )}
                         </Box>
-                        {open && (
+                        {snackbarOpen && (
                             <Snackbar
                                 anchorOrigin={{
                                     vertical: "bottom",
                                     horizontal: "center",
                                 }}
-                                open={open}
+                                open={snackbarOpen}
                                 onClose={handleClose}
+                                autoHideDuration={5 * 1000}
                                 message={
-                                    scoreState.sent
+                                    scoreState.submitted
                                         ? "Score saved. Check out the leaderboards!"
                                         : scoreState.error
                                 }
@@ -267,10 +281,10 @@ function GamePage() {
                     <Box className="rightDiv">
                         <Box className="rightContent">
                             <Typography className="title">
-                                Want to get competetive ?
+                                Want to get competitive?
                             </Typography>
                             <Typography className="subtitle">
-                                Check out leaderboards
+                                Check out the leaderboards
                             </Typography>
 
                             <Button

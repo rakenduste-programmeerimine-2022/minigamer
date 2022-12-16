@@ -1,4 +1,4 @@
-const { startOfDay } = require("date-fns");
+const { startOfDay, endOfDay } = require("date-fns");
 const jwt = require("jsonwebtoken");
 
 const {
@@ -20,6 +20,13 @@ const games = require("../utility/games");
 // filter by game and day
 const MAX_RESULTS = 25;
 const BEGINNING = startOfDay(new Date("2022-11-20"));
+
+const betweenDayStartAndEnd = (date) => {
+    return {
+        $gte: startOfDay(date),
+        $lte: endOfDay(date),
+    };
+};
 
 exports.methods = {
     getGameToken: (game, score) => {
@@ -48,7 +55,7 @@ exports.methods = {
             useDate
                 ? {
                       gameID,
-                      date: dateObj,
+                      date: betweenDayStartAndEnd(dateObj),
                   }
                 : {
                       gameID,
@@ -83,7 +90,7 @@ exports.methods = {
         const scores = await Score.find(
             {
                 gameID: 3,
-                date: dateObj,
+                date: betweenDayStartAndEnd(dateObj),
             },
             "-_id -gameID -__v -date"
         )
@@ -112,7 +119,9 @@ exports.methods = {
                 gameID: useGame
                     ? games.gameID({ byName: true, name: game })
                     : { $gte: 0, $lte: 2 },
-                date: useDate ? dateObj : { $gt: BEGINNING },
+                date: useDate
+                    ? betweenDayStartAndEnd(dateObj)
+                    : { $gt: BEGINNING },
             },
             "-_id -__v"
         )
@@ -138,7 +147,9 @@ exports.methods = {
                 gameID: useGame
                     ? games.gameID({ byName: true, name: game })
                     : { $gte: 0, $lte: 2 },
-                date: useDate ? dateObj : { $gt: BEGINNING },
+                date: useDate
+                    ? betweenDayStartAndEnd(dateObj)
+                    : { $gt: BEGINNING },
             },
             "-_id -__v"
         )

@@ -13,7 +13,7 @@ const Board = ({ seed, setGameWon }) => {
   useEffect(() => {
       function freshBoard() {
           const SIZE = 10;
-          const BOMBS = 20;
+          const BOMBS = 15;
           const newBoard = createBoard(SIZE, SIZE, BOMBS, seed);
           setNonMines(SIZE * SIZE - BOMBS);
           setMinelocations(newBoard.mineLocation);

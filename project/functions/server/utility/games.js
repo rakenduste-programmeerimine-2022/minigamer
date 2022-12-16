@@ -15,8 +15,8 @@ exports.environmentVariable = (name) => {
     return env[id];
 };
 
-exports.gameID = ({ byName = true, name = "", env = "" }) => {
-    return byName ? games.indexOf(name) : env.indexOf(env);
+exports.gameID = ({ byName = true, name = "", envVar = "" }) => {
+    return byName ? games.indexOf(name) : env.indexOf(envVar);
 };
 
 exports.name = (id) => {

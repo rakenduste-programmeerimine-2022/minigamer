@@ -103,7 +103,7 @@ const checkUserAndGame = (req, res, next) => {
         }
         if (
             result.score != _score ||
-            games.gameID({ byName: false, env: result.env }) != _gameID
+            games.gameID({ byName: false, envVar: result.env }) != _gameID
         ) {
             return res
                 .status(400)

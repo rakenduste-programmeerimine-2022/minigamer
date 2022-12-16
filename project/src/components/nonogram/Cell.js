@@ -4,17 +4,18 @@ import React from "react";
 
 const Cell = ({ setRowCell, index, value }) => {
   const onMouseEvent = (event) => {
-    if (event.buttons === 1) {
-      setRowCell(index);
-    }
+      console.log(event);
+      if (event.buttons === 1) {
+          setRowCell(index);
+      }
   };
 
   return (
-    <TableCell
-      className={`Cell ${value ? "BlackCell" : "WhiteCell"}`}
-      onMouseEnter={onMouseEvent}
-      onMouseDown={onMouseEvent}
-    />
+      <TableCell
+          className={`Cell ${value ? "BlackCell" : "WhiteCell"}`}
+          onPointerEnter={onMouseEvent}
+          onPointerDown={onMouseEvent}
+      />
   );
 };
 
